@@ -15,11 +15,10 @@ const {
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/index.js");
 const { protectedRoute } = require("../middleware/protectedRoute.js");
-const { checkAdminRole } = require("../controllers/CategoryController.js");
 
 const router = express.Router();
 
-router.post("/signup", createdUser);
+router.get("/createuser", createdUser);
 router.post("/login", pinRateLimiter, login);
 router.post("/logout", logout);
 router.post("/pin", validatePassword, sendPin);

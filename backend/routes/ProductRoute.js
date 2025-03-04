@@ -14,7 +14,7 @@ const router = express.Router();
 router.post(
   "/",
   protectedRoute,
-  uploadImage.single("image"),
+  uploadImage,
   compressAndSaveImage,
   createProduct
 );
@@ -22,7 +22,7 @@ router.get("/", getProducts);
 router.put(
   "/:id",
   protectedRoute,
-  uploadImage.single("image"),
+  uploadImage,
   compressAndSaveImage,
   updateProduct
 );
