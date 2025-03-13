@@ -1,26 +1,19 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
-import '../styles/LoginAdmin.css'; // Import file CSS
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/LoginAdmin.css"; // Import file CSS
+import useLogin from "../hook/useLogin";
 
 const LoginAdmin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = async (e) => {
+  const { loading, login } = useLogin();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/api/login', { email, password });
-      if (response.data.success) {
-        navigate('/dashboard'); // Redirect ke dashboard setelah login berhasil
-      } else {
-        setError('Login gagal. Periksa email dan password Anda.');
-      }
-    } catch (err) {
-      setError('Terjadi kesalahan saat login.');
-    }
+    await login(email, password);
   };
 
   return (
@@ -33,7 +26,7 @@ const LoginAdmin = () => {
         <div className="login-admin-box">
           <h2>Login Admin</h2>
           {error && <p className="error-message">{error}</p>}
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleSubmit}>
             <div className="input-group">
               <label>Email:</label>
               <input
