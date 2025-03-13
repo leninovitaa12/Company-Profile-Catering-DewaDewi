@@ -1,0 +1,20 @@
+{
+  "name": "compay-profile",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leninovitaa12/Company-Profile-Catering-DewaDewi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leninovitaa12/Company-Profile-Catering-DewaDewi/issues"
+  },
+  "homepage": "https://github.com/leninovitaa12/Company-Profile-Catering-DewaDewi#readme",
+  "description": ""
+}
