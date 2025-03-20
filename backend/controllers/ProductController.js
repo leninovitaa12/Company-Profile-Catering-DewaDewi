@@ -1,5 +1,7 @@
 const { Op, Sequelize } = require("sequelize");
 const { Product } = require("../models/index.js");
+const fs = require("fs");
+const path = require("path");
 
 // Create Product
 const createProduct = async (req, res) => {
@@ -100,6 +102,16 @@ const updateProduct = async (req, res) => {
       imageUrl = `${req.protocol}://${req.get("host")}/public/image/${
         req.file.filename
       }`;
+
+      const filename = path.basename(product.image);
+      const imagePath = path.join(__dirname, "../public/image/", filename);
+
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+        console.log(`Gambar ${filename} berhasil dihapus.`);
+      } else {
+        console.log(`Gambar ${filename} tidak ditemukan.`);
+      }
     }
 
     await product.update({

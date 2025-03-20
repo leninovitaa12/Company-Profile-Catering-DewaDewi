@@ -32,7 +32,9 @@ const uploadImage = multer({
 const compressAndSaveImage = (req, res, next) => {
   if (!req.file) return next();
 
-  const filename = `${Date.now()}-${req.file.originalname}`;
+  const sanitizedFilename = req.file.originalname.replace(/\s+/g, "-");
+
+  const filename = `${Date.now()}-${sanitizedFilename}`;
 
   const filePath = path.join(__dirname, "../public/image", filename);
 

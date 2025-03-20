@@ -19,7 +19,8 @@ const { protectedRoute } = require("../middleware/protectedRoute.js");
 const router = express.Router();
 
 router.get("/createuser", createdUser);
-router.post("/login", pinRateLimiter, login);
+// router.post("/login", pinRateLimiter, login);
+router.post("/login", login);
 router.post("/logout", logout);
 router.post("/pin", validatePassword, sendPin);
 router.post("/pin-reset", sendPin);
