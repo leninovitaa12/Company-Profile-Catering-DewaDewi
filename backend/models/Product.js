@@ -27,19 +27,12 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       category: {
-        type: DataTypes.ENUM(
-          "Main Course",
-          "Appetizer",
-          "Dessert",
-          "Beverage",
-          "Snack"
-        ),
+        type: DataTypes.ENUM("Frozen Food", "Matang", "Minuman"),
         allowNull: false,
       },
     },
     {
       timestamps: true,
-      paranoid: true,
     }
   );
 

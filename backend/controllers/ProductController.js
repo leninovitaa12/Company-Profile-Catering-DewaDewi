@@ -127,6 +127,18 @@ const deleteProduct = async (req, res) => {
       return res.status(404).json({ error: "Produk tidak ditemukan." });
     }
 
+    if (product.image) {
+      const filename = path.basename(product.image);
+      const imagePath = path.join(__dirname, "../public/image/", filename);
+
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+        console.log(`Gambar ${filename} berhasil dihapus.`);
+      } else {
+        console.log(`Gambar ${filename} tidak ditemukan.`);
+      }
+    }
+
     await product.destroy();
     res.status(200).json({ message: "Produk berhasil dihapus." });
   } catch (error) {
