@@ -5,9 +5,9 @@ import { Button } from './ui/button'
 const TransformationSection = () => {
   return (
     <section className="py-12 md:py-20">
-              <div className="grid px-8">
+              <div className="about grid px-8">
                 <div className="text-center space-y-2">
-                  <h2 className="text-3xl font-bold">Start Your Transformation</h2>
+                  <h2 className="text-3xl font-bold">Tentang Kami</h2>
                   <p className="text-muted-foreground">Personalized nutrition plans for your health goals</p>
                 </div>
                 <div className="grid md:grid-cols-3 gap-6">
