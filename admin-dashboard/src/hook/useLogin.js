@@ -17,10 +17,14 @@ const useLogin = () => {
 
     setLoading(true);
     try {
-      const { data } = await axios.post(`${apiUrl}/api/auth/login`, {
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${apiUrl}/api/auth/login`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       if (data.error) {
         throw new Error(data.error);
