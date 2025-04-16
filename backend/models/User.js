@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(60),
         allowNull: false,
       },
+      role: {  // Tambahkan kolom role
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "admin", // default role admin
+      },
     },
     {
       timestamps: true,

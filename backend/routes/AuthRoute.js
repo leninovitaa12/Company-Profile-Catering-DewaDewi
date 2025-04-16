@@ -11,6 +11,7 @@ const {
   getUser,
   validatePassword,
   resetPassword,
+  createUserWithRole, // Pastikan untuk mengimpor fungsi createUserWithRole
 } = require("../controllers/AuthControllers.js");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/index.js");
@@ -19,7 +20,6 @@ const { protectedRoute } = require("../middleware/protectedRoute.js");
 const router = express.Router();
 
 router.get("/createuser", createdUser);
-// router.post("/login", pinRateLimiter, login);
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/pin", validatePassword, sendPin);
@@ -31,6 +31,9 @@ router.post(
   validatePassword,
   resetPassword
 );
+
+// Rute untuk membuat pengguna dengan role admin atau superuser
+router.post("/create-user", createUserWithRole);  // Menambahkan rute create-user
 
 router.get("/check", protectedRoute, getUser);
 
