@@ -19,17 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      price: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-        validate: {
-          min: 0,
-        },
-      },
-      category: {
-        type: DataTypes.ENUM("Frozen Food", "Matang", "Minuman"),
-        allowNull: false,
-      },
     },
     {
       timestamps: true,

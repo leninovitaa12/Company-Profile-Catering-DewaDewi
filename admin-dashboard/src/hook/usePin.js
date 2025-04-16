@@ -20,12 +20,16 @@ const usePin = () => {
 
     setLoadings(true);
     try {
-      const { data } = await axios.post(`${apiUrl}/api/auth/pin`, {
-        name,
-        email,
-        password,
-        confirmPassword,
-      });
+      const { data } = await axios.post(
+        `${apiUrl}/api/auth/pin`,
+        {
+          name,
+          email,
+          password,
+          confirmPassword,
+        },
+        { withCredentials: true }
+      );
 
       if (data.error) {
         throw new Error(data.error);

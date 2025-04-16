@@ -14,9 +14,13 @@ const usePinReset = () => {
 
     setLoadings(true);
     try {
-      const { data } = await axios.post(`${apiUrl}/api/auth/pin-reset`, {
-        email,
-      });
+      const { data } = await axios.post(
+        `${apiUrl}/api/auth/pin-reset`,
+        {
+          email,
+        },
+        { withCredentials: true }
+      );
 
       if (data.error) {
         throw new Error(data.error);
