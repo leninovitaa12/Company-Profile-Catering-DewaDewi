@@ -23,10 +23,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(60),
         allowNull: false,
       },
+<<<<<<< HEAD
       role: {  // Tambahkan kolom role
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "admin", // default role admin
+=======
+      role: {
+        type: DataTypes.ENUM("admin", "super-admin"),
+        allowNull: false,
+        defaultValue: "admin",
+>>>>>>> c434af83c9c649cb609cd8544f3c1b762610f012
       },
     },
     {

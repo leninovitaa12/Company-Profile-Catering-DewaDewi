@@ -6,10 +6,16 @@ const nodemailer = require("nodemailer");
 
 const createdUser = async (req, res) => {
   try {
+<<<<<<< HEAD
     const name = "satu";
     const email = "dir@gmail.com";
     const password = "wardah26";
     const role = "superuser";  // Menambahkan role 'superuser' ke akun yang dibuat
+=======
+    const name = "test";
+    const email = "lenileni@gmail.com";
+    const password = "tes1234";
+>>>>>>> c434af83c9c649cb609cd8544f3c1b762610f012
 
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
@@ -57,6 +63,7 @@ const login = async (req, res) => {
 
     // Return user data including role
     res.status(200).json({
+<<<<<<< HEAD
       success: true,
       user: {
         name: user.name,
@@ -92,6 +99,11 @@ const loginAdmin = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role, // Pastikan role ada di sini
+=======
+      name: user.name,
+      email: user.email,
+      role: user.role,
+>>>>>>> c434af83c9c649cb609cd8544f3c1b762610f012
     });
   } catch (error) {
     console.error("Login Error:", error.message);

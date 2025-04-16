@@ -20,12 +20,24 @@ const useLogin = () => {
   
     setLoading(true);
     try {
+<<<<<<< HEAD
       const { data } = await axios.post(`${apiUrl}/api/auth/login`, {
         email,
         password,
       });
   
       // Jika ada error dari server (dari backend)
+=======
+      const { data } = await axios.post(
+        `${apiUrl}/api/auth/login`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+
+>>>>>>> c434af83c9c649cb609cd8544f3c1b762610f012
       if (data.error) {
         throw new Error(data.error);  // Lemparkan error untuk ditangani di bagian berikutnya
       }

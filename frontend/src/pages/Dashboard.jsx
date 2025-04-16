@@ -135,7 +135,7 @@ function Dashboard() {
             <Tabs defaultValue="meal-plan">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="meal-plan">Meal Plan</TabsTrigger>
-                <TabsTrigger value="supplements">Supplements</TabsTrigger>
+                <TabsTrigger value="Product">Supplements</TabsTrigger>
                 <TabsTrigger value="progress">Progress</TabsTrigger>
               </TabsList>
 
