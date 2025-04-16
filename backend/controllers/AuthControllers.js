@@ -54,38 +54,6 @@ const login = async (req, res) => {
     res.status(200).json({
       name: user.name,
       email: user.email,
-    });
-  } catch (error) {
-    console.error("Login Error:", error.message);
-    res.status(500).json({ error: "Terjadi kesalahan pada server" });
-  }
-};
-
-const loginAdmin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return res.status(400).json({ error: "Email salah!" });
-    }
-
-    if (user.role !== "admin") {
-      return res
-        .status(403)
-        .json({ error: "Hanya admin yang dapat mengakses ini." });
-    }
-
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ error: "Password salah!" });
-    }
-
-    tokenAndCookie(user.id, res);
-
-    res.status(200).json({
-      name: user.name,
-      email: user.email,
       role: user.role,
     });
   } catch (error) {

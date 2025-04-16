@@ -33,4 +33,13 @@ const protectedRoute = async (req, res, next) => {
   next();
 };
 
-module.exports = { protectedRoute };
+const checkRoot = (req, res, next) => {
+  if (req.user?.role !== "super-admin") {
+    return res
+      .status(403)
+      .json({ error: "Akses dibatasi hanya untuk super-admin." });
+  }
+  next();
+};
+
+module.exports = { protectedRoute, checkRoot };
