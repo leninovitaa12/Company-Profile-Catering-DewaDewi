@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const AuthRoute = require("./routes/AuthRoute.js");
+const AuthRoute = require("./routes/AuthRoute.js"); // Mengimpor AuthRoute
 const ProductRoute = require("./routes/ProductRoute");
 
 const path = require("path");
@@ -35,7 +35,10 @@ app.use(
   })
 );
 
+// Menambahkan AuthRoute untuk menangani rute auth
 app.use("/api/auth", AuthRoute);
+
+// Rute untuk produk
 app.use("/api/product", ProductRoute);
 
 app.listen(PORT, () => {

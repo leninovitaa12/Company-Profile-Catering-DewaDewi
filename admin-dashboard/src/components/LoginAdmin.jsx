@@ -1,16 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import useLogin from "../hook/useLogin";
+import { useNavigate, Link } from "react-router-dom";  // Import Link here
+import useLogin from "../hook/useLogin"; // hook untuk login
 
 const LoginAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loading } = useLogin();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await login(email, password);
-  };
+  const { handleSubmit, loading, error } = useLogin(); // Gunakan handleSubmit
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#F1EFDC]">
@@ -20,7 +15,10 @@ const LoginAdmin = () => {
           <p className="text-lg">Silakan masuk untuk mengakses dashboard admin.</p>
         </div>
         <div className="w-full md:w-1/2 flex justify-center items-center p-10">
-          <form className="w-full" onSubmit={handleSubmit}>
+          <form
+            className="w-full"
+            onSubmit={(e) => handleSubmit(e, email, password)}  // Panggil handleSubmit saat form disubmit
+          >
             <h2 className="text-3xl font-bold text-[#42032C] mb-8 text-center">Login Admin</h2>
             <div className="mb-5">
               <label className="block text-[#42032C] font-semibold mb-2">Email</label>
@@ -51,6 +49,7 @@ const LoginAdmin = () => {
             >
               {loading ? "Loading..." : "Login"}
             </button>
+            {error && <p className="text-red-500 text-center mt-4">{error}</p>}
             <p className="mt-4 text-center">
               <Link
                 to="/forgot-password"
