@@ -1,54 +1,47 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";  // Jangan import BrowserRouter di sini
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "./context/AuthContext";
 import LoginAdmin from "./components/LoginAdmin";
 import DashboardAdmin from "./components/DashboardAdmin";
 import ForgotPassword from "./components/ForgotPassword";
 import Testimoni from "./components/Testimoni";
 import Product from "./components/Product";
-import SuperUserDashboard from "./components/SuperUserDashboard";
-import { useNavigate } from 'react-router-dom';
+import SuperAdminDashboard from "./components/SuperAdminDashboard";
 
 function App() {
-  const { authUser } = useAuthContext(); // Mendapatkan user yang sedang login
-  const navigate = useNavigate(); // Mendapatkan fungsi navigate
-
-  useEffect(() => {
-    // Jika sudah login, arahkan ke dashboard
-    if (authUser) {
-      navigate("/dashboard");
-    }
-  }, [authUser, navigate]); // Menambahkan authUser dan navigate sebagai dependensi
+  const { authUser } = useAuthContext();
 
   return (
     <Routes>
       {/* Rute Login */}
       <Route
         path="/login"
-        element={authUser ? <Navigate to="/dashboard" replace /> : <LoginAdmin />}
+        element={authUser ? <Navigate to="/" /> : <LoginAdmin />}
       />
       {/* Rute Dashboard */}
-      <Route path="/dashboard" 
-      element={authUser ? <DashboardAdmin /> : <Navigate to="/login" replace />} />
+      <Route
+        path="/"
+        element={authUser ? <DashboardAdmin /> : <Navigate to="/login" />}
+      />
       {/* Rute Forgot Password */}
       <Route
         path="/forgot-password"
-        element={authUser ? <Navigate to="/dashboard" replace /> : <ForgotPassword />}
+        element={authUser ? <Navigate to="/" /> : <ForgotPassword />}
       />
       {/* Rute Testimoni */}
       <Route
         path="/testimoni"
-        element={authUser ? <Testimoni /> : <Navigate to="/login" replace />}
+        element={authUser ? <Testimoni /> : <Navigate to="/login" />}
       />
       {/* Rute Product */}
       <Route
         path="/product"
-        element={authUser ? <Product /> : <Navigate to="/login" replace />}
+        element={authUser ? <Product /> : <Navigate to="/login" />}
       />
-      {/* Rute Super User Dashboard */}
+      {/* Akun Product */}
       <Route
-        path="/superuser-dashboard"
-        element={authUser?.role === "superuser" ? <SuperUserDashboard /> : <Navigate to="/login" replace />}
+        path="/account"
+        element={authUser ? <SuperAdminDashboard /> : <Navigate to="/login" />}
       />
     </Routes>
   );

@@ -9,7 +9,6 @@ const createdUser = async (req, res) => {
     const name = "satu";
     const email = "dir@gmail.com";
     const password = "wardah26";
-    const role = "superuser";  // Menambahkan role 'superuser' ke akun yang dibuat
 
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
@@ -22,16 +21,11 @@ const createdUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role,  // Menetapkan role sebagai 'superuser'
     });
 
     tokenAndCookie(newUser.id, res);
 
-    res.status(201).json({
-      name: newUser.name,
-      email: newUser.email,
-      role: newUser.role,  // Menyertakan role dalam response
-    });
+    res.status(201).json("akun berhasil dibuat");
   } catch (error) {
     console.error("Signup Error:", error.message);
     res.status(500).json({ error: "Terjadi kesalahan pada server" });
@@ -51,11 +45,7 @@ const login = async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(400).json({ error: "Password salah!" });
     }
-
-    // Generate token and cookie for session
     tokenAndCookie(user.id, res);
-
-    // Return user data including role
     res.status(200).json({
       name: user.name,
       email: user.email,
@@ -206,46 +196,6 @@ const resetPassword = async (req, res) => {
   }
 };
 
-const createUserWithRole = async (req, res) => {
-  try {
-    const { name, email, password, role } = req.body;
-
-    if (!name || !email || !password || !role) {
-      return res.status(400).json({ error: "Semua data harus diisi!" });
-    }
-
-    // Pastikan role valid
-    if (!["admin", "superuser"].includes(role)) {
-      return res.status(400).json({ error: "Role tidak valid!" });
-    }
-
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      return res.status(400).json({ error: "Email sudah digunakan!" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      role, // Set role sesuai input
-    });
-
-    tokenAndCookie(newUser.id, res);
-
-    res.status(201).json({
-      name: newUser.name,
-      email: newUser.email,
-      role: newUser.role,
-    });
-  } catch (error) {
-    console.error("Signup Error:", error.message);
-    res.status(500).json({ error: "Terjadi kesalahan pada server" });
-  }
-};
-
 module.exports = {
   login,
   logout,
@@ -253,6 +203,5 @@ module.exports = {
   getUser,
   validatePassword,
   resetPassword,
-  createUserWithRole,
   createdUser,
 };
