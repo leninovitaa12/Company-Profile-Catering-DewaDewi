@@ -27,7 +27,7 @@ const products = [
 
 const BestSellerSection = () => {
   const [detail, setDetail] = useState(null)
-  return (
+  return (<>
     <section id='products' className="py-12 md:py-20 w-full bg-gray-50">
           <div className="grid px-8">
             <div className="text-center space-y-2">
@@ -61,8 +61,8 @@ const BestSellerSection = () => {
             </div>
           </div>
 
-          {detail && <ProductDetail product={detail} setProduct={setDetail} />}
         </section>
+          {detail && <ProductDetail product={detail} setProduct={setDetail} />}</>
   )
 }
 

@@ -16,19 +16,16 @@ const Header = () => {
                     CATERING DEWA DEWI
                   </Link >
                   <nav className="hidden md:flex gap-6">
-                    <Link to={"/"} className="text-sm font-medium">
+                    <ScrollLink smooth={true} spy={true} to={"home"} className="text-sm cursor-pointer font-medium">
                         Home
-                    </Link>
-                    <ScrollLink smooth={true} spy={true} to={"products"} className="text-sm font-medium" offset={-100} duration={500} >
+                    </ScrollLink>
+                    <ScrollLink smooth={true} spy={true} to={"products"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
                         Product
                     </ScrollLink>
-                    <ScrollLink smooth={true} spy={true} to={"program"} className="text-sm font-medium" offset={-100} duration={500} >
-                        Program
-                    </ScrollLink>
-                    <ScrollLink smooth={true} spy={true} to={"about"} className="text-sm font-medium" offset={-100} duration={500} >
+                    <ScrollLink smooth={true} spy={true} to={"about"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
                         About
                     </ScrollLink>
-                    <ScrollLink smooth={true} spy={true} to={"contact"} className="text-sm font-medium" offset={-100} duration={500} >
+                    <ScrollLink smooth={true} spy={true} to={"contact"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
                         Contact
                     </ScrollLink>
                   </nav>
@@ -40,19 +37,16 @@ const Header = () => {
 
              {menu && (<div className="flex justify-center w-full items-center py-8">
                   <nav className="md:hidden gap-6 flex bg-white flex-col justify-center w-[80vw] items-center text-center">
-                    <Link to={"/"} onClick={() => setMenu(false)} className="text-sm font-medium">
+                    <ScrollLink smooth={true} spy={true} to={"home"} onClick={() => setMenu(false)} className="text-sm font-medium">
                         Home
-                    </Link>
-                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"products"} className="text-sm font-medium" offset={-100} duration={500} >
+                    </ScrollLink>
+                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"products"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
                         Product
                     </ScrollLink>
-                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"program"} className="text-sm font-medium" offset={-100} duration={500} >
-                        Program
-                    </ScrollLink>
-                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"about"} className="text-sm font-medium" offset={-100} duration={500} >
+                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"about"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
                         About
                     </ScrollLink>
-                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"contact"} className="text-sm font-medium" offset={-100} duration={500} >
+                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"contact"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
                         Contact
                     </ScrollLink>
                   </nav>

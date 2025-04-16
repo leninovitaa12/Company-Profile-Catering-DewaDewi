@@ -8,7 +8,6 @@ import BestSellerSection from "../components/BestSellerSection"
 import TransformationSection from "../components/AboutSection"
 import TestimoniSection from "../components/testimoniSection"
 import BreakSection from "../components/BreakSection"
-import ProgramSection from "../components/ProgramSection"
 
 function HomePage() {
   return (
@@ -29,12 +28,8 @@ function HomePage() {
         {/* Transformation Section */}
         <TransformationSection/>
 
-        {/* Sustainable Nutrition Program */}
-        <ProgramSection/>
-
         {/* Green CTA Section */}
         <BreakSection/>
-
         
         {/* Testimonials Section */}
         <TestimoniSection/>

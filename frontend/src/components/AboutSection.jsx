@@ -1,45 +1,44 @@
-import React from 'react'
-import { ArrowRight} from "lucide-react"
-import { Button } from './ui/button'
+import React from "react";
 
-const TransformationSection = () => {
+const AboutSection = () => {
   return (
-    <section className="py-12 md:py-20">
-              <div className="about grid px-8">
-                <div className="text-center space-y-2">
-                  <h2 className="text-3xl font-bold">Tentang Kami</h2>
-                  <p className="text-muted-foreground">Personalized nutrition plans for your health goals</p>
-                </div>
-                <div className="grid md:grid-cols-3 gap-6">
-                  {[
-                    { title: "Meal Plans", image: "https://placehold.co/300x300" },
-                    { title: "Nutrition Coaching", image: "https://placehold.co/300x300" },
-                    { title: "Premium Supplements", image: "https://placehold.co/300x300" },
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg"
-                    >
-                      <div className="aspect-square relative">
-                        <img
-                          src={item.image || "/placeholder.svg"}
-                          alt={item.title}
-                          className="object-cover w-full h-full transition-transform group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-medium">{item.title}</h3>
-                        <p className="text-sm text-muted-foreground">Customized for your needs</p>
-                        <Button variant="link" className="mt-2 p-0 h-auto" size="sm">
-                          Learn more <ArrowRight className="ml-1 h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-  )
-}
+    <section className="bg-white py-16">
+      <div className="container mx-auto px-6 md:px-12 grid md:grid-cols-2 gap-10 items-center">
+        {/* Teks */}
+        <div className="space-y-6">
+          <h2 className="text-5xl font-extrabold text-black tracking-tight">
+            ABOUT.
+          </h2>
+          <div className="h-1 w-20 bg-[#606c38]"></div>
 
-export default TransformationSection
+          <p className="text-lg text-black font-semibold">
+            Kami passionate dalam menyajikan hidangan lezat dan pelayanan terbaik.
+          </p>
+
+          <div className="space-y-4 text-black text-sm leading-relaxed">
+            <p>
+              Salah satu perusahaan jasa katering di Kota Madiun. Dibangun atas fondasi kepercayaan serta kepuasan konsumen.
+            </p>
+            <p>
+              Katering untuk setiap jenis acara — mulai dari katering untuk korporasi dan institusi, pernikahan, acara ulang tahun, serta acara elaborasi lainnya.
+            </p>
+            <p>
+              Kami senantiasa memberikan produk berkualitas dengan penyajian yang inovatif.
+            </p>
+          </div>
+        </div>
+
+        {/* Gambar */}
+        <div className="w-full">
+          <img
+            src="/your-image.jpg" // ganti dengan path gambar kamu
+            alt="Tentang Kami"
+            className="w-full h-auto rounded-lg shadow-md object-cover"
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default AboutSection;
