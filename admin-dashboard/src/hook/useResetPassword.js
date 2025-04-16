@@ -21,12 +21,16 @@ const useResetPassword = () => {
 
     setLoading(true);
     try {
-      const { data } = await axios.post(`${apiUrl}/api/auth/reset-password`, {
-        email,
-        pin,
-        password,
-        confirmPassword,
-      });
+      const { data } = await axios.post(
+        `${apiUrl}/api/auth/reset-password`,
+        {
+          email,
+          pin,
+          password,
+          confirmPassword,
+        },
+        { withCredentials: true }
+      );
 
       if (data.error) {
         throw new Error(data.error);
