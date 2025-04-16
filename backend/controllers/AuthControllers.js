@@ -6,16 +6,10 @@ const nodemailer = require("nodemailer");
 
 const createdUser = async (req, res) => {
   try {
-<<<<<<< HEAD
     const name = "satu";
     const email = "dir@gmail.com";
     const password = "wardah26";
     const role = "superuser";  // Menambahkan role 'superuser' ke akun yang dibuat
-=======
-    const name = "test";
-    const email = "lenileni@gmail.com";
-    const password = "tes1234";
->>>>>>> c434af83c9c649cb609cd8544f3c1b762610f012
 
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
@@ -63,47 +57,9 @@ const login = async (req, res) => {
 
     // Return user data including role
     res.status(200).json({
-<<<<<<< HEAD
-      success: true,
-      user: {
-        name: user.name,
-        email: user.email,
-        role: user.role,  // Include role here
-      },
-    });
-  } catch (error) {
-    console.error("Login Error:", error.message);
-    res.status(500).json({ error: "Terjadi kesalahan pada server" });
-  }
-};
-
-const loginAdmin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return res.status(400).json({ error: "Email salah!" });
-    }
-
-    // Verifikasi role user, pastikan mereka adalah admin atau superuser
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ error: "Password salah!" });
-    }
-
-    tokenAndCookie(user.id, res);
-
-    // Menambahkan role dalam response
-    res.status(200).json({
-      name: user.name,
-      email: user.email,
-      role: user.role, // Pastikan role ada di sini
-=======
       name: user.name,
       email: user.email,
       role: user.role,
->>>>>>> c434af83c9c649cb609cd8544f3c1b762610f012
     });
   } catch (error) {
     console.error("Login Error:", error.message);
