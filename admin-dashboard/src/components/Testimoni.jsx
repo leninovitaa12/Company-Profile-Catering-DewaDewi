@@ -4,6 +4,7 @@ import useLogout from "../hook/useLogout";
 import { useAuthContext } from "../context/AuthContext";
 import TestimoniAdd from "./TestimoniAdd";
 import TestimoniItem from "./TestimoniItem";
+import useGetTestimoni from "../hook/useGetTestimoni";
 
 // Simple SVG icons as components
 // Simple SVG icons as components
@@ -98,6 +99,8 @@ const Testimoni = () => {
   const { authUser } = useAuthContext();
   const { logout, loading } = useLogout();
 
+  const { testimonis, loadings, error, refetch } = useGetTestimoni();
+
   const handleLogout = () => {
     if (logout) {
       logout();
@@ -185,9 +188,14 @@ const Testimoni = () => {
       </div>
       <div className="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
         {/* post */}
-        <TestimoniAdd />
+        <TestimoniAdd refetch={refetch} />
         {/* get */}
-        <TestimoniItem />
+        <TestimoniItem
+          testimonis={testimonis}
+          loading={loadings}
+          error={error}
+          refetch={refetch}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import useLogout from "../hook/useLogout";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
@@ -95,33 +95,8 @@ const LogoutIcon = () => (
   </svg>
 );
 
-const ImageIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-    <polyline points="21 15 16 10 5 21"></polyline>
-  </svg>
-);
-
 const Product = () => {
   const { authUser } = useAuthContext();
-  const [productName, setProductName] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-  const [productImage, setProductImage] = useState(null);
-  const [products, setProducts] = useState([]);
-  const [editingProduct, setEditingProduct] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const fileInputRef = useRef(null);
 
   const [add, setAdd] = useState(false);
 
@@ -131,68 +106,6 @@ const Product = () => {
     if (logout) {
       logout();
     }
-  };
-
-  const handleImageChange = (e) => {
-    setProductImage(e.target.files[0]);
-  };
-
-  const resetForm = () => {
-    setProductName("");
-    setProductDescription("");
-    setProductImage(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const handleAddProduct = () => {
-    if (!productName.trim()) {
-      alert("Nama produk tidak boleh kosong!");
-      return;
-    }
-
-    const newProduct = {
-      id: Date.now(),
-      name: productName,
-      description: productDescription,
-      image: productImage,
-      createdAt: new Date(),
-    };
-
-    setProducts([...products, newProduct]);
-    resetForm();
-  };
-
-  const handleEditClick = (product) => {
-    setEditingProduct({ ...product });
-    setIsEditing(true);
-  };
-
-  const handleUpdateProduct = () => {
-    if (!editingProduct.name.trim()) {
-      alert("Nama produk tidak boleh kosong!");
-      return;
-    }
-
-    setProducts(
-      products.map((product) =>
-        product.id === editingProduct.id ? editingProduct : product
-      )
-    );
-    setIsEditing(false);
-    setEditingProduct(null);
-  };
-
-  const handleDeleteProduct = (id) => {
-    if (window.confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
-      setProducts(products.filter((product) => product.id !== id));
-    }
-  };
-
-  const cancelEdit = () => {
-    setIsEditing(false);
-    setEditingProduct(null);
   };
 
   return (

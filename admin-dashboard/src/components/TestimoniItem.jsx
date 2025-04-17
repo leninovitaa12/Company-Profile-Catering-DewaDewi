@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import useGetTestimoni from "../hook/useGetTestimoni";
 import useDeleteTestimoni from "../hook/useDeleteTestimoni"; // Import hook delete
 import useEditTestimoni from "../hook/useEditTestimoni"; // Import hook edit
 
@@ -68,16 +67,15 @@ const formatDate = (isoString) => {
   });
 };
 
-const TestimoniItem = () => {
+const TestimoniItem = ({ testimonis, loading, error, refetch }) => {
   const [sortOption, setSortOption] = useState("latest");
   const replaceFileInputRef = useRef(null);
 
-  const { testimonis, loading, error, refetch } = useGetTestimoni();
   const {
     deleteTestimoni,
     loading: deleteLoading,
     error: deleteError,
-  } = useDeleteTestimoni(); // Hook delete
+  } = useDeleteTestimoni();
   const {
     editTestimoni,
     loading: editLoading,

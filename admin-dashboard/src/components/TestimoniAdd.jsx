@@ -19,7 +19,7 @@ const UploadIcon = () => (
   </svg>
 );
 
-const TestimoniAdd = () => {
+const TestimoniAdd = ({ refetch }) => {
   const [testimoniImage, setTestimoniImage] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -39,6 +39,7 @@ const TestimoniAdd = () => {
         // Setujui apa yang perlu dilakukan setelah upload sukses (misalnya reset atau tampilkan pesan sukses)
         alert("Testimoni berhasil diunggah!");
         setTestimoniImage(null); // reset image setelah upload sukses
+        refetch();
       }
     }
   };
