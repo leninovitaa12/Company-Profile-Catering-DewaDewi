@@ -160,7 +160,7 @@ const ProductAdd = ({ setAdd }) => {
               <button
                 className="bg-[#D36B00] hover:bg-[#42032C] text-white py-2.5 px-5 rounded-lg transition-colors flex items-center gap-2"
                 onClick={handleAddProduct}
-                disabled={loading} // Disables the button when loading
+                disabled={loading} 
               >
                 {loading ? "Memproses..." : "Tambah Produk"}
               </button>

@@ -160,12 +160,11 @@ const Product = () => {
 
   const [add, setAdd] = useState(false)
 
-  // Use the logout hook
   const { logout, loading } = useLogout()
 
   const handleLogout = () => {
     if (logout) {
-      logout(); // Using logout function from context
+      logout(); 
     }
   };
 
@@ -295,8 +294,6 @@ const Product = () => {
                       )}
 </div>
 </div>
-      {/* Main Content */}
-      
         {/* Add Product Form */}
         {add && (<ProductAdd setAdd={setAdd}/>)}
 
