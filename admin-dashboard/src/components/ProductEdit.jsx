@@ -20,7 +20,7 @@ const ImageIcon = () => (
   </svg>
 );
 
-const ProductEdit = ({ setProducts, product }) => {
+const ProductEdit = ({ setProductToEdit, product }) => {
   const [productName, setProductName] = useState(product.name || "");
   const [productDescription, setProductDescription] = useState(
     product.description || ""
@@ -67,14 +67,10 @@ const ProductEdit = ({ setProducts, product }) => {
 
     try {
       setLoading(true);
-      const updatedProduct = await updateProduct(product.id, updatedData); // Update produk
-      setProducts((prevProducts) =>
-        prevProducts.map((item) =>
-          item.id === product.id ? { ...item, ...updatedProduct } : item
-        )
-      );
+      await updateProduct(product.id, updatedData);
       resetForm();
       toast.success("Produk berhasil diperbarui");
+      setProductToEdit();
     } catch (error) {
       console.error("Gagal mengedit produk:", error);
       toast.error("Gagal mengedit produk");
@@ -132,7 +128,7 @@ const ProductEdit = ({ setProducts, product }) => {
 
         <button
           className="text-black bg-white rounded-lg px-4 py-2 mb-4 border"
-          onClick={() => setProducts([])} // Menutup form edit atau mengembalikan ke daftar produk
+          onClick={() => setProductToEdit(null)} // Menutup form edit atau mengembalikan ke daftar produk
         >
           Kembali
         </button>

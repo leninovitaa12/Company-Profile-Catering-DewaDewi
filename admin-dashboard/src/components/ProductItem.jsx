@@ -42,12 +42,10 @@ const TrashIcon = () => (
 const ProductItem = ({ setAdd }) => {
   const { products, loading, total, refetch } = useGetProductsAdmin();
   const { deleteProduct, loading: deleteLoading } = useDeleteProduct();
-  const [isEditing, setIsEditing] = useState(false); // State untuk kontrol edit form
   const [productToEdit, setProductToEdit] = useState(null); // State untuk menyimpan produk yang diedit
 
   const handleEditClick = (product) => {
     setProductToEdit(product); // Menyimpan produk yang ingin diedit
-    setIsEditing(true); // Menampilkan form edit
   };
 
   const handleDeleteProduct = async (id) => {
@@ -62,11 +60,14 @@ const ProductItem = ({ setAdd }) => {
   return (
     <div className="mt-8 p-5 mx-auto">
       {/* Menampilkan form edit jika isEditing true */}
-      {isEditing && productToEdit && (
-        <ProductEdit setProducts={refetch} product={productToEdit} />
+      {productToEdit && (
+        <ProductEdit
+          setProductToEdit={setProductToEdit}
+          product={productToEdit}
+        />
       )}
 
-      {!isEditing && !productToEdit && (
+      {!productToEdit && (
         <>
           <h3 className="text-2xl font-semibold text-gray-800 mb-5">
             Daftar Produk
@@ -82,7 +83,7 @@ const ProductItem = ({ setAdd }) => {
 
       {loading ? (
         <p className="text-center text-gray-500">Memuat produk...</p>
-      ) : products.length > 0 && !isEditing && !productToEdit ? (
+      ) : products.length > 0 && !productToEdit ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {products.map((product) => (
             <div
