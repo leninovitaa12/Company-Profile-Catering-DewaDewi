@@ -1,32 +1,11 @@
-import React, { useState } from 'react'
-import { Button } from './ui/button'
-import ProductDetail from './ProductDetail'
-
-const products = [
-  {
-    name: "Frozen Chicken Nuggets",
-    description: "Delicious and crispy frozen chicken nuggets made from high-quality ingredients.",
-    image: "https://placehold.co/300x300",
-  },
-  {
-    name: "Beef Sausage",
-    description: "Premium quality beef sausage, perfect for grilling or breakfast.",
-    image: "https://placehold.co/300x300",
-  },
-  {
-    name: "Frozen Fish Fillet",
-    description: "Fresh frozen fish fillet, ready to cook for your favorite seafood dishes.",
-    image: "https://placehold.co/300x300",
-  },
-  {
-    name: "Vegetable Spring Rolls",
-    description: "Crispy and tasty vegetable spring rolls, perfect as a light snack.",
-    image: "https://placehold.co/300x300",
-  },
-];
+import React, { useState } from 'react';
+import { Button } from './ui/button';
+import ProductDetail from './ProductDetail';
+import useGetProductsAdmin from '../hook/useGetProduct.js'; // pastikan path-nya sesuai
 
 const BestSellerSection = () => {
   const [detail, setDetail] = useState(null)
+  const { products, loading } = useGetProductsAdmin("", 1) // ambil page 1, tanpa filter nama
 
   return (
     <>
@@ -45,29 +24,33 @@ const BestSellerSection = () => {
 
           {/* Produk */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-            {products.map((item, index) => (
-              <div
-                key={index}
-                className="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg"
-              >
-                <div className="aspect-square relative">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="object-cover w-full h-full transition-transform group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-[#606c38]">{item.name}</h3>
-                  <p className="text-sm text-muted-foreground">Natural ingredients</p>
-                  <div className="mt-2 flex items-center justify-between">
-                    <Button onClick={() => setDetail(item)} variant="ghost" size="sm">
-                      Detail
-                    </Button>
+            {loading ? (
+              <p className="col-span-full text-center text-muted-foreground">Loading products...</p>
+            ) : (
+              products.map((item, index) => (
+                <div
+                  key={index}
+                  className="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg"
+                >
+                  <div className="aspect-square relative">
+                    <img
+                      src={item.image || "https://placehold.co/300x300"}
+                      alt={item.name}
+                      className="object-cover w-full h-full transition-transform group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-[#606c38]">{item.name}</h3>
+                    <p className="text-sm text-muted-foreground">{item.description || 'Natural ingredients'}</p>
+                    <div className="mt-2 flex items-center justify-between">
+                      <Button onClick={() => setDetail(item)} variant="ghost" size="sm">
+                        Detail
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </section>
