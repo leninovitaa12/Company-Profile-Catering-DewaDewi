@@ -3,8 +3,10 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const AuthRoute = require("./routes/AuthRoute.js"); // Mengimpor AuthRoute
+const AuthRoute = require("./routes/AuthRoute.js");
 const ProductRoute = require("./routes/ProductRoute");
+const AccountRoute = require("./routes/AccountRoute.js");
+const TestimoniRoute = require("./routes/TestimoniRoute.js");
 
 const path = require("path");
 const { sequelize } = require("./models/index.js");
@@ -35,11 +37,10 @@ app.use(
   })
 );
 
-// Menambahkan AuthRoute untuk menangani rute auth
 app.use("/api/auth", AuthRoute);
-
-// Rute untuk produk
 app.use("/api/product", ProductRoute);
+app.use("/api/testimoni", TestimoniRoute);
+app.use("/api/account", AccountRoute);
 
 app.listen(PORT, () => {
   console.log(`Server Run in port ${PORT}`);
