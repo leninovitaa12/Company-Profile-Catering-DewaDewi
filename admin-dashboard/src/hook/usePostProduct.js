@@ -12,9 +12,6 @@ const usePostProduct = () => {
     try {
       const res = await axios.post(`${apiUrl}/api/product/`, productData, {
         withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
       });
 
       toast.success("Product created successfully!");

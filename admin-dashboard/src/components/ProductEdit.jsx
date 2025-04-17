@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
-import usePostProduct from "../hook/usePostProduct"; // Importing the hook
+import useUpdateProduct from "../hook/useUpdateProduct"; // Menggunakan hook untuk update produk
 
 const ImageIcon = () => (
   <svg
@@ -20,16 +20,28 @@ const ImageIcon = () => (
   </svg>
 );
 
-const ProductAdd = ({ setAdd }) => {
-  const [productName, setProductName] = useState("");
-  const [productDescription, setProductDescription] = useState("");
+const ProductEdit = ({ setProducts, product }) => {
+  const [productName, setProductName] = useState(product.name || "");
+  const [productDescription, setProductDescription] = useState(
+    product.description || ""
+  );
   const [productImage, setProductImage] = useState(null);
-  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
-  const { postProduct, loading } = usePostProduct(); // Using the custom hook for postProduct and loading
+
+  const { updateProduct } = useUpdateProduct(); // Menggunakan hook untuk update produk
+
+  useEffect(() => {
+    if (product.image) {
+      setProductImage(product.image); // Set image jika ada gambar yang sudah ter-upload
+    }
+  }, [product]);
 
   const handleImageChange = (e) => {
-    setProductImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setProductImage(file);
+    }
   };
 
   const resetForm = () => {
@@ -41,45 +53,92 @@ const ProductAdd = ({ setAdd }) => {
     }
   };
 
-  const handleAddProduct = async () => {
+  const handleEditProduct = async () => {
     if (!productName.trim()) {
       alert("Nama produk tidak boleh kosong!");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("name", productName);
-    formData.append("description", productDescription);
-    if (productImage) {
-      formData.append("image", productImage);
-    }
+    const updatedData = {
+      name: productName,
+      description: productDescription,
+      image: productImage,
+    };
 
     try {
-      await postProduct(formData);
+      setLoading(true);
+      const updatedProduct = await updateProduct(product.id, updatedData); // Update produk
+      setProducts((prevProducts) =>
+        prevProducts.map((item) =>
+          item.id === product.id ? { ...item, ...updatedProduct } : item
+        )
+      );
       resetForm();
-      setAdd(false);
-      toast.success("Menambahkan Produk Berhasil");
+      toast.success("Produk berhasil diperbarui");
     } catch (error) {
-      console.error("Failed to add product:", error);
+      console.error("Gagal mengedit produk:", error);
+      toast.error("Gagal mengedit produk");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const renderImagePreview = () => {
+    if (productImage) {
+      // Jika productImage adalah file (diupload oleh user)
+      if (productImage instanceof File) {
+        return (
+          <div className="mt-2 flex items-center gap-4">
+            <div className="relative w-16 h-16 border rounded-md overflow-hidden">
+              <img
+                src={URL.createObjectURL(productImage)} // Membuat URL objek untuk file yang di-upload
+                alt="Preview"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="text-sm text-gray-600">
+              <p>{(productImage.size / 1024).toFixed(2)} KB</p>
+            </div>
+          </div>
+        );
+      }
+    } else if (product.image) {
+      // Jika productImage kosong, tampilkan gambar yang sudah ada dari produk
+      return (
+        <div className="mt-2 flex items-center gap-4">
+          <div className="relative w-16 h-16 border rounded-md overflow-hidden">
+            <img
+              src={product.image || "/placeholder.svg"} // Gambar produk yang sudah ada
+              alt="Preview"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="text-sm text-gray-600">
+            <p>{(product.image.size / 1024).toFixed(2)} KB</p>
+          </div>
+        </div>
+      );
+    }
+
+    return null;
   };
 
   return (
     <>
       <div className="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
         <div className="flex justify-between items-center mb-6 border-b pb-3">
-          <h2 className="text-3xl font-bold text-gray-800">Manajemen Produk</h2>
+          <h2 className="text-3xl font-bold text-gray-800">Edit Produk</h2>
         </div>
 
         <button
           className="text-black bg-white rounded-lg px-4 py-2 mb-4 border"
-          onClick={() => setAdd(false)}
+          onClick={() => setProducts([])} // Menutup form edit atau mengembalikan ke daftar produk
         >
           Kembali
         </button>
 
         <div className="bg-gray-50 p-5 rounded-lg mb-6 border border-gray-200">
-          <h3 className="text-xl font-semibold mb-4">Tambah Produk Baru</h3>
+          <h3 className="text-xl font-semibold mb-4">Edit Produk</h3>
           <div className="space-y-4">
             <div>
               <label
@@ -140,31 +199,16 @@ const ProductAdd = ({ setAdd }) => {
                   {productImage ? productImage.name : "Pilih Gambar Produk"}
                 </label>
               </div>
-              {productImage && (
-                <div className="mt-2 flex items-center gap-4">
-                  <div className="relative w-16 h-16 border rounded-md overflow-hidden">
-                    <img
-                      src={
-                        URL.createObjectURL(productImage) || "/placeholder.svg"
-                      }
-                      alt="Preview"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    <p>{(productImage.size / 1024).toFixed(2)} KB</p>
-                  </div>
-                </div>
-              )}
+              {renderImagePreview()}
             </div>
 
             <div>
               <button
                 className="bg-[#D36B00] hover:bg-[#42032C] text-white py-2.5 px-5 rounded-lg transition-colors flex items-center gap-2"
-                onClick={handleAddProduct}
+                onClick={handleEditProduct}
                 disabled={loading}
               >
-                {loading ? "Memproses..." : "Tambah Produk"}
+                {loading ? "Memproses..." : "Simpan Perubahan"}
               </button>
             </div>
           </div>
@@ -174,4 +218,4 @@ const ProductAdd = ({ setAdd }) => {
   );
 };
 
-export default ProductAdd;
+export default ProductEdit;
