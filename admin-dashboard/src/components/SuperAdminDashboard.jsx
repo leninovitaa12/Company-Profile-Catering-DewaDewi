@@ -4,8 +4,78 @@ import { useState } from "react"
 import { useAuthContext } from "../context/AuthContext"
 import useLogout from "../hook/useLogout"
 import { toast } from "react-toastify"
+import { Link } from "react-router-dom"
 
 // Simple SVG icons as components
+const HomeIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+  </svg>
+)
+
+const TestimoniIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+  </svg>
+)
+
+const ProductIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m7.5 4.27 9 5.15"></path>
+    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+    <path d="m3.3 7 8.7 5 8.7-5"></path>
+    <path d="M12 22V12"></path>
+  </svg>
+)
+
+const AccountIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+    <circle cx="12" cy="7" r="4"></circle>
+  </svg>
+)
+
 const UserIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
@@ -50,13 +120,14 @@ const SuperAdminDashboard = () => {
   const [oldPassword, setOldPassword] = useState("") // Old password field
   const [errorMessage, setErrorMessage] = useState("")
 
-  // Using the logout hook
-  const { logout } = useLogout()
+  // Use the logout hook
+  const { logout, loading } = useLogout()
 
-  // Logout function
   const handleLogout = () => {
-    logout()
-  }
+    if (logout) {
+      logout(); // Using logout function from context
+    }
+  };
 
   // If user is not a super-admin, show 401 error
   if (authUser.role !== "super-admin")
@@ -152,110 +223,194 @@ const SuperAdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F1EFDC]">
-      {/* Header */}
-      <header className="bg-[#42032C] text-white p-4 shadow-md">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <ShieldIcon />
-            <h1 className="text-2xl font-bold">Super Admin Dashboard</h1>
+    <div className="flex min-h-screen bg-[#F1EFDC]">
+      {/* Sidebar */}
+      <div className="w-64 bg-[#42032C] text-white min-h-screen p-4 hidden md:block">
+        <div className="flex items-center justify-center mb-8 pt-4">
+          <h1 className="text-xl font-bold">Menu Admin</h1>
+        </div>
+
+        <nav className="space-y-2">
+          <Link
+            to="/"
+            className="flex items-center space-x-3 p-2 rounded-lg hover:bg-[#D36B00] transition-colors"
+          >
+            <HomeIcon />
+            <span>Dashboard</span>
+          </Link>
+
+          <Link
+            to="/testimoni"
+            className="flex items-center space-x-3 p-2 rounded-lg hover:bg-[#D36B00] transition-colors"
+          >
+            <TestimoniIcon />
+            <span>Testimoni</span>
+          </Link>
+
+          <Link
+            to="/product"
+            className="flex items-center space-x-3 p-2 rounded-lg hover:bg-[#D36B00] transition-colors"
+          >
+            <ProductIcon />
+            <span>Produk</span>
+          </Link>
+
+          <div className="bg-[#D36B00] rounded-lg p-2 flex items-center space-x-3 cursor-default">
+            <AccountIcon />
+            <span>Akun</span>
           </div>
+        </nav>
+
+        <div className="absolute bottom-4 left-4 right-4">
           <button
             onClick={handleLogout}
-            className="flex items-center space-x-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+            className="w flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors"
+            disabled={loading}
           >
             <LogoutIcon />
-            <span>Logout</span>
+            <span>{loading ? "Logging out..." : "Logout"}</span>
           </button>
         </div>
-      </header>
+      </div>
 
-      <main className="container mx-auto py-8 px-4">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-500 text-sm">Total Admin</p>
-                <h3 className="text-3xl font-bold text-[#42032C]">{admins.length}</h3>
-              </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <UserIcon />
-              </div>
+      {/* Main Content */}
+      <div className="flex-1">
+        {/* Header */}
+        <header className="bg-[#42032C] text-white p-4 shadow-md">
+          <div className="container mx-auto flex justify-between items-center">
+            <div className="flex items-center space-x-2">
+              <ShieldIcon />
+              <h1 className="text-2xl font-bold">Super Admin Dashboard</h1>
             </div>
           </div>
+        </header>
 
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-500 text-sm">Super Admin</p>
-                <h3 className="text-3xl font-bold text-[#42032C]">
-                  {admins.filter((admin) => admin.role === "super-admin").length}
-                </h3>
-              </div>
-              <div className="p-3 bg-purple-100 rounded-full">
-                <ShieldIcon />
-              </div>
+        {/* Mobile Navigation */}
+        <div className="md:hidden bg-white p-2 shadow-md">
+          <div className="flex justify-between">
+            <Link to="/" className="flex flex-col items-center p-2 text-[#D36B00] hover:text-[#42032C]">
+              <HomeIcon />
+              <span className="text-xs mt-1">Dashboard</span>
+            </Link>
+            
+            <Link to="/testimoni" className="flex flex-col items-center p-2 text-[#D36B00] hover:text-[#42032C]">
+              <TestimoniIcon />
+              <span className="text-xs mt-1">Testimoni</span>
+            </Link>
+
+            <Link to="/product" className="flex flex-col items-center p-2 text-[#D36B00] hover:text-[#42032C]">
+              <ProductIcon />
+              <span className="text-xs mt-1">Produk</span>
+            </Link>
+
+            <div className="flex flex-col items-center p-2 text-[#D36B00]">
+              <AccountIcon />
+              <span className="text-xs mt-1 font-bold">Akun</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold text-[#42032C]">Manajemen Admin</h2>
-            <button
-              onClick={() => openModal()}
-              className="flex items-center space-x-2 bg-[#D36B00] hover:bg-[#42032C] text-white px-4 py-2 rounded-lg transition-colors"
-            >
-              <PlusIcon />
-              <span>Tambah Admin</span>
-            </button>
+        <main className="container mx-auto py-8 px-4">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-500 text-sm">Total Admin</p>
+                  <h3 className="text-3xl font-bold text-[#42032C]">{admins.length}</h3>
+                </div>
+                <div className="p-3 bg-blue-100 rounded-full">
+                  <UserIcon />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-500 text-sm">Super Admin</p>
+                  <h3 className="text-3xl font-bold text-[#42032C]">
+                    {admins.filter((admin) => admin.role === "super-admin").length}
+                  </h3>
+                </div>
+                <div className="p-3 bg-purple-100 rounded-full">
+                  <ShieldIcon />
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-500 text-sm">Regular Admin</p>
+                  <h3 className="text-3xl font-bold text-[#42032C]">
+                    {admins.filter((admin) => admin.role === "admin").length}
+                  </h3>
+                </div>
+                <div className="p-3 bg-green-100 rounded-full">
+                  <UserIcon />
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Admin List */}
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="py-3 px-4 text-left">Nama</th>
-                  <th className="py-3 px-4 text-left">Email</th>
-                  <th className="py-3 px-4 text-left">Role</th>
-                  <th className="py-3 px-4 text-left">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {admins.map((admin, index) => (
-                  <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                    <td className="py-3 px-4 border-b">{admin.name}</td>
-                    <td className="py-3 px-4 border-b">{admin.email}</td>
-                    <td className="py-3 px-4 border-b">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs ${admin.role === "super-admin" ? "bg-purple-100 text-purple-800" : "bg-blue-100 text-blue-800"}`}
-                      >
-                        {admin.role}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 border-b">
-                      <button
-                        onClick={() => handleDeleteUser(admin.email)}
-                        className="text-red-500 hover:text-red-700 mr-2"
-                      >
-                        Hapus
-                      </button>
-                      <button
-                        onClick={() => openModal(admin)}
-                        className="text-blue-500 hover:text-blue-700"
-                      >
-                        Edit
-                      </button>
-                    </td>
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold text-[#42032C]">Manajemen Admin</h2>
+              <button
+                onClick={() => openModal()}
+                className="flex items-center space-x-2 bg-[#D36B00] hover:bg-[#42032C] text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                <PlusIcon />
+                <span>Tambah Admin</span>
+              </button>
+            </div>
+
+            {/* Admin List */}
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="py-3 px-4 text-left">Nama</th>
+                    <th className="py-3 px-4 text-left">Email</th>
+                    <th className="py-3 px-4 text-left">Role</th>
+                    <th className="py-3 px-4 text-left">Aksi</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {admins.map((admin, index) => (
+                    <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                      <td className="py-3 px-4 border-b">{admin.name}</td>
+                      <td className="py-3 px-4 border-b">{admin.email}</td>
+                      <td className="py-3 px-4 border-b">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs ${admin.role === "super-admin" ? "bg-purple-100 text-purple-800" : "bg-blue-100 text-blue-800"}`}
+                        >
+                          {admin.role}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b">
+                        <button
+                          onClick={() => handleDeleteUser(admin.email)}
+                          className="text-red-500 hover:text-red-700 mr-2"
+                        >
+                          Hapus
+                        </button>
+                        <button
+                          onClick={() => openModal(admin)}
+                          className="text-blue-500 hover:text-blue-700"
+                        >
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
 
       {/* Modal untuk Add User */}
       {isModalOpen && (

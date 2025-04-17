@@ -145,9 +145,8 @@ const DashboardAdmin = () => {
       {/* Sidebar */}
       <div className="w-64 bg-[#42032C] text-white min-h-screen p-4 hidden md:block">
         <div className="flex items-center justify-center mb-8 pt-4">
-          <h1 className="text-xl font-bold">Admin Panel</h1>
+          <h1 className="text-xl font-bold">Menu Admin</h1>
         </div>
-
         <nav className="space-y-2">
           <div className="bg-[#D36B00] rounded-lg p-2 flex items-center space-x-3">
             <HomeIcon />
@@ -184,7 +183,7 @@ const DashboardAdmin = () => {
         <div className="absolute bottom-4 left-4 right-4">
           <button
             onClick={handleLogout}
-            className="w flex items-center justif space-x-2 bg-red-400 hover:bg-red-50 text-white p-2 rounded-lg transition-colors"
+            className="w flex items-center justif space-x-2 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors"
             disabled={loading}
           >
             <LogoutIcon />
