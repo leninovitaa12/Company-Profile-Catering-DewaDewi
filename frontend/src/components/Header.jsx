@@ -1,76 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link as ScrollLink } from "react-scroll";
+import { Link } from "react-router-dom";
+import { FiMenu, FiX } from "react-icons/fi";
+import { Button } from "./ui/button";
 
 const Header = () => {
+  const [menu, setMenu] = useState(false)
+
   return (
     <>
-      <div className="bg-white top-0 left-0 sticky z-30 right-0">
-        <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
-          <header className="flex items-center justify-between py-4">
-            {/* <!-- logo - start --> */}
-            <a
-              href="/"
-              className="inline-flex items-center gap-2 text-2xl text-black md:text-3xl"
-              aria-label="logo"
-            >
-              Logo
-            </a>
-            {/* <!-- logo - end --> */}
+      <header className="sticky top-0 z-50 w-full border-b bg-background">
+              <div className="flex h-16 px-2">
+                <div className="flex justify-evenly w-full items-center gap-6">
+                  <Link to="/" className="font-bold text-xl">
+                    CATERING DEWA DEWI
+                  </Link >
+                  <nav className="hidden md:flex gap-6">
+                    <ScrollLink smooth={true} spy={true} to={"home"} className="text-sm cursor-pointer font-medium">
+                        Home
+                    </ScrollLink>
+                    <ScrollLink smooth={true} spy={true} to={"products"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
+                        Product
+                    </ScrollLink>
+                    <ScrollLink smooth={true} spy={true} to={"about"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
+                        About
+                    </ScrollLink>
+                    <ScrollLink smooth={true} spy={true} to={"contact"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
+                        Contact
+                    </ScrollLink>
+                  </nav>
+                  <Button onClick={() => setMenu(!menu)} className="md:hidden">
+                    {menu?<FiX></FiX>:<FiMenu/>}
+                  </Button>
+                </div>
+              </div>
 
-            {/* <!-- nav - start --> */}
-            <nav className="hidden gap-12 lg:flex">
-              <a
-                href="#"
-                className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
-              >
-                Home
-              </a>
-              <a
-                href="#"
-                className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
-              >
-                About
-              </a>
-              <a
-                href="#"
-                className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
-              >
-                Product
-              </a>
-            </nav>
-            {/* <!-- nav - end --> */}
-
-            {/* <!-- buttons - start --> */}
-            <div className="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
-              <a
-                href="#"
-                className="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
-              >
-                Contact
-              </a>
-            </div>
-
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-lg bg-gray-200 px-2.5 py-2 text-sm font-semibold text-gray-500 ring-indigo-300 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base lg:hidden"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              Menu
-            </button>
-            {/* <!-- buttons - end --> */}
-          </header>
-        </div>
-      </div>
+             {menu && (<div className="flex justify-center w-full items-center py-8">
+                  <nav className="md:hidden gap-6 flex bg-white flex-col justify-center w-[80vw] items-center text-center">
+                    <ScrollLink smooth={true} spy={true} to={"home"} onClick={() => setMenu(false)} className="text-sm font-medium">
+                        Home
+                    </ScrollLink>
+                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"products"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
+                        Product
+                    </ScrollLink>
+                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"about"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
+                        About
+                    </ScrollLink>
+                    <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"contact"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
+                        Contact
+                    </ScrollLink>
+                  </nav>
+             </div>)}
+            </header>
     </>
   );
 };

@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false,
       },
       email: {
@@ -20,11 +20,13 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       password: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(60),
         allowNull: false,
-        validate: {
-          len: [8, 100],
-        },
+      },
+      role: {
+        type: DataTypes.ENUM("admin", "super-admin"),
+        allowNull: false,
+        defaultValue: "admin",
       },
     },
     {

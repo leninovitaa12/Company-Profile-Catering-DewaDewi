@@ -1,5 +1,76 @@
-#root {
-  margin: 0;
-  padding: 0;
-  background-color: white;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 60 33% 96%;  /* #F1EFDC (krem muda) */
+    --foreground: 342 60% 13%; /* #42032C (ungu tua) tapi lebih gelap untuk teks */
+    
+    --card: 0 0% 100%;
+    --card-foreground: 342 60% 13%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 342 60% 13%;
+    
+    --primary: 342 60% 13%;    /* #42032C (ungu tua) */
+    --primary-foreground: 60 33% 96%;
+    
+    --secondary: 33 100% 41%;  /* #D36B00 (oranye) */
+    --secondary-foreground: 60 33% 96%;
+    
+    --muted: 45 50% 75%;       /* #E6D2AA (krem) */
+    --muted-foreground: 342 40% 20%;
+    
+    --accent: 33 100% 41%;     /* #D36B00 (oranye) */
+    --accent-foreground: 60 33% 96%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 45 50% 75%;
+    --input: 45 50% 75%;
+    --ring: 342 60% 13%;
+    
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 342 60% 13%;  /* #42032C (ungu tua) */
+    --foreground: 60 33% 96%;   /* #F1EFDC (krem muda) */
+    
+    --card: 342 50% 18%;
+    --card-foreground: 60 33% 96%;
+    
+    --popover: 342 50% 18%;
+    --popover-foreground: 60 33% 96%;
+    
+    --primary: 33 100% 41%;     /* #D36B00 (oranye) */
+    --primary-foreground: 60 33% 96%;
+    
+    --secondary: 45 50% 75%;    /* #E6D2AA (krem) */
+    --secondary-foreground: 342 60% 13%;
+    
+    --muted: 342 30% 20%;
+    --muted-foreground: 45 30% 80%;
+    
+    --accent: 45 50% 75%;       /* #E6D2AA (krem) */
+    --accent-foreground: 342 60% 13%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    
+    --border: 342 30% 30%;
+    --input: 342 30% 30%;
+    --ring: 33 100% 41%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

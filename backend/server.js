@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 
 const AuthRoute = require("./routes/AuthRoute.js");
 const ProductRoute = require("./routes/ProductRoute");
+const AccountRoute = require("./routes/AccountRoute.js");
+const TestimoniRoute = require("./routes/TestimoniRoute.js");
 
 const path = require("path");
 const { sequelize } = require("./models/index.js");
@@ -15,7 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 sequelize
-  .sync()
+  .sync({ alter: true })
   .then(() => {
     console.log("Database synchronized successfully.");
   })
@@ -37,6 +39,8 @@ app.use(
 
 app.use("/api/auth", AuthRoute);
 app.use("/api/product", ProductRoute);
+app.use("/api/testimoni", TestimoniRoute);
+app.use("/api/account", AccountRoute);
 
 app.listen(PORT, () => {
   console.log(`Server Run in port ${PORT}`);

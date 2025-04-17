@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(60),
         allowNull: false,
       },
       image: {
@@ -19,27 +19,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      price: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-        validate: {
-          min: 0,
-        },
-      },
-      category: {
-        type: DataTypes.ENUM(
-          "Main Course",
-          "Appetizer",
-          "Dessert",
-          "Beverage",
-          "Snack"
-        ),
-        allowNull: false,
-      },
     },
     {
       timestamps: true,
-      paranoid: true,
     }
   );
 

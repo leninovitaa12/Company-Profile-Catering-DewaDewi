@@ -6,9 +6,9 @@ const nodemailer = require("nodemailer");
 
 const createdUser = async (req, res) => {
   try {
-    const name = "test";
-    const email = "melozatez@gmail.com";
-    const password = "Test1234";
+    const name = "satu";
+    const email = "dir@gmail.com";
+    const password = "wardah26";
 
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
@@ -25,13 +25,11 @@ const createdUser = async (req, res) => {
 
     tokenAndCookie(newUser.id, res);
 
-    res.status(201).json({
-      name: newUser.name,
-      email: newUser.email,
-    });
+    res.status(201).json("akun berhasil dibuat");
   } catch (error) {
     console.error("Signup Error:", error.message);
     res.status(500).json({ error: "Terjadi kesalahan pada server" });
+    console.error("Error creating user:", error.message);
   }
 };
 
@@ -48,41 +46,7 @@ const login = async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(400).json({ error: "Password salah!" });
     }
-
     tokenAndCookie(user.id, res);
-
-    res.status(200).json({
-      name: user.name,
-      email: user.email,
-    });
-  } catch (error) {
-    console.error("Login Error:", error.message);
-    res.status(500).json({ error: "Terjadi kesalahan pada server" });
-  }
-};
-
-const loginAdmin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return res.status(400).json({ error: "Email salah!" });
-    }
-
-    if (user.role !== "admin") {
-      return res
-        .status(403)
-        .json({ error: "Hanya admin yang dapat mengakses ini." });
-    }
-
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ error: "Password salah!" });
-    }
-
-    tokenAndCookie(user.id, res);
-
     res.status(200).json({
       name: user.name,
       email: user.email,
