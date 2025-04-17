@@ -1,30 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import useResetPassword from "../hook/useResetPassword";
+import usePinReset from "../hook/usePinReset";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [inputs, setInputs] = useState({
+    email: "",
+    pin: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const { loadings, getPin, onPin } = usePinReset();
+  const { loading, resetPassword } = useResetPassword();
 
-  const handleForgotPassword = async (e) => {
+  const handleSubmitGetPin = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/forgot-password",
-        { email }
-      );
-      if (response.data.success) {
-        setMessage("Permintaan reset password telah dikirim ke email Anda.");
-        setError("");
-      } else {
-        setError("Email tidak ditemukan.");
-        setMessage("");
-      }
-    } catch (err) {
-      setError("Terjadi kesalahan saat mengirim permintaan.");
-      setMessage("");
-    }
+    await getPin(inputs);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await resetPassword(inputs);
   };
 
   return (
@@ -37,42 +34,111 @@ const ForgotPassword = () => {
           </p>
         </div>
         <div className="w-full md:w-1/2 flex justify-center items-center p-10">
-          <form className="w-full" onSubmit={handleForgotPassword}>
-            <h2 className="text-3xl font-bold text-[#42032C] mb-8 text-center">
-              Reset Password
-            </h2>
-            {message && (
-              <p className="text-green-600 text-center mb-4">{message}</p>
-            )}
-            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-            <div className="mb-5">
-              <label className="block text-[#42032C] font-semibold mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="Masukkan email Anda"
-                className="w-full px-4 py-3 border border-[#E6D2AA] rounded-lg bg-[#F1EFDC] text-[#42032C] focus:outline-none focus:border-[#D36B00]"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-3 bg-[#D36B00] hover:bg-[#42032C] transition text-white rounded-lg font-bold"
-            >
-              Kirim Permintaan
-            </button>
-            <p className="mt-4 text-center">
-              <Link
-                to={"/login"}
-                className="text-[#42032C] hover:text-[#D36B00] font-semibold transition"
+          {!onPin && (
+            <form className="w-full" onSubmit={handleSubmitGetPin}>
+              <h2 className="text-3xl font-bold text-[#42032C] mb-8 text-center">
+                Reset Password
+              </h2>
+              <div className="mb-5">
+                <label className="block text-[#42032C] font-semibold mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={inputs.email}
+                  onChange={(e) =>
+                    setInputs({ ...inputs, email: e.target.value })
+                  }
+                  required
+                  placeholder="Masukkan email Anda"
+                  className="w-full px-4 py-3 border border-[#E6D2AA] rounded-lg bg-[#F1EFDC] text-[#42032C] focus:outline-none focus:border-[#D36B00]"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#D36B00] hover:bg-[#42032C] transition text-white rounded-lg font-bold"
               >
-                Kembali ke Login
-              </Link>
-            </p>
-          </form>
+                Kirim Permintaan
+              </button>
+              <p className="mt-4 text-center">
+                <Link
+                  to={"/login"}
+                  className="text-[#42032C] hover:text-[#D36B00] font-semibold transition"
+                >
+                  Kembali ke Login
+                </Link>
+              </p>
+            </form>
+          )}
+
+          {onPin && (
+            <form className="w-full" onSubmit={handleSubmit}>
+              <h2 className="text-3xl font-bold text-[#42032C] mb-8 text-center">
+                Reset Password
+              </h2>
+              <p className="font-bold text-[#42032C] mb-8 text-center">
+                Masukkan Pin dan Password
+              </p>
+              <div className="mb-5">
+                <label className="block text-[#42032C] font-semibold mb-2">
+                  Pin
+                </label>
+                <input
+                  type="text"
+                  value={inputs.pin}
+                  onChange={(e) =>
+                    setInputs({ ...inputs, pin: e.target.value })
+                  }
+                  required
+                  placeholder="Masukkan email Anda"
+                  className="w-full px-4 py-3 border border-[#E6D2AA] rounded-lg bg-[#F1EFDC] text-[#42032C] focus:outline-none focus:border-[#D36B00]"
+                />
+                <label className="block text-[#42032C] font-semibold mb-2">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={inputs.password}
+                  onChange={(e) =>
+                    setInputs({ ...inputs, password: e.target.value })
+                  }
+                  required
+                  placeholder="Masukkan email Anda"
+                  className="w-full px-4 py-3 border border-[#E6D2AA] rounded-lg bg-[#F1EFDC] text-[#42032C] focus:outline-none focus:border-[#D36B00]"
+                />
+                <label className="block text-[#42032C] font-semibold mb-2">
+                  Password Confirmation
+                </label>
+                <input
+                  type="password"
+                  value={inputs.confirmPassword}
+                  onChange={(e) =>
+                    setInputs({
+                      ...inputs,
+                      confirmPassword: e.target.confirmPassword,
+                    })
+                  }
+                  required
+                  placeholder="Masukkan email Anda"
+                  className="w-full px-4 py-3 border border-[#E6D2AA] rounded-lg bg-[#F1EFDC] text-[#42032C] focus:outline-none focus:border-[#D36B00]"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#D36B00] hover:bg-[#42032C] transition text-white rounded-lg font-bold"
+              >
+                Kirim
+              </button>
+              <p className="mt-4 text-center">
+                <Link
+                  to={"/login"}
+                  className="text-[#42032C] hover:text-[#D36B00] font-semibold transition"
+                >
+                  Kembali ke Login
+                </Link>
+              </p>
+            </form>
+          )}
         </div>
       </div>
     </div>
