@@ -1,0 +1,13 @@
+:root {
+    /* Brand Color Variables */
+    --primary-brand: #42032C;
+    --secondary-brand: #D36B00;
+    --accent-brand: #E6D2AA;
+    --light-brand: #F1EFDC;
+  
+    /* Applied Colors */
+    --header-bg: var(--light-brand);
+    --header-border: var(--accent-brand);
+    --nav-text: var(--primary-brand);
+    --nav-hover: var(--secondary-brand);
+  }

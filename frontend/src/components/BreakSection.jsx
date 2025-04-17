@@ -3,16 +3,21 @@ import { Button } from './ui/button'
 
 const BreakSection = () => {
   return (
-    <section className="py-12 md:py-16 bg-[#606c38] text-white">
+    <section className="py-12 md:py-16 bg-[#42032C] text-[#E6D2AA] font-sans">
       <div className="text-center">
-        <h2 className="text-2xl md:text-3xl font-bold">Di madiun? bingung mau jajan apa?</h2>
+        <h2 className="text-2xl md:text-3xl font-bold">
+          Di Madiun? Bingung mau jajan apa?
+        </h2>
         <p className="max-w-2xl mx-auto">
           Kecamatan Demangan, Kota Madiun. Pesan disini aja!
         </p>
 
         {/* Flex container untuk tombol dan WA */}
         <div className="mt-4 flex justify-center items-center gap-4">
-          <Button variant="outline" className="border-white text-[#606c38] hover:bg-white hover:text-[#606c38]">
+          <Button
+            variant="outline"
+            className="border-[#F1EFDC] text-[#E6D2AA] hover:bg-[#F1EFDC] hover:text-[#800000]"
+          >
             Pesan Disini
           </Button>
 
