@@ -13,7 +13,7 @@ const BreakSection = () => {
         {/* Flex container untuk tombol dan WA */}
         <div className="mt-4 flex justify-center items-center gap-4">
           <Button variant="outline" className="border-white text-[#606c38] hover:bg-white hover:text-[#606c38]">
-            pesan Disini
+            Pesan Disini
           </Button>
 
           <a
