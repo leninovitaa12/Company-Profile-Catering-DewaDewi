@@ -33,8 +33,8 @@ const HeroSection = () => {
         <div className="relative h-[300px] md:h-[400px]">
           {/* Gambar tanpa border (dihapus border-4 dan style border) */}
           <img
-            src="https://placehold.co/500x400"
-            alt="Woman with healthy food"
+            src="https://www.vivakebabsandgrill.com.au/ressources/images/46c0c3577192.jpg"
+            alt="Catering Dede"
             className="object-cover rounded-lg w-full h-full"
           />
         </div>
