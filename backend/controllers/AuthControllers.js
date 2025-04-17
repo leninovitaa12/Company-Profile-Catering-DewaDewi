@@ -29,6 +29,7 @@ const createdUser = async (req, res) => {
   } catch (error) {
     console.error("Signup Error:", error.message);
     res.status(500).json({ error: "Terjadi kesalahan pada server" });
+    console.error("Error creating user:", error.message);
   }
 };
 
