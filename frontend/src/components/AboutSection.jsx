@@ -28,10 +28,10 @@ const AboutSection = () => {
           </div>
         </div>
 
-        {/* Gambar - TANPA BORDER */}
+        {/* Gambar */}
         <div className="w-full">
           <img
-            src="/your-image.jpg"
+            src="https://i.pinimg.com/originals/52/6d/39/526d39bf93b6de71c9fcc7741a7c3aa0.jpg"
             alt="Tentang Kami"
             className="w-full h-auto rounded-lg shadow-md object-cover"
           />
