@@ -1,6 +1,6 @@
 "use client"
 
-import { useLogout } from "/hook/useLogout"
+import useLogout from "../../hook/useLogout";  
 
 export const Button = ({
   children,
