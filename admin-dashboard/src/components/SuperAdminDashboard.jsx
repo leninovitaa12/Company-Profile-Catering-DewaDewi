@@ -2,18 +2,16 @@
 
 import { useState } from "react"
 import { useAuthContext } from "../context/AuthContext"
-import { toast } from "react-toastify"
-import Sidebar from "../components/ui/sidebar"
-import PageHeader from "../components/ui/page-header"
-import Card, { StatCard } from "../components/ui/card"
-import Button from "../components/ui/button"
-import { AccountIcon, PlusIcon, ShieldIcon, UserIcon } from "../components/icons"
+import { Sidebar, PageHeader, Card, StatCard, Button } from "../components/ui/ui-components"
+import { AccountIcon, PlusIcon, ShieldIcon, UserIcon } from "../components/ui/icons"
+
+// Import hooks untuk koneksi database
+import useGetAdmins from "../hook/useGetAdmins"
+import useCreateAdmin from "../hook/useCreateAdmin"
+import useUpdateAdmin from "../hook/useUpdateAdmin"
+import useDeleteAdmin from "../hook/useDeleteAdmin"
 
 const SuperAdminDashboard = () => {
-  const [admins, setAdmins] = useState([
-    { name: "Admin Satu", email: "admin1@example.com", password: "password123", role: "admin" },
-    { name: "Admin Dua", email: "admin2@example.com", password: "password123", role: "admin" },
-  ])
   const { authUser } = useAuthContext()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedAdmin, setSelectedAdmin] = useState(null)
@@ -24,6 +22,12 @@ const SuperAdminDashboard = () => {
   const [role, setRole] = useState("admin")
   const [oldPassword, setOldPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
+
+  // Menggunakan hooks untuk koneksi database
+  const { admins, loading: adminsLoading, error: adminsError, refetch } = useGetAdmins()
+  const { createAdmin, loading: createLoading } = useCreateAdmin()
+  const { updateAdmin, loading: updateLoading } = useUpdateAdmin()
+  const { deleteAdmin, loading: deleteLoading } = useDeleteAdmin()
 
   // If user is not a super-admin, show 401 error
   if (authUser.role !== "super-admin")
@@ -47,6 +51,10 @@ const SuperAdminDashboard = () => {
       setName(admin.name)
       setEmail(admin.email)
       setRole(admin.role)
+      // Reset password fields
+      setPassword("")
+      setConfirmPassword("")
+      setOldPassword("")
     } else {
       setSelectedAdmin(null)
       setName("")
@@ -57,6 +65,7 @@ const SuperAdminDashboard = () => {
       setOldPassword("")
     }
     setIsModalOpen(true)
+    setErrorMessage("")
   }
 
   // Close modal function
@@ -66,21 +75,19 @@ const SuperAdminDashboard = () => {
   }
 
   // Delete user function
-  const handleDeleteUser = (email) => {
-    setAdmins(admins.filter((admin) => admin.email !== email))
-    toast.success("Admin berhasil dihapus")
+  const handleDeleteUser = async (id) => {
+    if (window.confirm("Apakah Anda yakin ingin menghapus admin ini?")) {
+      const result = await deleteAdmin(id)
+      if (result) {
+        refetch() // Refresh data setelah berhasil menghapus
+      }
+    }
   }
 
   // Update user function
-  const handleUpdateUser = () => {
+  const handleUpdateUser = async () => {
     if (password !== confirmPassword) {
       setErrorMessage("Password dan konfirmasi password tidak cocok!")
-      return
-    }
-
-    // Validate if the old password matches the current password
-    if (oldPassword !== selectedAdmin.password) {
-      setErrorMessage("Password lama tidak cocok!")
       return
     }
 
@@ -89,29 +96,36 @@ const SuperAdminDashboard = () => {
       return
     }
 
-    // Update the admin information
-    const updatedAdmins = admins.map((admin) =>
-      admin.email === selectedAdmin.email ? { ...admin, name, email, password, role } : admin,
-    )
-    setAdmins(updatedAdmins)
-    toast.success("Admin berhasil diperbarui")
-    closeModal()
+    // Prepare data for update
+    const updateData = { name, email, role }
+    if (password) {
+      updateData.password = password
+    }
+
+    const result = await updateAdmin(selectedAdmin.id, updateData)
+    if (result) {
+      refetch() // Refresh data setelah berhasil update
+      closeModal()
+    }
   }
 
   // Function to create a new user
-  const handleCreateUser = () => {
+  const handleCreateUser = async () => {
     if (password !== confirmPassword) {
       setErrorMessage("Password dan konfirmasi password tidak cocok!")
       return
     }
-    if (!name || !email || !role) {
+    if (!name || !email || !password || !role) {
       setErrorMessage("Semua field harus diisi!")
       return
     }
+
     const newAdmin = { name, email, password, role }
-    setAdmins([...admins, newAdmin])
-    toast.success("Admin berhasil ditambahkan")
-    closeModal()
+    const result = await createAdmin(newAdmin)
+    if (result) {
+      refetch() // Refresh data setelah berhasil menambahkan
+      closeModal()
+    }
   }
 
   return (
@@ -135,18 +149,23 @@ const SuperAdminDashboard = () => {
           <div className="max-w-6xl mx-auto space-y-6">
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <StatCard title="Total Admin" value={admins.length} icon={<UserIcon />} color="bg-blue-100" />
+              <StatCard
+                title="Total Admin"
+                value={adminsLoading ? "..." : admins.length}
+                icon={<UserIcon />}
+                color="bg-blue-100"
+              />
 
               <StatCard
                 title="Super Admin"
-                value={admins.filter((admin) => admin.role === "super-admin").length}
+                value={adminsLoading ? "..." : admins.filter((admin) => admin.role === "super-admin").length}
                 icon={<ShieldIcon />}
                 color="bg-purple-100"
               />
 
               <StatCard
                 title="Regular Admin"
-                value={admins.filter((admin) => admin.role === "admin").length}
+                value={adminsLoading ? "..." : admins.filter((admin) => admin.role === "admin").length}
                 icon={<UserIcon />}
                 color="bg-green-100"
               />
@@ -154,52 +173,66 @@ const SuperAdminDashboard = () => {
 
             {/* Admin List */}
             <Card title="Manajemen Admin" icon={<AccountIcon />}>
-              <div className="overflow-x-auto">
-                <table className="min-w-full bg-white rounded-lg overflow-hidden">
-                  <thead className="bg-gray-50 border-b">
-                    <tr>
-                      <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Nama</th>
-                      <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Email</th>
-                      <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Role</th>
-                      <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {admins.map((admin, index) => (
-                      <tr key={index} className="hover:bg-gray-50 transition-colors">
-                        <td className="py-3 px-4">{admin.name}</td>
-                        <td className="py-3 px-4">{admin.email}</td>
-                        <td className="py-3 px-4">
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              admin.role === "super-admin"
-                                ? "bg-purple-100 text-purple-800"
-                                : "bg-blue-100 text-blue-800"
-                            }`}
-                          >
-                            {admin.role}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4">
-                          <div className="flex space-x-2">
-                            <Button variant="outline" size="sm" onClick={() => openModal(admin)} className="text-sm">
-                              Edit
-                            </Button>
-                            <Button
-                              variant="danger"
-                              size="sm"
-                              onClick={() => handleDeleteUser(admin.email)}
-                              className="text-sm"
-                            >
-                              Hapus
-                            </Button>
-                          </div>
-                        </td>
+              {adminsLoading ? (
+                <div className="p-8 text-center">
+                  <p className="text-gray-500">Memuat data admin...</p>
+                </div>
+              ) : adminsError ? (
+                <div className="p-8 text-center">
+                  <p className="text-red-500">{adminsError}</p>
+                  <Button variant="primary" size="sm" onClick={refetch} className="mt-4">
+                    Coba Lagi
+                  </Button>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full bg-white rounded-lg overflow-hidden">
+                    <thead className="bg-gray-50 border-b">
+                      <tr>
+                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Nama</th>
+                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Email</th>
+                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Role</th>
+                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Aksi</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {admins.map((admin) => (
+                        <tr key={admin.id} className="hover:bg-gray-50 transition-colors">
+                          <td className="py-3 px-4">{admin.name}</td>
+                          <td className="py-3 px-4">{admin.email}</td>
+                          <td className="py-3 px-4">
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                admin.role === "super-admin"
+                                  ? "bg-purple-100 text-purple-800"
+                                  : "bg-blue-100 text-blue-800"
+                              }`}
+                            >
+                              {admin.role}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="flex space-x-2">
+                              <Button variant="outline" size="sm" onClick={() => openModal(admin)} className="text-sm">
+                                Edit
+                              </Button>
+                              <Button
+                                variant="danger"
+                                size="sm"
+                                onClick={() => handleDeleteUser(admin.id)}
+                                className="text-sm"
+                                disabled={deleteLoading}
+                              >
+                                {deleteLoading ? "Menghapus..." : "Hapus"}
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </Card>
           </div>
         </div>
@@ -237,29 +270,18 @@ const SuperAdminDashboard = () => {
                   />
                 </div>
 
-                {/* Old Password */}
-                {selectedAdmin && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Password Lama</label>
-                    <input
-                      type="password"
-                      placeholder="Masukkan password lama"
-                      value={oldPassword}
-                      onChange={(e) => setOldPassword(e.target.value)}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#D36B00] focus:border-[#D36B00] outline-none"
-                    />
-                  </div>
-                )}
-
                 {/* Password input */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {selectedAdmin ? "Password Baru (kosongkan jika tidak ingin mengubah)" : "Password"}
+                  </label>
                   <input
                     type="password"
                     placeholder="Minimal 8 karakter"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#D36B00] focus:border-[#D36B00] outline-none"
+                    required={!selectedAdmin} // Wajib diisi untuk admin baru
                   />
                 </div>
 
@@ -271,6 +293,7 @@ const SuperAdminDashboard = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-[#D36B00] focus:border-[#D36B00] outline-none"
+                    required={!selectedAdmin || password !== ""} // Wajib diisi jika admin baru atau password diubah
                   />
                 </div>
 
@@ -296,8 +319,12 @@ const SuperAdminDashboard = () => {
               <Button variant="secondary" onClick={closeModal}>
                 Batal
               </Button>
-              <Button variant="primary" onClick={selectedAdmin ? handleUpdateUser : handleCreateUser}>
-                {selectedAdmin ? "Simpan Perubahan" : "Buat Admin"}
+              <Button
+                variant="primary"
+                onClick={selectedAdmin ? handleUpdateUser : handleCreateUser}
+                disabled={createLoading || updateLoading}
+              >
+                {createLoading || updateLoading ? "Memproses..." : selectedAdmin ? "Simpan Perubahan" : "Buat Admin"}
               </Button>
             </div>
           </div>

@@ -92,10 +92,6 @@ const TestimoniItem = ({ testimonis, loading, error, refetch }) => {
     return sortOption === "latest" ? dateB - dateA : dateA - dateB;
   });
 
-  const handleSortChange = (e) => {
-    setSortOption(e.target.value);
-  };
-
   const handleReplaceImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -140,22 +136,6 @@ const TestimoniItem = ({ testimonis, loading, error, refetch }) => {
 
   return (
     <div className="mt-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-3 sm:mb-0">
-          Galeri Testimoni
-        </h3>
-        <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-3 py-2">
-          <CalendarIcon />
-          <select
-            value={sortOption}
-            onChange={handleSortChange}
-            className="bg-transparent focus:outline-none text-gray-700"
-          >
-            <option value="latest">Terbaru</option>
-            <option value="oldest">Terlama</option>
-          </select>
-        </div>
-      </div>
       <input
         type="file"
         ref={replaceFileInputRef}

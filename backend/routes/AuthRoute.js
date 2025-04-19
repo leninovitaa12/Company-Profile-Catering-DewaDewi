@@ -16,7 +16,12 @@ const { protectedRoute } = require("../middleware/protectedRoute.js");
 
 const router = express.Router();
 
-router.get("/createuser", createdUser);
+// ✅ Ini HARUS diubah dari GET ke POST dan jangan hardcoded
+router.get("/createuser", createdUser); // ❌ Salah (GET dan hardcoded)
+
+// ✅ Perbaikan:
+router.post("/register", validatePassword, createdUser);
+
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/pin", validatePassword, sendPin);

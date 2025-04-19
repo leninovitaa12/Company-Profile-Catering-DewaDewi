@@ -2,11 +2,8 @@
 
 import { useState } from "react"
 import { useAuthContext } from "../context/AuthContext"
-import Sidebar from "../components/ui/sidebar"
-import PageHeader from "../components/ui/page-header"
-import Card from "../components/ui/card"
-import Button from "../components/ui/button"
-import { ProductIcon, PlusIcon } from "../components/icons"
+import { Sidebar, PageHeader, Card, Button } from "../components/ui/ui-components"
+import { ProductIcon, PlusIcon } from "../components/ui/icons"
 import ProductAdd from "./ProductAdd"
 import ProductItem from "./ProductItem"
 
@@ -39,17 +36,17 @@ const Product = () => {
 
         <div className="flex-1 p-4 md:p-6">
           <div className="max-w-6xl mx-auto space-y-6">
-            {/* Add Product Form */}
-            {showAddForm && (
+            {showAddForm ? (
+              /* Show only ProductAdd when showAddForm is true */
               <Card title="Tambah Produk Baru" className="border border-[#D36B00]/20">
                 <ProductAdd onClose={() => setShowAddForm(false)} />
               </Card>
+            ) : (
+              /* Show ProductItem when showAddForm is false */
+              <Card title="Daftar Produk">
+                <ProductItem onEdit={() => setShowAddForm(true)} />
+              </Card>
             )}
-
-            {/* Product List */}
-            <Card title="Daftar Produk">
-              <ProductItem onEdit={() => setShowAddForm(true)} />
-            </Card>
           </div>
         </div>
       </div>

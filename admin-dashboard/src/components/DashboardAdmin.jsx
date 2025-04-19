@@ -1,18 +1,40 @@
 "use client"
 import { useAuthContext } from "../context/AuthContext"
-import Sidebar from "../components/ui/sidebar"
-import PageHeader from "../components/ui/page-header"
-import Card, { StatCard, ContentCard } from "../components/ui/card"
-import Button from "../components/ui/button"
-import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, CalendarIcon } from "../components/icons"
+import { Sidebar, PageHeader, Card, StatCard, ContentCard } from "../components/ui/ui-components"
+import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, CalendarIcon } from "../components/ui/icons"
 
+// Tambahkan import untuk hooks yang diperlukan
+import useGetProductsAdmin from "../hook/useGetProducts"
+import useGetTestimoni from "../hook/useGetTestimoni"
+
+// Dalam komponen DashboardAdmin, tambahkan penggunaan hooks
 const DashboardAdmin = () => {
   const { authUser } = useAuthContext()
 
+  // Fetch data produk dan testimoni
+  const { products, loading: productsLoading } = useGetProductsAdmin()
+  const { testimonis, loadings: testimonisLoading } = useGetTestimoni()
+
+  // Update stats array untuk menggunakan nilai dinamis
   const stats = [
-    { title: "Total Produk", value: "24", icon: <ProductIcon />, color: "bg-blue-100" },
-    { title: "Testimoni", value: "12", icon: <TestimoniIcon />, color: "bg-green-100" },
-    { title: "Pengguna", value: "5", icon: <AccountIcon />, color: "bg-purple-100" },
+    {
+      title: "Total Produk",
+      value: productsLoading ? "..." : products?.length || "0",
+      icon: <ProductIcon />,
+      color: "bg-blue-100",
+    },
+    {
+      title: "Testimoni",
+      value: testimonisLoading ? "..." : testimonis?.length || "0",
+      icon: <TestimoniIcon />,
+      color: "bg-green-100",
+    },
+    {
+      title: "Pengguna",
+      value: "5",
+      icon: <AccountIcon />,
+      color: "bg-purple-100",
+    },
   ]
 
   // Recent activities
@@ -35,15 +57,7 @@ const DashboardAdmin = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col pb-16 md:pb-0">
-        <PageHeader
-          title="Dashboard Admin"
-          icon={<HomeIcon />}
-          actions={
-            <Button variant="primary" size="sm" icon={<CalendarIcon />}>
-              Lihat Jadwal
-            </Button>
-          }
-        />
+        <PageHeader title="Dashboard Admin" icon={<HomeIcon />} />
 
         <div className="flex-1 p-4 md:p-6">
           <div className="max-w-6xl mx-auto space-y-6">
