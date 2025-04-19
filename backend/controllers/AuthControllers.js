@@ -6,9 +6,11 @@ const nodemailer = require("nodemailer");
 
 const createdUser = async (req, res) => {
   try {
-    const name = "satu";
-    const email = "dir@gmail.com";
-    const password = "wardah26";
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: "Semua field harus diisi!" });
+    }
 
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
@@ -25,11 +27,10 @@ const createdUser = async (req, res) => {
 
     tokenAndCookie(newUser.id, res);
 
-    res.status(201).json("akun berhasil dibuat");
+    res.status(201).json("Akun berhasil dibuat");
   } catch (error) {
     console.error("Signup Error:", error.message);
     res.status(500).json({ error: "Terjadi kesalahan pada server" });
-    console.error("Error creating user:", error.message);
   }
 };
 
