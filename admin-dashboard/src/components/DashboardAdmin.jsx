@@ -6,6 +6,7 @@ import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, CalendarIcon } from 
 // Tambahkan import untuk hooks yang diperlukan
 import useGetProductsAdmin from "../hook/useGetProducts"
 import useGetTestimoni from "../hook/useGetTestimoni"
+import useVisitorCount from "../hook/useVisitorCount"
 
 // Dalam komponen DashboardAdmin, tambahkan penggunaan hooks
 const DashboardAdmin = () => {
@@ -14,6 +15,7 @@ const DashboardAdmin = () => {
   // Fetch data produk dan testimoni
   const { products, loading: productsLoading } = useGetProductsAdmin()
   const { testimonis, loadings: testimonisLoading } = useGetTestimoni()
+  const { visitorCount, loading: visitorLoading } = useVisitorCount()
 
   // Update stats array untuk menggunakan nilai dinamis
   const stats = [
@@ -31,7 +33,7 @@ const DashboardAdmin = () => {
     },
     {
       title: "Pengguna",
-      value: "5",
+      value: visitorLoading ? "..." : visitorCount.toString(),
       icon: <AccountIcon />,
       color: "bg-purple-100",
     },
