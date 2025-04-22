@@ -3,7 +3,7 @@ import { Button } from './ui/button'
 
 const BreakSection = () => {
   return (
-    <section className="py-12 md:py-16 bg-[#42032C] text-[#E6D2AA] font-sans">
+    <section id="contact" className="py-12 md:py-16 bg-[#42032C] text-[#E6D2AA] font-sans">
       <div className="text-center">
         <h2 className="text-2xl md:text-3xl font-bold">
           Di Madiun? Bingung mau jajan apa?
