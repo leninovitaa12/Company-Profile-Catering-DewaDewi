@@ -25,11 +25,10 @@ const createdUser = async (req, res) => {
 
     tokenAndCookie(newUser.id, res);
 
-    res.status(201).json("akun berhasil dibuat");
+    res.status(201).json("Akun berhasil dibuat");
   } catch (error) {
     console.error("Signup Error:", error.message);
     res.status(500).json({ error: "Terjadi kesalahan pada server" });
-    console.error("Error creating user:", error.message);
   }
 };
 

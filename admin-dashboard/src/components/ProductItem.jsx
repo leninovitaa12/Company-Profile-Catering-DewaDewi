@@ -67,20 +67,6 @@ const ProductItem = ({ setAdd }) => {
         />
       )}
 
-      {!productToEdit && (
-        <>
-          <h3 className="text-2xl font-semibold text-gray-800 mb-5">
-            Daftar Produk
-          </h3>
-          <button
-            className="text-black bg-white rounded-lg px-4 py-2 mb-4"
-            onClick={() => setAdd(true)}
-          >
-            Add Product
-          </button>
-        </>
-      )}
-
       {loading ? (
         <p className="text-center text-gray-500">Memuat produk...</p>
       ) : products.length > 0 && !productToEdit ? (
