@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from './ui/button'
 import { Link as ScrollLink } from "react-scroll";
 
-const HeroSection = () => {
+const HeroSection = ({about, image}) => {
   return (
     <section id='home' className="relative mx-auto">
       <div className="grid px-8 md:grid-cols-2 gap-6 py-12 md:py-20">
@@ -14,7 +14,7 @@ const HeroSection = () => {
           
           {/* Warna teks muted diubah ke --primary-brand dengan opacity 80% */}
           <p className="text-lg text-[color:var(--primary-brand)] opacity-80 text-center max-w-[600px]">
-            Discover the power of whole food nutrition with our premium supplements and programs.
+            {about}
           </p>
           
           <div className="flex flex-col items-center justify-center gap-3 pt-4">
@@ -31,9 +31,9 @@ const HeroSection = () => {
         </div>
         
         <div className="relative h-[300px] md:h-[400px]">
-          {/* Gambar tanpa border (dihapus border-4 dan style border) */}
+          {/* Gambar */}
           <img
-            src="https://www.vivakebabsandgrill.com.au/ressources/images/46c0c3577192.jpg"
+            src={image}
             alt="Catering Dede"
             className="object-cover rounded-lg w-full h-full"
           />

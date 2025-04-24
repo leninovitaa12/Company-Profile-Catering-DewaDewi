@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from './ui/button'
 
-const BreakSection = () => {
+const BreakSection = ({alamat, nohp}) => {
   return (
     <section id="contact" className="py-12 md:py-16 bg-[#42032C] text-[#E6D2AA] font-sans">
       <div className="text-center">
@@ -9,7 +9,7 @@ const BreakSection = () => {
           Di Madiun? Bingung mau jajan apa?
         </h2>
         <p className="max-w-2xl mx-auto">
-          Kecamatan Demangan, Kota Madiun. Pesan disini aja!
+          {alamat}. Pesan disini aja!
         </p>
 
         {/* Flex container untuk tombol dan WA */}
@@ -22,7 +22,7 @@ const BreakSection = () => {
           </Button>
 
           <a
-            href="https://api.whatsapp.com/send?phone=YOUR_PHONE_NUMBER"
+            href={`https://api.whatsapp.com/send?phone=62${nohp}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-12 h-12 bg-green-500 text-white rounded-full shadow-lg transition-transform hover:scale-110"
