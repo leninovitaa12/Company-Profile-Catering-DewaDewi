@@ -4,7 +4,7 @@ const AboutSection = () => {
   return (
     <section id="about" className="bg-[var(--light-brand)] py-16 font-sans">
       <div className="container mx-auto px-6 md:px-12 grid md:grid-cols-2 gap-10 items-center">
-        {/* Teks */}
+        {/* Teks */} 
         <div className="space-y-6">
           <h2 className="text-5xl font-extrabold text-[var(--primary-brand)] tracking-tight">
             ABOUT.
