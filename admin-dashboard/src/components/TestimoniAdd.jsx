@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import usePostTestimoni from "../hook/usePostTestimoni";
+import { toast } from "react-toastify";
 
 const UploadIcon = () => (
   <svg
@@ -19,7 +20,7 @@ const UploadIcon = () => (
   </svg>
 );
 
-const TestimoniAdd = ({ refetch }) => {
+const TestimoniAdd = ({ onSuccess, refetch }) => {
   const [testimoniImage, setTestimoniImage] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -37,8 +38,9 @@ const TestimoniAdd = ({ refetch }) => {
       const result = await postTestimoni(testimoniImage.file);
       if (result) {
         // Setujui apa yang perlu dilakukan setelah upload sukses (misalnya reset atau tampilkan pesan sukses)
-        alert("Testimoni berhasil diunggah!");
+        toast.success("Testimoni berhasil diunggah!");
         setTestimoniImage(null); // reset image setelah upload sukses
+        onSuccess()
         refetch();
       }
     }

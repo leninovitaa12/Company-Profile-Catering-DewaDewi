@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { useAuthContext } from "../../context/AuthContext"
 import useLogout from "../../hook/useLogout"
 import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, LogoutIcon } from "./icons"
+import { useState } from "react"
 
 // Button Component
 export const Button = ({
@@ -49,27 +50,65 @@ export const Button = ({
 
 // LogoutButton Component
 export const LogoutButton = ({ className = "", isMobile = false }) => {
-  const { logout, loading } = useLogout() || {}
+  const { logout, loading } = useLogout() || {};
+  const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal konfirmasi
 
-  const handleLogout = () => {
+  // Fungsi untuk menangani klik logout, membuka modal konfirmasi
+  const handleLogoutClick = () => {
+    setIsModalOpen(true);
+  };
+
+  // Fungsi untuk menangani konfirmasi logout (ya)
+  const handleLogoutConfirm = () => {
     if (logout) {
-      logout()
+      logout(); // Melakukan logout
     }
-  }
+    setIsModalOpen(false); // Menutup modal setelah logout
+  };
+
+  // Fungsi untuk menutup modal jika cancel
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
 
   return (
-    <button
-      onClick={handleLogout}
-      className={`flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors ${
-        isMobile ? "px-3 py-1" : "p-2 w-full"
-      } ${className}`}
-      disabled={loading}
-    >
-      <LogoutIcon />
-      {!isMobile && <span>{loading ? "Logging out..." : "Logout"}</span>}
-    </button>
-  )
-}
+    <div>
+      <button
+        onClick={handleLogoutClick} // Menampilkan modal ketika tombol logout diklik
+        className={`flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors ${
+          isMobile ? "px-3 py-1" : "p-2 w-full"
+        } ${className}`}
+        disabled={loading}
+      >
+        <LogoutIcon />
+        {!isMobile && <span>{loading ? "Logging out..." : "Logout"}</span>}
+      </button>
+
+      {/* Modal Konfirmasi Logout */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h3 className="text-lg font-semibold text-center">Are you sure you want to logout?</h3>
+            <div className="mt-4 flex justify-center gap-4">
+              <button
+                onClick={handleLogoutConfirm} // Mengonfirmasi logout
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                Yes
+              </button>
+              <button
+                onClick={handleModalClose} // Menutup modal tanpa logout
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 // Card Component
 export const Card = ({ title, children, className = "", actions, icon, variant = "default" }) => {
@@ -122,14 +161,28 @@ export const ContentCard = ({ title, children, className = "" }) => {
 
 // PageHeader Component
 export const PageHeader = ({ title, icon, actions }) => {
-  const { authUser } = useAuthContext()
-  const { logout, loading } = useLogout()
+  const { authUser } = useAuthContext();
+  const { logout, loading } = useLogout();
 
-  const handleLogout = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal konfirmasi
+
+  // Fungsi untuk membuka modal konfirmasi
+  const handleLogoutClick = () => {
+    setIsModalOpen(true); // Menampilkan modal
+  };
+
+  // Fungsi untuk menangani logout setelah konfirmasi (Yes)
+  const handleLogoutConfirm = () => {
     if (logout) {
-      logout()
+      logout(); // Logout jika Yes
     }
-  }
+    setIsModalOpen(false); // Tutup modal
+  };
+
+  // Fungsi untuk menutup modal tanpa logout (Cancel)
+  const handleModalClose = () => {
+    setIsModalOpen(false); // Tutup modal jika Cancel
+  };
 
   return (
     <header className="bg-[#42032C] text-white p-4 shadow-md sticky top-0 z-10">
@@ -142,12 +195,14 @@ export const PageHeader = ({ title, icon, actions }) => {
         <div className="flex items-center space-x-4">
           <div className="hidden md:flex items-center space-x-3">
             <div className="bg-[#D36B00]/20 px-3 py-1 rounded-full">
-              <span className="font-medium text-sm">{authUser?.email || "admin@example.com"}</span>
+              <span className="font-medium text-sm">
+                {authUser?.email || "admin@example.com"}
+              </span>
             </div>
             {actions}
           </div>
           <button
-            onClick={handleLogout}
+            onClick={handleLogoutClick} // Menampilkan modal saat tombol logout diklik
             className="md:hidden flex items-center justify-center bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors"
             disabled={loading}
           >
@@ -155,9 +210,34 @@ export const PageHeader = ({ title, icon, actions }) => {
           </button>
         </div>
       </div>
+
+      {/* Modal Konfirmasi Logout */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <p className="text-lg text-black font-semibold text-center">
+              Are you sure you want to logout?
+            </p>
+            <div className="mt-4 flex justify-center gap-4">
+              <button
+                onClick={handleLogoutConfirm} // Konfirmasi logout
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                Yes
+              </button>
+              <button
+                onClick={handleModalClose} // Menutup modal tanpa logout
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
-  )
-}
+  );
+};
 
 // SidebarSeparator Component
 export const SidebarSeparator = ({ label }) => {
@@ -196,17 +276,32 @@ export const SidebarMenuItem = ({ icon, label, to, isActive, onClick }) => {
 
 // Sidebar Component
 export const Sidebar = ({ activePage }) => {
-  const { authUser } = useAuthContext()
-  const { logout, loading } = useLogout()
+  const { authUser } = useAuthContext();
+  const { logout, loading } = useLogout();
 
-  const handleLogout = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal konfirmasi logout
+
+  // Fungsi untuk membuka modal konfirmasi
+  const handleLogoutClick = () => {
+    setIsModalOpen(true);
+  };
+
+  // Fungsi untuk menangani logout setelah konfirmasi (Yes)
+  const handleLogoutConfirm = () => {
     if (logout) {
-      logout()
+      logout();
     }
-  }
+    setIsModalOpen(false);
+  };
 
+  // Fungsi untuk menutup modal tanpa logout (Cancel)
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  // Menu Item Component
   const MenuItem = ({ to, icon, label, isActive }) => {
-    const Component = isActive ? "div" : Link
+    const Component = isActive ? "div" : Link;
     return (
       <Component
         to={!isActive ? to : undefined}
@@ -219,8 +314,8 @@ export const Sidebar = ({ activePage }) => {
         <span className="flex-shrink-0">{icon}</span>
         <span>{label}</span>
       </Component>
-    )
-  }
+    );
+  };
 
   // Separator component for sidebar sections
   const Separator = ({ label }) => {
@@ -236,8 +331,8 @@ export const Sidebar = ({ activePage }) => {
           <div className="h-px bg-white/20 mx-2"></div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -266,7 +361,7 @@ export const Sidebar = ({ activePage }) => {
 
         <div className="mt-4 pt-4 border-t border-white/10">
           <button
-            onClick={handleLogout}
+            onClick={handleLogoutClick} // Menampilkan modal konfirmasi
             className="w-full flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white p-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
             disabled={loading}
           >
@@ -281,9 +376,7 @@ export const Sidebar = ({ activePage }) => {
         <div className="flex justify-between">
           <Link
             to="/"
-            className={`flex flex-col items-center p-2 ${
-              activePage === "dashboard" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"
-            }`}
+            className={`flex flex-col items-center p-2 ${activePage === "dashboard" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
           >
             <HomeIcon />
             <span className="text-xs mt-1">Dashboard</span>
@@ -291,20 +384,15 @@ export const Sidebar = ({ activePage }) => {
 
           <Link
             to="/profil"
-            className={`flex flex-col items-center p-2 ${
-              activePage === "profil" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"
-            }`}
+            className={`flex flex-col items-center p-2 ${activePage === "profil" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
           >
             <TestimoniIcon />
             <span className="text-xs mt-1">Profil</span>
           </Link>
 
-
           <Link
             to="/testimoni"
-            className={`flex flex-col items-center p-2 ${
-              activePage === "testimoni" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"
-            }`}
+            className={`flex flex-col items-center p-2 ${activePage === "testimoni" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
           >
             <TestimoniIcon />
             <span className="text-xs mt-1">Testimoni</span>
@@ -312,9 +400,7 @@ export const Sidebar = ({ activePage }) => {
 
           <Link
             to="/product"
-            className={`flex flex-col items-center p-2 ${
-              activePage === "product" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"
-            }`}
+            className={`flex flex-col items-center p-2 ${activePage === "product" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
           >
             <ProductIcon />
             <span className="text-xs mt-1">Produk</span>
@@ -323,9 +409,7 @@ export const Sidebar = ({ activePage }) => {
           {authUser?.role === "super-admin" && (
             <Link
               to="/account"
-              className={`flex flex-col items-center p-2 ${
-                activePage === "account" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"
-              }`}
+              className={`flex flex-col items-center p-2 ${activePage === "account" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
             >
               <AccountIcon />
               <span className="text-xs mt-1">Akun</span>
@@ -333,9 +417,34 @@ export const Sidebar = ({ activePage }) => {
           )}
         </div>
       </div>
+
+      {/* Modal Konfirmasi Logout */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h3 className="text-lg text-black font-semibold text-center">
+              Are you sure you want to logout?
+            </h3>
+            <div className="mt-4 flex justify-center gap-4">
+              <button
+                onClick={handleLogoutConfirm} // Konfirmasi logout
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                Yes
+              </button>
+              <button
+                onClick={handleModalClose} // Menutup modal tanpa logout
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
-  )
-}
+  );
+};
 
 // Helper function to format date
 export const formatDate = (isoString) => {

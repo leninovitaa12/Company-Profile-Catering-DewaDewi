@@ -103,7 +103,7 @@ const ForgotPassword = () => {
                     setInputs({ ...inputs, password: e.target.value })
                   }
                   required
-                  placeholder="Masukkan email Anda"
+                  placeholder="Masukkan password Anda"
                   className="w-full px-4 py-3 border border-[#E6D2AA] rounded-lg bg-[#F1EFDC] text-[#42032C] focus:outline-none focus:border-[#D36B00]"
                 />
                 <label className="block text-[#42032C] font-semibold mb-2">
@@ -115,11 +115,11 @@ const ForgotPassword = () => {
                   onChange={(e) =>
                     setInputs({
                       ...inputs,
-                      confirmPassword: e.target.confirmPassword,
+                      confirmPassword: e.target.value,
                     })
                   }
                   required
-                  placeholder="Masukkan email Anda"
+                  placeholder="Konfirmasi password Anda"
                   className="w-full px-4 py-3 border border-[#E6D2AA] rounded-lg bg-[#F1EFDC] text-[#42032C] focus:outline-none focus:border-[#D36B00]"
                 />
               </div>

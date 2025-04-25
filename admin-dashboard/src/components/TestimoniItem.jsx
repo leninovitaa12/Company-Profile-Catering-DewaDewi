@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import useDeleteTestimoni from "../hook/useDeleteTestimoni"; // Import hook delete
 import useEditTestimoni from "../hook/useEditTestimoni"; // Import hook edit
+import { toast } from "react-toastify";
 
 const CalendarIcon = () => (
   <svg
@@ -67,9 +68,38 @@ const formatDate = (isoString) => {
   });
 };
 
+const ConfirmModal = ({ isOpen, onConfirm, onCancel }) => {
+  if (!isOpen) return null; // Tidak menampilkan modal jika isOpen false
+
+  return (
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Konfirmasi Penghapusan</h3>
+        <p className="text-sm text-gray-600 mb-4">Apakah Anda yakin ingin menghapus testimoni ini?</p>
+        <div className="flex justify-end gap-4">
+          <button
+            className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded-md"
+            onClick={onCancel} // Tombol Batal
+          >
+            Batal
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
+            onClick={onConfirm} // Tombol Konfirmasi
+          >
+            Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const TestimoniItem = ({ testimonis, loading, error, refetch }) => {
   const [sortOption, setSortOption] = useState("latest");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const replaceFileInputRef = useRef(null);
+  const [testimoniIdToDelete, setTestimoniIdToDelete] = useState(null);
 
   const {
     deleteTestimoni,
@@ -112,7 +142,7 @@ const TestimoniItem = ({ testimonis, loading, error, refetch }) => {
     formData.append("image", selectedFile);
     const result = await editTestimoni(editingTestimoniId, formData);
     if (result) {
-      alert("Testimoni berhasil diperbarui!");
+      toast.success("Testimoni berhasil diperbarui!");
       refetch(); // Refetch data setelah update
       setSelectedFile(null); // Reset file dan preview setelah simpan
       setPreviewImage(null); // Reset preview image
@@ -126,13 +156,31 @@ const TestimoniItem = ({ testimonis, loading, error, refetch }) => {
     setEditingTestimoniId(null); // Reset ID testimoni yang sedang diedit
   };
 
-  const handleDelete = async (id) => {
-    const result = await deleteTestimoni(id);
-    if (result) {
-      alert("Testimoni berhasil dihapus!");
-      refetch(); // Refetch data setelah penghapusan
+  const handleDelete = (id) => {
+    setTestimoniIdToDelete(id); // Set ID testimoni yang ingin dihapus
+    setIsModalOpen(true); // Buka modal
+  };
+
+  // Fungsi untuk menutup modal konfirmasi
+  const closeDeleteModal = () => {
+    setIsModalOpen(false); // Tutup modal
+    setTestimoniIdToDelete(null); // Reset ID testimoni yang ingin dihapus
+  };
+
+  // Fungsi untuk mengonfirmasi penghapusan
+  const handleDeleteConfirm = async () => {
+    if (testimoniIdToDelete) {
+      const result = await deleteTestimoni(testimoniIdToDelete); // Panggil deleteTestimoni
+      if (result) {
+        toast.success("Testimoni berhasil dihapus!");
+        refetch(); // Refetch data setelah penghapusan
+        closeDeleteModal(); // Tutup modal setelah penghapusan berhasil
+      } else {
+        toast.error("Gagal menghapus testimoni!");
+      }
     }
   };
+
 
   return (
     <div className="mt-8">
@@ -224,6 +272,12 @@ const TestimoniItem = ({ testimonis, loading, error, refetch }) => {
           /> */}
         </div>
       )}
+      {/* Modal Konfirmasi */}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onConfirm={handleDeleteConfirm}
+        onCancel={closeDeleteModal}
+      />
     </div>
   );
 };

@@ -144,7 +144,7 @@ const validatePassword = (req, res, next) => {
       .json({ error: "Password wajib diisi untuk pendaftaran manual." });
   }
 
-  if (password !== confirmPassword) {
+  if (password != confirmPassword) {
     return res.status(400).json({ error: "Password tidak cocok!" });
   }
 
@@ -175,7 +175,7 @@ const resetPassword = async (req, res) => {
       return res.status(400).json({ error: "Semua field harus diisi!" });
     }
 
-    if (password !== confirmPassword) {
+    if (password != confirmPassword) {
       return res
         .status(400)
         .json({ error: "Konfirmasi password tidak cocok!" });

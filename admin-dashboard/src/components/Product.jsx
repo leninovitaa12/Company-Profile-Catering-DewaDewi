@@ -6,9 +6,11 @@ import { Sidebar, PageHeader, Card, Button } from "../components/ui/ui-component
 import { ProductIcon, PlusIcon } from "../components/ui/icons"
 import ProductAdd from "./ProductAdd"
 import ProductItem from "./ProductItem"
+import useGetProductsAdmin from "../hook/useGetProducts"
 
 const Product = () => {
   const { authUser } = useAuthContext()
+  const { products, loading, refetch } = useGetProductsAdmin();
   const [showAddForm, setShowAddForm] = useState(false)
 
   return (
@@ -39,12 +41,12 @@ const Product = () => {
             {showAddForm ? (
               /* Show only ProductAdd when showAddForm is true */
               <Card title="Tambah Produk Baru" className="border border-[#D36B00]/20">
-                <ProductAdd onClose={() => setShowAddForm(false)} />
+                <ProductAdd refetch={refetch} onClose={() => setShowAddForm(false)} />
               </Card>
             ) : (
               /* Show ProductItem when showAddForm is false */
               <Card title="Daftar Produk">
-                <ProductItem onEdit={() => setShowAddForm(true)} />
+                <ProductItem products={products} loading={loading} refetch={refetch} onEdit={() => setShowAddForm(true)} />
               </Card>
             )}
           </div>
