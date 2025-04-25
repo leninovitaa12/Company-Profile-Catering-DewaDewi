@@ -8,6 +8,7 @@ import Testimoni from "./components/Testimoni";
 import Product from "./components/Product";
 import SuperAdminDashboard from "./components/SuperAdminDashboard";
 import Layout from "./Layout";
+import ProfileSection from "./components/ProfileSection";
 
 function App() {
   const { authUser } = useAuthContext();
@@ -50,6 +51,19 @@ function App() {
             <Layout>
               <ForgotPassword />
             </Layout>
+          )
+        }
+      />
+      {/* Rute Profile */}
+      <Route
+        path="/profil"
+        element={
+          authUser ? (
+            <Layout>
+              <ProfileSection />
+            </Layout>
+          ) : (
+            <Navigate to="/login" />
           )
         }
       />

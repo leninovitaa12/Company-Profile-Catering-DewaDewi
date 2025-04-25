@@ -252,6 +252,7 @@ export const Sidebar = ({ activePage }) => {
 
         <nav className="space-y-2 flex-1">
           <MenuItem to="/" icon={<HomeIcon />} label="Dashboard" isActive={activePage === "dashboard"} />
+          <MenuItem to="/profil" icon={<TestimoniIcon />} label="Profil" isActive={activePage === "profil"} />
           <MenuItem to="/testimoni" icon={<TestimoniIcon />} label="Testimoni" isActive={activePage === "testimoni"} />
           <MenuItem to="/product" icon={<ProductIcon />} label="Produk" isActive={activePage === "product"} />
 
@@ -287,6 +288,17 @@ export const Sidebar = ({ activePage }) => {
             <HomeIcon />
             <span className="text-xs mt-1">Dashboard</span>
           </Link>
+
+          <Link
+            to="/profil"
+            className={`flex flex-col items-center p-2 ${
+              activePage === "profil" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"
+            }`}
+          >
+            <TestimoniIcon />
+            <span className="text-xs mt-1">Profil</span>
+          </Link>
+
 
           <Link
             to="/testimoni"
