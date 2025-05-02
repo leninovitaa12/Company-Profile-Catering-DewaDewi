@@ -14,13 +14,6 @@ const BreakSection = ({alamat, nohp}) => {
 
         {/* Flex container untuk tombol dan WA */}
         <div className="mt-4 flex justify-center items-center gap-4">
-          <Button
-            variant="outline"
-            className="border-[#F1EFDC] text-[#E6D2AA] hover:bg-[#F1EFDC] hover:text-[#800000]"
-          >
-            Pesan Disini
-          </Button>
-
           <a
             href={`https://api.whatsapp.com/send?phone=62${nohp}`}
             target="_blank"

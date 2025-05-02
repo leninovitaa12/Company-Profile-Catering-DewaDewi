@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { useAuthContext } from "../context/AuthContext"
 import useGetTestimoni from "../hook/useGetTestimoni"
@@ -11,12 +9,7 @@ import TestimoniItem from "./TestimoniItem"
 const Testimoni = () => {
   const { authUser } = useAuthContext()
   const [showAddForm, setShowAddForm] = useState(false)
-  const [sortOption, setSortOption] = useState("latest")
   const { testimonis, loadings, error, refetch } = useGetTestimoni()
-
-  const handleSortChange = (e) => {
-    setSortOption(e.target.value)
-  }
 
   return (
     <div className="flex min-h-screen bg-[#F1EFDC]">
@@ -50,17 +43,6 @@ const Testimoni = () => {
             ) : (
               <Card title="Galeri Testimoni">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5">
-                  <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-3 py-2">
-                    <CalendarIcon />
-                    <select
-                      value={sortOption}
-                      onChange={handleSortChange}
-                      className="bg-transparent focus:outline-none text-gray-700"
-                    >
-                      <option value="latest">Terbaru</option>
-                      <option value="oldest">Terlama</option>
-                    </select>
-                  </div>
                 </div>
                 <TestimoniItem testimonis={testimonis} loading={loadings} error={error} refetch={refetch} />
               </Card>

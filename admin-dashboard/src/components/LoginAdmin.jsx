@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Import Link here
-import useLogin from "../hook/useLogin"; // hook untuk login
+import { useNavigate, Link } from "react-router-dom";
+import useLogin from "../hook/useLogin";
 
 const LoginAdmin = () => {
   const [email, setEmail] = useState("");
@@ -8,29 +8,29 @@ const LoginAdmin = () => {
   const { login, loading, error } = useLogin();
 
   const handleSubmit = async (e, email, password) => {
-    e.preventDefault(); // Mencegah reload halaman
+    e.preventDefault();
     if (!email || !password) {
-      toast.error("Email dan password wajib diisi!"); // Menampilkan pesan error jika form tidak lengkap
+      toast.error("Email dan password wajib diisi!");
       return;
     }
     await login(email, password);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#F1EFDC]">
-      <div className="bg-white rounded-xl shadow-2xl flex overflow-hidden max-w-4xl">
+    <div className="flex items-center justify-center min-h-screen bg-[#F1EFDC] p-4">
+      <div className="bg-white rounded-xl shadow-2xl flex flex-col md:flex-row overflow-hidden w-full max-w-5xl">
         <div className="w-full md:w-1/2 bg-gradient-to-br from-[#42032C] to-[#D36B00] flex flex-col justify-center items-center p-8 text-white">
-          <h1 className="text-5xl font-bold mb-4">Selamat Datang</h1>
-          <p className="text-lg">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">Selamat Datang</h1>
+          <p className="text-md md:text-lg text-center">
             Silakan masuk untuk mengakses dashboard admin.
           </p>
         </div>
-        <div className="w-full md:w-1/2 flex justify-center items-center p-10">
+        <div className="w-full md:w-1/2 flex justify-center items-center p-6 md:p-10">
           <form
-            className="w-full"
-            onSubmit={(e) => handleSubmit(e, email, password)} // Panggil handleSubmit saat form disubmit
+            className="w-full max-w-md"
+            onSubmit={(e) => handleSubmit(e, email, password)}
           >
-            <h2 className="text-3xl font-bold text-[#42032C] mb-8 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#42032C] mb-8 text-center">
               Login Admin
             </h2>
             <div className="mb-5">

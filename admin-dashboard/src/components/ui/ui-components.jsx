@@ -1,9 +1,16 @@
-"use client"
-import { Link } from "react-router-dom"
-import { useAuthContext } from "../../context/AuthContext"
-import useLogout from "../../hook/useLogout"
-import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, LogoutIcon } from "./icons"
-import { useState } from "react"
+"use client";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
+import useLogout from "../../hook/useLogout";
+import {
+  HomeIcon,
+  TestimoniIcon,
+  ProductIcon,
+  AccountIcon,
+  LogoutIcon,
+  ProfilIcon,
+} from "./icons";
+import { useState } from "react";
 
 // Button Component
 export const Button = ({
@@ -21,15 +28,16 @@ export const Button = ({
     primary: "bg-[#D36B00] hover:bg-[#42032C] text-white",
     secondary: "bg-gray-200 hover:bg-gray-300 text-gray-800",
     danger: "bg-red-500 hover:bg-red-600 text-white",
-    outline: "bg-transparent border border-[#D36B00] text-[#D36B00] hover:bg-[#D36B00] hover:text-white",
+    outline:
+      "bg-transparent border border-[#D36B00] text-[#D36B00] hover:bg-[#D36B00] hover:text-white",
     ghost: "bg-transparent hover:bg-gray-100 text-gray-700",
-  }
+  };
 
   const sizes = {
     sm: "py-1 px-3 text-sm",
     md: "py-2 px-4",
     lg: "py-3 px-6 text-lg",
-  }
+  };
 
   return (
     <button
@@ -45,8 +53,8 @@ export const Button = ({
       {icon && <span className="flex-shrink-0">{icon}</span>}
       {children}
     </button>
-  )
-}
+  );
+};
 
 // LogoutButton Component
 export const LogoutButton = ({ className = "", isMobile = false }) => {
@@ -88,7 +96,9 @@ export const LogoutButton = ({ className = "", isMobile = false }) => {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-            <h3 className="text-lg font-semibold text-center">Are you sure you want to logout?</h3>
+            <h3 className="text-lg font-semibold text-center">
+              Are you sure you want to logout?
+            </h3>
             <div className="mt-4 flex justify-center gap-4">
               <button
                 onClick={handleLogoutConfirm} // Mengonfirmasi logout
@@ -111,15 +121,24 @@ export const LogoutButton = ({ className = "", isMobile = false }) => {
 };
 
 // Card Component
-export const Card = ({ title, children, className = "", actions, icon, variant = "default" }) => {
+export const Card = ({
+  title,
+  children,
+  className = "",
+  actions,
+  icon,
+  variant = "default",
+}) => {
   const variants = {
     default: "",
     stat: "hover:shadow-lg transition-shadow",
     content: "p-6",
-  }
+  };
 
   return (
-    <div className={`bg-white rounded-lg shadow-md overflow-hidden ${variants[variant]} ${className}`}>
+    <div
+      className={`bg-white rounded-lg shadow-md overflow-hidden ${variants[variant]} ${className}`}
+    >
       {title && (
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
           <div className="flex items-center gap-2">
@@ -131,8 +150,8 @@ export const Card = ({ title, children, className = "", actions, icon, variant =
       )}
       <div className={variant === "content" ? "p-0" : "p-4"}>{children}</div>
     </div>
-  )
-}
+  );
+};
 
 // StatCard Component
 export const StatCard = ({ title, value, icon, color = "bg-blue-100" }) => {
@@ -146,8 +165,8 @@ export const StatCard = ({ title, value, icon, color = "bg-blue-100" }) => {
         <div className={`p-3 ${color} rounded-full`}>{icon}</div>
       </div>
     </Card>
-  )
-}
+  );
+};
 
 // ContentCard Component
 export const ContentCard = ({ title, children, className = "" }) => {
@@ -156,8 +175,8 @@ export const ContentCard = ({ title, children, className = "" }) => {
       <h3 className="text-xl font-semibold text-[#42032C] mb-4">{title}</h3>
       {children}
     </Card>
-  )
-}
+  );
+};
 
 // PageHeader Component
 export const PageHeader = ({ title, icon, actions }) => {
@@ -253,26 +272,28 @@ export const SidebarSeparator = ({ label }) => {
         <div className="h-px bg-white/20 mx-2"></div>
       )}
     </div>
-  )
-}
+  );
+};
 
 // SidebarMenuItem Component
 export const SidebarMenuItem = ({ icon, label, to, isActive, onClick }) => {
-  const Component = to ? Link : "div"
+  const Component = to ? Link : "div";
 
   return (
     <Component
       to={to}
       onClick={onClick}
       className={`flex items-center space-x-3 p-2 rounded-lg transition-colors ${
-        isActive ? "bg-[#D36B00] cursor-default" : "hover:bg-[#D36B00] transition-colors"
+        isActive
+          ? "bg-[#D36B00] cursor-default"
+          : "hover:bg-[#D36B00] transition-colors"
       }`}
     >
       <span className="flex-shrink-0">{icon}</span>
       <span>{label}</span>
     </Component>
-  )
-}
+  );
+};
 
 // Sidebar Component
 export const Sidebar = ({ activePage }) => {
@@ -346,15 +367,40 @@ export const Sidebar = ({ activePage }) => {
         </div>
 
         <nav className="space-y-2 flex-1">
-          <MenuItem to="/" icon={<HomeIcon />} label="Dashboard" isActive={activePage === "dashboard"} />
-          <MenuItem to="/profil" icon={<TestimoniIcon />} label="Profil" isActive={activePage === "profil"} />
-          <MenuItem to="/testimoni" icon={<TestimoniIcon />} label="Testimoni" isActive={activePage === "testimoni"} />
-          <MenuItem to="/product" icon={<ProductIcon />} label="Produk" isActive={activePage === "product"} />
+          <MenuItem
+            to="/"
+            icon={<HomeIcon />}
+            label="Dashboard"
+            isActive={activePage === "dashboard"}
+          />
+          <MenuItem
+            to="/profil"
+            icon={<ProfilIcon />}
+            label="Profil"
+            isActive={activePage === "profil"}
+          />
+          <MenuItem
+            to="/testimoni"
+            icon={<TestimoniIcon />}
+            label="Testimoni"
+            isActive={activePage === "testimoni"}
+          />
+          <MenuItem
+            to="/product"
+            icon={<ProductIcon />}
+            label="Produk"
+            isActive={activePage === "product"}
+          />
 
           {authUser?.role === "super-admin" && (
             <>
               <Separator label="Admin" />
-              <MenuItem to="/account" icon={<AccountIcon />} label="Akun" isActive={activePage === "account"} />
+              <MenuItem
+                to="/account"
+                icon={<AccountIcon />}
+                label="Akun"
+                isActive={activePage === "account"}
+              />
             </>
           )}
         </nav>
@@ -376,7 +422,11 @@ export const Sidebar = ({ activePage }) => {
         <div className="flex justify-between">
           <Link
             to="/"
-            className={`flex flex-col items-center p-2 ${activePage === "dashboard" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
+            className={`flex flex-col items-center p-2 ${
+              activePage === "dashboard"
+                ? "text-[#D36B00] font-bold"
+                : "text-gray-600 hover:text-[#D36B00]"
+            }`}
           >
             <HomeIcon />
             <span className="text-xs mt-1">Dashboard</span>
@@ -384,15 +434,23 @@ export const Sidebar = ({ activePage }) => {
 
           <Link
             to="/profil"
-            className={`flex flex-col items-center p-2 ${activePage === "profil" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
+            className={`flex flex-col items-center p-2 ${
+              activePage === "profil"
+                ? "text-[#D36B00] font-bold"
+                : "text-gray-600 hover:text-[#D36B00]"
+            }`}
           >
-            <TestimoniIcon />
+            <ProfilIcon />
             <span className="text-xs mt-1">Profil</span>
           </Link>
 
           <Link
             to="/testimoni"
-            className={`flex flex-col items-center p-2 ${activePage === "testimoni" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
+            className={`flex flex-col items-center p-2 ${
+              activePage === "testimoni"
+                ? "text-[#D36B00] font-bold"
+                : "text-gray-600 hover:text-[#D36B00]"
+            }`}
           >
             <TestimoniIcon />
             <span className="text-xs mt-1">Testimoni</span>
@@ -400,7 +458,11 @@ export const Sidebar = ({ activePage }) => {
 
           <Link
             to="/product"
-            className={`flex flex-col items-center p-2 ${activePage === "product" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
+            className={`flex flex-col items-center p-2 ${
+              activePage === "product"
+                ? "text-[#D36B00] font-bold"
+                : "text-gray-600 hover:text-[#D36B00]"
+            }`}
           >
             <ProductIcon />
             <span className="text-xs mt-1">Produk</span>
@@ -409,7 +471,11 @@ export const Sidebar = ({ activePage }) => {
           {authUser?.role === "super-admin" && (
             <Link
               to="/account"
-              className={`flex flex-col items-center p-2 ${activePage === "account" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
+              className={`flex flex-col items-center p-2 ${
+                activePage === "account"
+                  ? "text-[#D36B00] font-bold"
+                  : "text-gray-600 hover:text-[#D36B00]"
+              }`}
             >
               <AccountIcon />
               <span className="text-xs mt-1">Akun</span>
@@ -448,10 +514,10 @@ export const Sidebar = ({ activePage }) => {
 
 // Helper function to format date
 export const formatDate = (isoString) => {
-  const date = new Date(isoString)
+  const date = new Date(isoString);
   return date.toLocaleDateString("id-ID", {
     day: "numeric",
     month: "long",
     year: "numeric",
-  })
-}
+  });
+};

@@ -1,83 +1,70 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { toast } from "react-toastify"
-import useProfile from "../hook/useProfile"
-import { PageHeader, Sidebar } from "./ui/ui-components"
-import { TestimoniIcon } from "./ui/icons"
-
-const ImageIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-    <polyline points="21 15 16 10 5 21"></polyline>
-  </svg>
-)
+import { useState, useRef, useEffect } from "react";
+import { toast } from "react-toastify";
+import useProfile from "../hook/useProfile";
+import { PageHeader, Sidebar } from "./ui/ui-components";
+import { ProfilIcon, ImageIcon } from "./ui/icons"; // Import icons
 
 const ProfileSection = () => {
-  const { profile, loading, error, saveProfile } = useProfile()
-  const [nohp, setNohp] = useState("")
-  const [alamat, setAlamat] = useState("")
-  const [about, setAbout] = useState("")
-  const [image, setImage] = useState(null)
-  const [imagePreview, setImagePreview] = useState(null)
-  const fileInputRef = useRef(null)
+  const { profile, loading, error, saveProfile } = useProfile();
+  const [nohp, setNohp] = useState("");
+  const [alamat, setAlamat] = useState("");
+  const [about, setAbout] = useState("");
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (profile) {
-      setNohp(profile.nohp || "")
-      setAlamat(profile.alamat || "")
-      setAbout(profile.about || "")
-      setImagePreview(profile.image || null)
+      setNohp(profile.nohp || "");
+      setAlamat(profile.alamat || "");
+      setAbout(profile.about || "");
+      setImagePreview(profile.image || null);
     }
-  }, [profile])
+  }, [profile]);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0]
-    setImage(file)
+    const file = e.target.files[0];
+    setImage(file);
     if (file) {
-      setImagePreview(URL.createObjectURL(file))
+      setImagePreview(URL.createObjectURL(file));
     }
-  }
+  };
 
   const handleSubmit = async () => {
-    if (!nohp && !alamat && !about) {
-        toast.warning("Minimal salah satu field harus diisi")
-        return
-      }      
+    // Memastikan semua field wajib diisi
+    if (!nohp || !alamat || !about) {
+      toast.warning("Semua field wajib diisi!");
+      return;
+    }
 
-    const formData = new FormData()
-    formData.append("nohp", nohp)
-    formData.append("alamat", alamat)
-    formData.append("about", about)
-    if (image) formData.append("image", image)
+    const formData = new FormData();
+    formData.append("nohp", nohp);
+    formData.append("alamat", alamat);
+    formData.append("about", about);
+    if (image) formData.append("image", image);
 
     try {
-      await saveProfile(formData)
-      toast.success("Profil berhasil disimpan")
+      await saveProfile(formData);
+      toast.success("Profil berhasil disimpan");
     } catch {
-      toast.error("Gagal menyimpan profil")
+      toast.error("Gagal menyimpan profil");
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F1EFDC]">
       <Sidebar activePage="profil" />
       <div className="flex-1">
-        <PageHeader title="Manajemen Profil" icon={<TestimoniIcon />} />
+        <PageHeader title="Manajemen Profil" icon={<ProfilIcon />} />
         <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-6 mt-6">
+          {/* Profile form */}
           <div>
-            <label htmlFor="nohp" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="nohp"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Nomor HP
             </label>
             <div className="flex rounded-lg border border-gray-300 overflow-hidden">
@@ -96,7 +83,10 @@ const ProfileSection = () => {
           </div>
 
           <div>
-            <label htmlFor="alamat" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="alamat"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Alamat
             </label>
             <textarea
@@ -109,7 +99,10 @@ const ProfileSection = () => {
           </div>
 
           <div>
-            <label htmlFor="about" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="about"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Tentang Saya
             </label>
             <textarea
@@ -122,7 +115,10 @@ const ProfileSection = () => {
           </div>
 
           <div>
-            <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Gambar Profil
             </label>
             <div className="flex items-center">
@@ -167,7 +163,7 @@ const ProfileSection = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProfileSection
+export default ProfileSection;

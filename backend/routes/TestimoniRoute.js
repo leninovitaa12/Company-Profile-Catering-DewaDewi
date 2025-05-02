@@ -1,7 +1,7 @@
 const express = require("express");
 const { protectedRoute } = require("../middleware/protectedRoute");
 
-const { uploadImage, compressAndSaveImage } = require("../lib/uploadImage");
+const { uploadImageW, compressAndSaveImageW } = require("../lib/uploadImageW");
 const {
   createTestimoni,
   updateTestimoni,
@@ -14,16 +14,16 @@ const router = express.Router();
 router.post(
   "/",
   protectedRoute,
-  uploadImage,
-  compressAndSaveImage,
+  uploadImageW,
+  compressAndSaveImageW,
   createTestimoni
 );
 router.get("/", getTestimoni);
 router.put(
   "/:id",
   protectedRoute,
-  uploadImage,
-  compressAndSaveImage,
+  uploadImageW,
+  compressAndSaveImageW,
   updateTestimoni
 );
 router.delete("/:id", protectedRoute, deleteTestimoni);

@@ -7,11 +7,11 @@ const CarouselSection = () => {
     {
       title: "Semuanya ada Disini",
       description: "Frozen Food dan Bisa pesan Catering disini!",
-      image: "https://images.pexels.com/photos/10393670/pexels-photo-10393670.jpeg?auto=compress&cs=tinysrgb&w=600",
+      image: "https://asset.kompas.com/crops/GZKGclL9N-Dv7wO6JWi8l7udJME=/179x0:1080x601/750x500/data/photo/2019/06/21/3717931935.jpg",
     },
     {
       title: "Siap Melayani dengan sepenuh Hati",
-      description: "Dibuat oleh orang palembang asli lho! Rasanya sudah pasti autentik!",
+      description: "Dibuat oleh orang palembang asli lho!",
       image:
         "https://img.freepik.com/free-photo/deep-fried-fish-ball-dark-surface_1150-43602.jpg?t=st=1744357927~exp=1744361527~hmac=a4b7deb9cc972c7a051ddb4a271cf67bb82d754db60eccd19793d55b9a980466&w=1380",
     },
@@ -58,14 +58,14 @@ const CarouselSection = () => {
 
                     <p className="mb-8 max-w-md text-center text-[#F1EFDC]">{slide.description}</p>
 
-                    <div className="mx-auto">
+                    {/* <div className="mx-auto">
                       <a
                         href="#"
                         className="inline-block rounded-lg bg-[#D36B00] px-8 py-3 text-center text-sm font-semibold text-[#F1EFDC] outline-none transition duration-100 hover:bg-[#B05A00] focus-visible:ring active:bg-[#B05A00] md:text-base"
                       >
                         Contact
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

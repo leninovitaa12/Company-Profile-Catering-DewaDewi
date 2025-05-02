@@ -43,17 +43,24 @@ const ProductAdd = ({ refetch, onClose }) => {
   }
 
   const handleAddProduct = async () => {
+    // Validate all fields
     if (!productName.trim()) {
       toast.warning("Nama produk tidak boleh kosong!")
+      return
+    }
+    if (!productDescription.trim()) {
+      toast.warning("Deskripsi produk tidak boleh kosong!")
+      return
+    }
+    if (!productImage) {
+      toast.warning("Gambar produk wajib diunggah!")
       return
     }
 
     const formData = new FormData()
     formData.append("name", productName)
     formData.append("description", productDescription)
-    if (productImage) {
-      formData.append("image", productImage)
-    }
+    formData.append("image", productImage)
 
     try {
       await postProduct(formData)
@@ -63,6 +70,7 @@ const ProductAdd = ({ refetch, onClose }) => {
       toast.success("Menambahkan Produk Berhasil")
     } catch (error) {
       console.error("Failed to add product:", error)
+      toast.error("Gagal menambahkan produk")
     }
   }
 
