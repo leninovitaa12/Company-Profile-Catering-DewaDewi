@@ -28,6 +28,10 @@ const Header = () => {
                     <ScrollLink smooth={true} spy={true} to={"contact"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
                         Contact
                     </ScrollLink>
+                    <ScrollLink smooth={true} spy={true} to={"cara-pesan"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500}>
+                      Cara Pesan
+                    </ScrollLink>
+
                   </nav>
                   <Button onClick={() => setMenu(!menu)} className="md:hidden">
                     {menu?<FiX></FiX>:<FiMenu/>}
@@ -48,6 +52,9 @@ const Header = () => {
                     </ScrollLink>
                     <ScrollLink onClick={() => setMenu(false)} smooth={true} spy={true} to={"contact"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500} >
                         Contact
+                    </ScrollLink>
+                    <ScrollLink smooth={true} spy={true} to={"cara-pesan"} className="text-sm cursor-pointer font-medium" offset={-100} duration={500}>
+                      Cara Pesan
                     </ScrollLink>
                   </nav>
              </div>)}

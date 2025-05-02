@@ -9,6 +9,7 @@ import TransformationSection from "../components/AboutSection";
 import TestimoniSection from "../components/testimoniSection";
 import BreakSection from "../components/BreakSection";
 import useProfile from "../hook/useGetProfil";
+import CaraPesanSection from "../components/CaraPesanSection";
 import { useEffect, useState } from "react";
 
 function HomePage() {
@@ -49,19 +50,23 @@ function HomePage() {
       <Header />
 
       <main className="w-full">
-        {/* Hero Section */}
-        <HeroSection about={about} image={imagePreview} />
 
-        <CarouselSection />
+<CarouselSection />
 
         {/* Best Sellers Section */}
         <BestSellerSection />
 
+        {/* Hero Section */}
+        <HeroSection about={about} image={imagePreview} />
+        
         {/* Transformation Section */}
-        <TransformationSection />
+        {/* <TransformationSection /> */}
 
         {/* Green CTA Section */}
         <BreakSection alamat={alamat} nohp={nohp} />
+
+        {/* Cara Pesan Section */}
+        <CaraPesanSection />
 
         {/* Testimonials Section */}
         <TestimoniSection />

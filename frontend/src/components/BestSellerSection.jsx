@@ -41,16 +41,20 @@ const BestSellerSection = () => {
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-[var(--primary-brand)]">{item.name}</h3>
-                    <p className="text-sm text-[var(--primary-brand)] opacity-80">{item.description || 'Natural ingredients'}</p>
-                    <div className="mt-2 flex items-center justify-between">
-                      <Button 
-                        onClick={() => setDetail(item)} 
-                        variant="ghost" 
-                        size="sm"
-                        className="text-[var(--secondary-brand)] hover:text-[var(--primary-brand)]"
-                      >
-                        Detail
-                      </Button>
+                    
+                    {/* Deskripsi */}
+                    {/* <p className="text-sm text-[var(--primary-brand)] opacity-80">
+                      {item.description || 'Natural ingredients'}
+                    </p> */}
+
+                    <div className="mt-2 flex items-center justify-center">
+                    <Button 
+                      onClick={() => setDetail(item)}
+                      className="bg-[#42032C] text-white hover:bg-[#D36B00] transition-colors duration-300 transform hover:scale-105 hover:shadow-md"
+                      size="sm"
+                    >
+                      Detail
+                    </Button>
                     </div>
                   </div>
                 </div>
@@ -65,4 +69,4 @@ const BestSellerSection = () => {
   )
 }
 
-export default BestSellerSection
+export default BestSellerSection;
