@@ -22,6 +22,37 @@ import useCreateAdmin from "../hook/useCreateAdmin";
 import useUpdateAdmin from "../hook/useUpdateAdmin";
 import useDeleteAdmin from "../hook/useDeleteAdmin";
 
+const ConfirmModal = ({ isOpen, onConfirm, onCancel }) => {
+  if (!isOpen) return null; // Tidak menampilkan modal jika isOpen false
+
+  return (
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">
+          Konfirmasi Penghapusan
+        </h3>
+        <p className="text-sm text-gray-600 mb-4">
+          Apakah Anda yakin ingin menghapus Akun ini?
+        </p>
+        <div className="flex justify-end gap-4">
+          <button
+            className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded-md"
+            onClick={onCancel} // Tombol Batal
+          >
+            Batal
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
+            onClick={onConfirm} // Tombol Konfirmasi
+          >
+            Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const SuperAdminDashboard = () => {
   const { authUser } = useAuthContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,6 +64,9 @@ const SuperAdminDashboard = () => {
   const [role, setRole] = useState("admin");
   const [oldPassword, setOldPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [selectedAdminId, setSelectedAdminId] = useState(null);
 
   // Menggunakan hooks untuk koneksi database
   const {
@@ -94,13 +128,25 @@ const SuperAdminDashboard = () => {
     setErrorMessage("");
   };
 
-  // Delete user function
-  const handleDeleteUser = async (id) => {
-    if (window.confirm("Apakah Anda yakin ingin menghapus admin ini?")) {
-      const result = await deleteAdmin(id);
-      if (result) {
-        refetch(); // Refresh data setelah berhasil menghapus
-      }
+  const openDeleteModal = (id) => {
+    setSelectedAdminId(id);
+    setIsModalOpen2(true);
+  };
+
+  const closeDeleteModal = () => {
+    setSelectedAdminId(null);
+    setIsModalOpen2(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedAdminId) return;
+    try {
+      await deleteAdmin(selectedAdminId);
+      refetch();
+    } catch (error) {
+      toast.error("Gagal menghapus produk!");
+    } finally {
+      closeDeleteModal();
     }
   };
 
@@ -150,6 +196,11 @@ const SuperAdminDashboard = () => {
 
   return (
     <div className="flex w-full max-w-[100vw] overflow-x-auto overflow-y-hidden min-h-screen bg-[#F1EFDC]">
+      <ConfirmModal
+        isOpen={isModalOpen2}
+        onConfirm={handleDeleteConfirm}
+        onCancel={closeDeleteModal}
+      />
       {/* Sidebar */}
       <Sidebar activePage="account" />
 
@@ -292,7 +343,7 @@ const SuperAdminDashboard = () => {
                               <Button
                                 variant="danger"
                                 size="sm"
-                                onClick={() => handleDeleteUser(admin.id)}
+                                onClick={() => openDeleteModal(admin.id)}
                                 className="text-sm"
                                 disabled={deleteLoading}
                               >
@@ -380,7 +431,7 @@ const SuperAdminDashboard = () => {
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Role
                   </label>
@@ -392,7 +443,7 @@ const SuperAdminDashboard = () => {
                     <option value="admin">Admin</option>
                     <option value="super-admin">Super Admin</option>
                   </select>
-                </div>
+                </div> */}
 
                 {errorMessage && (
                   <div className="bg-red-50 border-l-4 border-red-500 p-3 text-red-700 text-sm">
