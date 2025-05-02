@@ -22,7 +22,7 @@ const ImageIcon = () => (
   </svg>
 )
 
-const ProductAdd = ({ onClose }) => {
+const ProductAdd = ({ refetch, onClose }) => {
   const [productName, setProductName] = useState("")
   const [productDescription, setProductDescription] = useState("")
   const [productImage, setProductImage] = useState(null)
@@ -44,7 +44,7 @@ const ProductAdd = ({ onClose }) => {
 
   const handleAddProduct = async () => {
     if (!productName.trim()) {
-      alert("Nama produk tidak boleh kosong!")
+      toast.warning("Nama produk tidak boleh kosong!")
       return
     }
 
@@ -59,6 +59,7 @@ const ProductAdd = ({ onClose }) => {
       await postProduct(formData)
       resetForm()
       onClose() // Use onClose instead of setAdd
+      await refetch()
       toast.success("Menambahkan Produk Berhasil")
     } catch (error) {
       console.error("Failed to add product:", error)

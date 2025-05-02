@@ -1,25 +1,25 @@
-import {  Check} from "lucide-react"
-import { Button } from "../components/ui/button"
-import Footer from "../components/Footer"
-import Header from "../components/Header"
-import CarouselSection from "../components/CarouselSection"
-import HeroSection from "../components/HeroSection"
-import BestSellerSection from "../components/BestSellerSection"
-import TransformationSection from "../components/AboutSection"
-import TestimoniSection from "../components/testimoniSection"
-import BreakSection from "../components/BreakSection"
-import useProfile from "../hook/useGetProfil"
-import { useEffect, useState } from "react"
+import { Check } from "lucide-react";
+import { Button } from "../components/ui/button";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import CarouselSection from "../components/CarouselSection";
+import HeroSection from "../components/HeroSection";
+import BestSellerSection from "../components/BestSellerSection";
+import TransformationSection from "../components/AboutSection";
+import TestimoniSection from "../components/testimoniSection";
+import BreakSection from "../components/BreakSection";
+import useProfile from "../hook/useGetProfil";
+import { useEffect, useState } from "react";
 
 function HomePage() {
   const { profile, loading, error, fetchProfile } = useProfile();
-  const [nohp, setNohp] = useState("")
-  const [alamat, setAlamat] = useState("")
-  const [about, setAbout] = useState("")
-  const [imagePreview, setImagePreview] = useState(null)
+  const [nohp, setNohp] = useState("");
+  const [alamat, setAlamat] = useState("");
+  const [about, setAbout] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
-    fetchProfile();  // Panggil fetchProfile hanya sekali saat komponen pertama kali dimuat
+    fetchProfile(); // Panggil fetchProfile hanya sekali saat komponen pertama kali dimuat
   }, []); // Pastikan array dependensi kosong agar hanya sekali dipanggil
 
   useEffect(() => {
@@ -45,33 +45,32 @@ function HomePage() {
   return (
     <div className="flex flex-col min-h-screen w-full">
       {/* Header */}
-      
-      <Header/>
+
+      <Header />
 
       <main className="w-full">
         {/* Hero Section */}
         <HeroSection about={about} image={imagePreview} />
 
-        <CarouselSection/>
+        <CarouselSection />
 
         {/* Best Sellers Section */}
-        <BestSellerSection/>
+        <BestSellerSection />
 
         {/* Transformation Section */}
-        <TransformationSection/>
+        <TransformationSection />
 
         {/* Green CTA Section */}
-        <BreakSection alamat={alamat} nohp={nohp}/>
-        
+        <BreakSection alamat={alamat} nohp={nohp} />
+
         {/* Testimonials Section */}
-        <TestimoniSection/>
+        <TestimoniSection />
       </main>
 
       {/* Footer */}
-      <Footer/>
+      <Footer />
     </div>
-  )
+  );
 }
 
-export default HomePage
-
+export default HomePage;

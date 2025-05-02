@@ -37,7 +37,7 @@ const useResetPassword = () => {
       }
 
       toast.success("Reset Password Successfully");
-      navigate("/signin");
+      navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.error || error.message);
     } finally {

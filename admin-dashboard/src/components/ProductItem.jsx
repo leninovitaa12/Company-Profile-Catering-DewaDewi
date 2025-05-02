@@ -1,5 +1,4 @@
 import { toast } from "react-toastify";
-import useGetProductsAdmin from "../hook/useGetProducts";
 import useDeleteProduct from "../hook/useDeleteProduct";
 import ProductEdit from "./ProductEdit"; // Import ProductEdit
 import { useState } from "react";
@@ -39,8 +38,7 @@ const TrashIcon = () => (
   </svg>
 );
 
-const ProductItem = ({ setAdd }) => {
-  const { products, loading, total, refetch } = useGetProductsAdmin();
+const ProductItem = ({ products, loading, refetch }) => {
   const { deleteProduct, loading: deleteLoading } = useDeleteProduct();
   const [productToEdit, setProductToEdit] = useState(null); // State untuk menyimpan produk yang diedit
 
@@ -64,6 +62,7 @@ const ProductItem = ({ setAdd }) => {
         <ProductEdit
           setProductToEdit={setProductToEdit}
           product={productToEdit}
+          refetch={refetch}
         />
       )}
 

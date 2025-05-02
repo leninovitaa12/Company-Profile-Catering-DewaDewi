@@ -20,7 +20,7 @@ const ImageIcon = () => (
   </svg>
 );
 
-const ProductEdit = ({ setProductToEdit, product }) => {
+const ProductEdit = ({ setProductToEdit, product, refetch }) => {
   const [productName, setProductName] = useState(product.name || "");
   const [productDescription, setProductDescription] = useState(
     product.description || ""
@@ -69,6 +69,7 @@ const ProductEdit = ({ setProductToEdit, product }) => {
       setLoading(true);
       await updateProduct(product.id, updatedData);
       resetForm();
+      await refetch();
       toast.success("Produk berhasil diperbarui");
       setProductToEdit();
     } catch (error) {

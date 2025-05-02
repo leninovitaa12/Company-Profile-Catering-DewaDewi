@@ -19,9 +19,8 @@ const router = express.Router();
 // ✅ Ini HARUS diubah dari GET ke POST dan jangan hardcoded
 router.get("/createuser", createdUser); // ❌ Salah (GET dan hardcoded)
 
-router.post("/login", login);
+router.post("/login", pinRateLimiter, login);
 router.post("/logout", logout);
-router.post("/pin", validatePassword, sendPin);
 router.post("/pin-reset", sendPin);
 router.post(
   "/reset-password",
