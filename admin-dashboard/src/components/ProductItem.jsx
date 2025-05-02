@@ -57,7 +57,7 @@ const ProductItem = ({ products, loading, refetch }) => {
 
   return (
     <div className="mt-8 p-5 mx-auto">
-      {/* Menampilkan form edit jika isEditing true */}
+      {/* Menampilkan form edit jika productToEdit ada */}
       {productToEdit && (
         <ProductEdit
           setProductToEdit={setProductToEdit}
@@ -120,14 +120,8 @@ const ProductItem = ({ products, loading, refetch }) => {
             </div>
           ))}
         </div>
-      ) : (
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-10 text-center">
-          <p className="text-gray-500">Belum ada produk yang ditambahkan.</p>
-          <p className="text-sm text-gray-400 mt-1">
-            Tambahkan produk pertama Anda.
-          </p>
-        </div>
-      )}
+      ) : null /* Menghapus pesan "Tidak ada produk untuk ditampilkan" */
+      }
     </div>
   );
 };

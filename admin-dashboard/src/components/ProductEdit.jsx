@@ -55,30 +55,34 @@ const ProductEdit = ({ setProductToEdit, product, refetch }) => {
 
   const handleEditProduct = async () => {
     if (!productName.trim()) {
-      alert("Nama produk tidak boleh kosong!");
+      toast.warning("Nama produk tidak boleh kosong!");
       return;
     }
-
+  
     const updatedData = {
       name: productName,
       description: productDescription,
       image: productImage,
     };
-
+  
     try {
       setLoading(true);
       await updateProduct(product.id, updatedData);
       resetForm();
       await refetch();
-      toast.success("Produk berhasil diperbarui");
-      setProductToEdit();
+      toast.success("Produk berhasil diperbarui", {
+        toastId: "edit-success", // Menetapkan toastId khusus
+      });
+      setProductToEdit(null);
     } catch (error) {
       console.error("Gagal mengedit produk:", error);
-      toast.error("Gagal mengedit produk");
+      toast.error("Gagal mengedit produk", {
+        toastId: "edit-error", // Menetapkan toastId khusus
+      });
     } finally {
       setLoading(false);
     }
-  };
+  };    
 
   const renderImagePreview = () => {
     if (productImage) {
@@ -123,19 +127,16 @@ const ProductEdit = ({ setProductToEdit, product, refetch }) => {
   return (
     <>
       <div className="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
-        <div className="flex justify-between items-center mb-6 border-b pb-3">
+        <div className="flex justify-center items-center mb-6 border-b pb-3">
           <h2 className="text-3xl font-bold text-gray-800">Edit Produk</h2>
         </div>
-
         <button
-          className="text-black bg-white rounded-lg px-4 py-2 mb-4 border"
-          onClick={() => setProductToEdit(null)} // Menutup form edit atau mengembalikan ke daftar produk
-        >
-          Kembali
-        </button>
-
+    className="text-white bg-[#D36B00] hover:bg-[#B25800] focus:outline-none focus:ring-2 focus:ring-[#D36B00] focus:ring-offset-2 rounded-lg px-6 py-3 mb-4 border border-transparent transition-all duration-300 ease-in-out"
+    onClick={() => setProductToEdit(null)} // Menutup form edit atau mengembalikan ke daftar produk
+  >
+    Kembali
+  </button>
         <div className="bg-gray-50 p-5 rounded-lg mb-6 border border-gray-200">
-          <h3 className="text-xl font-semibold mb-4">Edit Produk</h3>
           <div className="space-y-4">
             <div>
               <label

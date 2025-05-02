@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom"
 import { useAuthContext } from "../../context/AuthContext"
 import useLogout from "../../hook/useLogout"
-import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, LogoutIcon } from "./icons"
+import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, LogoutIcon, ProfilIcon } from "./icons"
 import { useState } from "react"
 
 // Button Component
@@ -347,7 +347,7 @@ export const Sidebar = ({ activePage }) => {
 
         <nav className="space-y-2 flex-1">
           <MenuItem to="/" icon={<HomeIcon />} label="Dashboard" isActive={activePage === "dashboard"} />
-          <MenuItem to="/profil" icon={<TestimoniIcon />} label="Profil" isActive={activePage === "profil"} />
+          <MenuItem to="/profil" icon={<ProfilIcon />} label="Profil" isActive={activePage === "profil"} />
           <MenuItem to="/testimoni" icon={<TestimoniIcon />} label="Testimoni" isActive={activePage === "testimoni"} />
           <MenuItem to="/product" icon={<ProductIcon />} label="Produk" isActive={activePage === "product"} />
 
@@ -386,7 +386,7 @@ export const Sidebar = ({ activePage }) => {
             to="/profil"
             className={`flex flex-col items-center p-2 ${activePage === "profil" ? "text-[#D36B00] font-bold" : "text-gray-600 hover:text-[#D36B00]"}`}
           >
-            <TestimoniIcon />
+            <ProfilIcon/>
             <span className="text-xs mt-1">Profil</span>
           </Link>
 

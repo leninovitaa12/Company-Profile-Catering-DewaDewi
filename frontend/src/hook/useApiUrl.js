@@ -1,5 +1,5 @@
 const useApiUrl = () => {
-    const url = "http://localhost:8000";
+    const url = "https://api.cateringdewadewimadiun.com";
     return url;
   };
   
