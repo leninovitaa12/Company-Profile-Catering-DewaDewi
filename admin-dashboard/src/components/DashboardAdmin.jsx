@@ -1,23 +1,59 @@
-"use client"
-import { useAuthContext } from "../context/AuthContext"
-import { Sidebar, PageHeader, Card, StatCard, ContentCard } from "../components/ui/ui-components"
-import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, CalendarIcon } from "../components/ui/icons"
+"use client";
 
-// Tambahkan import untuk hooks yang diperlukan
-import useGetProductsAdmin from "../hook/useGetProducts"
-import useGetTestimoni from "../hook/useGetTestimoni"
-import useVisitorCount from "../hook/useVisitorCount"
+import { useState, useEffect } from "react";
+import { useAuthContext } from "../context/AuthContext";
+import { Sidebar, PageHeader, Card, StatCard, ContentCard } from "../components/ui/ui-components";
+import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, CalendarIcon } from "../components/ui/icons";
+import useGetProductsAdmin from "../hook/useGetProducts";
+import useGetTestimoni from "../hook/useGetTestimoni";
 
-// Dalam komponen DashboardAdmin, tambahkan penggunaan hooks
+// Custom hook to calculate time ago (e.g., "5 hours ago")
+const useTimeAgo = (timestamp) => {
+  const [timeAgo, setTimeAgo] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const diffInMilliseconds = new Date() - new Date(timestamp);
+      const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+      const diffInMinutes = Math.floor(diffInSeconds / 60);
+      const diffInHours = Math.floor(diffInMinutes / 60);
+      const diffInDays = Math.floor(diffInHours / 24);
+
+      let timeString = "";
+      if (diffInMinutes < 1) {
+        timeString = `${diffInSeconds} detik yang lalu`;
+      } else if (diffInMinutes < 60) {
+        timeString = `${diffInMinutes} menit yang lalu`;
+      } else if (diffInHours < 24) {
+        timeString = `${diffInHours} jam yang lalu`;
+      } else {
+        timeString = `${diffInDays} hari yang lalu`;
+      }
+
+      setTimeAgo(timeString);
+    }, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, [timestamp]);
+
+  return timeAgo;
+};
+
 const DashboardAdmin = () => {
-  const { authUser } = useAuthContext()
+  const { authUser } = useAuthContext();
 
   // Fetch data produk dan testimoni
-  const { products, loading: productsLoading } = useGetProductsAdmin()
-  const { testimonis, loadings: testimonisLoading } = useGetTestimoni()
-  const { visitorCount, loading: visitorLoading } = useVisitorCount()
+  const { products, loading: productsLoading } = useGetProductsAdmin();
+  const { testimonis, loadings: testimonisLoading } = useGetTestimoni();
 
-  // Update stats array untuk menggunakan nilai dinamis
+  // Get the latest product and latest testimonial
+  const latestProduct = products[0] || {};
+  const latestTestimoni = testimonis[0] || {};
+
+  // Get the "time ago" for the latest product and testimonial
+  const latestProductTime = useTimeAgo(latestProduct.createdAt);
+  const latestTestimoniTime = useTimeAgo(latestTestimoni.createdAt);
+
   const stats = [
     {
       title: "Total Produk",
@@ -31,26 +67,13 @@ const DashboardAdmin = () => {
       icon: <TestimoniIcon />,
       color: "bg-green-100",
     },
-    {
-      title: "Pengguna",
-      value: visitorLoading ? "..." : visitorCount.toString(),
-      icon: <AccountIcon />,
-      color: "bg-purple-100",
-    },
-  ]
+  ];
 
   // Recent activities
   const activities = [
-    { action: "Produk baru ditambahkan", time: "2 jam yang lalu", icon: <ProductIcon /> },
-    { action: "Testimoni baru diterima", time: "5 jam yang lalu", icon: <TestimoniIcon /> },
-    { action: "Update stok produk", time: "Kemarin, 15:30", icon: <ProductIcon /> },
-  ]
-
-  // Upcoming events
-  const events = [
-    { title: "Meeting dengan supplier", date: "Besok, 10:00", icon: <CalendarIcon /> },
-    { title: "Promo bulanan", date: "3 hari lagi", icon: <CalendarIcon /> },
-  ]
+    { action: "Produk baru ditambahkan", time: latestProductTime, icon: <ProductIcon /> },
+    { action: "Testimoni baru diterima", time: latestTestimoniTime, icon: <TestimoniIcon /> },
+  ];
 
   return (
     <div className="flex min-h-screen bg-[#F1EFDC]">
@@ -91,25 +114,10 @@ const DashboardAdmin = () => {
               {/* Dashboard Content */}
               <ContentCard title="Informasi Dashboard" className="lg:col-span-2">
                 <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
-                  <h4 className="font-semibold text-lg mb-3 text-[#42032C]">Ringkasan Sistem</h4>
                   <p className="text-gray-700 mb-4">
                     Selamat datang di dashboard admin. Dari sini Anda dapat mengelola produk, testimoni, dan melihat
                     statistik penting tentang bisnis Anda.
                   </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                    <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                      <h5 className="font-medium text-[#42032C] mb-2">Produk Terlaris</h5>
-                      <p className="text-gray-600 text-sm">Produk A - 24 terjual</p>
-                      <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                        <div className="bg-[#D36B00] h-2 rounded-full" style={{ width: "70%" }}></div>
-                      </div>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                      <h5 className="font-medium text-[#42032C] mb-2">Testimoni Terbaru</h5>
-                      <p className="text-gray-600 text-sm">"Produk sangat bagus dan sesuai ekspektasi"</p>
-                      <p className="text-gray-500 text-xs mt-2">- Pelanggan, 2 hari yang lalu</p>
-                    </div>
-                  </div>
                 </div>
               </ContentCard>
 
@@ -128,29 +136,11 @@ const DashboardAdmin = () => {
                 </div>
               </ContentCard>
             </div>
-
-            {/* Upcoming Events */}
-            <ContentCard title="Jadwal Mendatang">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {events.map((event, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg border border-gray-200"
-                  >
-                    <div className="p-2 bg-[#42032C] bg-opacity-10 rounded-full text-[#42032C]">{event.icon}</div>
-                    <div>
-                      <p className="text-gray-800 font-medium">{event.title}</p>
-                      <p className="text-gray-500 text-sm">{event.date}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ContentCard>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DashboardAdmin
+export default DashboardAdmin;
