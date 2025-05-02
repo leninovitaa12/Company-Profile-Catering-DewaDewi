@@ -25,11 +25,11 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#F1EFDC]">
-      <div className="bg-white rounded-xl shadow-2xl flex overflow-hidden max-w-4xl">
+    <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-[#F1EFDC]">
+      <div className="bg-white flex-col md:flex-row rounded-xl shadow-2xl flex overflow-hidden max-w-4xl">
         <div className="w-full md:w-1/2 bg-gradient-to-br from-[#42032C] to-[#D36B00] flex flex-col justify-center items-center p-8 text-white">
-          <h1 className="text-5xl font-bold mb-4">Lupa Password?</h1>
-          <p className="text-lg">
+          <h1 className="text-xl md:text-5xl font-bold mb-4">Lupa Password?</h1>
+          <p className="md:text-lg text-center md:text-justify">
             Masukkan email Anda untuk mendapatkan permintaan reset password.
           </p>
         </div>
@@ -90,7 +90,7 @@ const ForgotPassword = () => {
                     setInputs({ ...inputs, pin: e.target.value })
                   }
                   required
-                  placeholder="Masukkan email Anda"
+                  placeholder="Masukkan Pin Anda"
                   className="w-full px-4 py-3 border border-[#E6D2AA] rounded-lg bg-[#F1EFDC] text-[#42032C] focus:outline-none focus:border-[#D36B00]"
                 />
                 <label className="block text-[#42032C] font-semibold mb-2">

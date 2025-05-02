@@ -23,12 +23,14 @@ const usePinReset = () => {
       );
 
       if (data.error) {
+        toast.error(data.error);
         throw new Error(data.error);
       }
       toast.success(data.message);
       setOnPin(true);
     } catch (error) {
-      toast.error(error.response?.data?.error || error.message);
+      console.log(error);
+      toast.error("Email tidak tersedia!");
     } finally {
       setLoadings(false);
     }

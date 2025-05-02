@@ -3,6 +3,37 @@ import useDeleteProduct from "../hook/useDeleteProduct";
 import ProductEdit from "./ProductEdit"; // Import ProductEdit
 import { useState } from "react";
 
+const ConfirmModal = ({ isOpen, onConfirm, onCancel }) => {
+  if (!isOpen) return null; // Tidak menampilkan modal jika isOpen false
+
+  return (
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">
+          Konfirmasi Penghapusan
+        </h3>
+        <p className="text-sm text-gray-600 mb-4">
+          Apakah Anda yakin ingin menghapus product ini?
+        </p>
+        <div className="flex justify-end gap-4">
+          <button
+            className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded-md"
+            onClick={onCancel} // Tombol Batal
+          >
+            Batal
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
+            onClick={onConfirm} // Tombol Konfirmasi
+          >
+            Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const EditIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -40,23 +71,43 @@ const TrashIcon = () => (
 
 const ProductItem = ({ products, loading, refetch }) => {
   const { deleteProduct, loading: deleteLoading } = useDeleteProduct();
-  const [productToEdit, setProductToEdit] = useState(null); // State untuk menyimpan produk yang diedit
+  const [productToEdit, setProductToEdit] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   const handleEditClick = (product) => {
     setProductToEdit(product); // Menyimpan produk yang ingin diedit
   };
 
-  const handleDeleteProduct = async (id) => {
+  const openDeleteModal = (id) => {
+    setSelectedProductId(id);
+    setIsModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setSelectedProductId(null);
+    setIsModalOpen(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedProductId) return;
     try {
-      await deleteProduct(id);
+      await deleteProduct(selectedProductId);
       refetch();
     } catch (error) {
       toast.error("Gagal menghapus produk!");
+    } finally {
+      closeDeleteModal();
     }
   };
 
   return (
     <div className="mt-8 p-5 mx-auto">
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onConfirm={handleDeleteConfirm}
+        onCancel={closeDeleteModal}
+      />
       {/* Menampilkan form edit jika isEditing true */}
       {productToEdit && (
         <ProductEdit
@@ -106,7 +157,7 @@ const ProductItem = ({ products, loading, refetch }) => {
                       </span>
                     </button>
                     <button
-                      onClick={() => handleDeleteProduct(product.id)}
+                      onClick={() => openDeleteModal(product.id)}
                       className="p-2 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
                       title="Hapus"
                     >

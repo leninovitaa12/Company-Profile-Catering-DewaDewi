@@ -26,7 +26,7 @@ const useUpdateProduct = () => {
         },
       });
 
-      toast.success("Product updated successfully!");
+      console.log("Product updated successfully!");
       return res.data;
     } catch (error) {
       toast.error(
