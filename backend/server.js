@@ -7,6 +7,7 @@ const AuthRoute = require("./routes/AuthRoute.js");
 const ProductRoute = require("./routes/ProductRoute");
 const AccountRoute = require("./routes/AccountRoute.js");
 const TestimoniRoute = require("./routes/TestimoniRoute.js");
+const ProfileRoute = require("./routes/ProfileRoute.js");
 
 const path = require("path");
 const { sequelize } = require("./models/index.js");
@@ -41,6 +42,7 @@ app.use("/api/auth", AuthRoute);
 app.use("/api/product", ProductRoute);
 app.use("/api/testimoni", TestimoniRoute);
 app.use("/api/account", AccountRoute);
+app.use("/api/profile", ProfileRoute);
 
 app.listen(PORT, () => {
   console.log(`Server Run in port ${PORT}`);
