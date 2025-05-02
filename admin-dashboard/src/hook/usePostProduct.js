@@ -13,8 +13,6 @@ const usePostProduct = () => {
       const res = await axios.post(`${apiUrl}/api/product/`, productData, {
         withCredentials: true,
       });
-
-      toast.success("Product created successfully!");
       return res.data;
     } catch (error) {
       toast.error(

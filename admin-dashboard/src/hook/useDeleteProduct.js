@@ -8,11 +8,6 @@ const useDeleteProduct = () => {
   const apiUrl = useApiUrl();
 
   const deleteProduct = async (id) => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete this product?"
-    );
-    if (!isConfirmed) return;
-
     setLoading(true);
     try {
       const res = await axios.delete(`${apiUrl}/api/product/${id}`, {

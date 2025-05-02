@@ -108,8 +108,12 @@ const sendPin = async (req, res) => {
   let { name } = req.body;
 
   try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({ error: "User tidak terdaftar!" });
+    }
+
     if (!name) {
-      const user = await User.findOne({ where: { email } });
       name = user ? user.name : "User";
     }
 
@@ -131,7 +135,7 @@ const sendPin = async (req, res) => {
     await createPinWithExpiry(email, pin);
     res.status(200).json({ message: "Code sent to Email successfully!", info });
   } catch (error) {
-    res.status(500).json({ message: "Error sending code", error });
+    res.status(500).json({ error: "Error sending code", error });
   }
 };
 
