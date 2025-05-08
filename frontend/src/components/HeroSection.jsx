@@ -3,137 +3,76 @@
 import { useState, useEffect } from "react"
 import "./HeroSection.css"
 
-// HeroSection menerima prop image dan about sesuai dengan kode asli Anda
-const HeroSection = ({ about, image }) => {
+const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Jika image adalah array, gunakan itu. Jika string tunggal, buat array dengan satu item
-  const carouselImages = Array.isArray(image) ? image : [image]
+  const carouselImages = [
+    {
+      url: "https://asset.kompas.com/crops/GZKGclL9N-Dv7wO6JWi8l7udJME=/179x0:1080x601/750x500/data/photo/2019/06/21/3717931935.jpg",
+      title: "Hidangan Berkualitas, Pengalaman Tak Terlupakan",
+      description:
+        "Kami menyediakan layanan katering premium dengan bahan-bahan segar dan organik untuk berbagai acara spesial Anda",
+    },
+    {
+      url: "https://img.freepik.com/free-photo/deep-fried-fish-ball-dark-surface_1150-43602.jpg?t=st=1744357927~exp=1744361527~hmac=a4b7deb9cc972c7a051ddb4a271cf67bb82d754db60eccd19793d55b9a980466&w=1380",
+      title: "Menu Spesial untuk Acara Spesial",
+      description: "Nikmati berbagai pilihan menu premium yang disiapkan oleh chef profesional kami",
+    },
+    {
+      url: "https://img.freepik.com/free-photo/front-view-tasy-little-dumplings-with-flour-dark-gray-surface_179666-44203.jpg?t=st=1744358624~exp=1744362224~hmac=755ff9f3b75ad275f2f1f6800ea6054bc743166442e8fdd5ff917b70c3fefb81&w=1380",
+      title: "Catering untuk Segala Acara",
+      description: "Dari pernikahan hingga acara kantor, kami siap melayani kebutuhan katering Anda",
+    },
+  ]
 
   useEffect(() => {
-    // Hanya jalankan carousel jika ada lebih dari 1 gambar
-    if (carouselImages.length > 1) {
-      const interval = setInterval(() => {
-        setCurrentSlide((prev) => (prev === carouselImages.length - 1 ? 0 : prev + 1))
-      }, 5000)
-      return () => clearInterval(interval)
-    }
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev === carouselImages.length - 1 ? 0 : prev + 1))
+    }, 5000)
+    return () => clearInterval(interval)
   }, [carouselImages.length])
 
   const goToSlide = (index) => {
     setCurrentSlide(index)
   }
 
-  // Jika tidak ada gambar atau gambar undefined/null, tampilkan placeholder
-  if (!image) {
-    return (
-      <section id="home" className="hero-section relative mx-auto">
-        <div className="relative h-[500px] md:h-[600px] lg:h-[700px]">
-          <img
-            src="/placeholder.svg?height=800&width=1600"
-            alt="DewaDewi Catering"
-            className="object-cover w-full h-full"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-
-          {/* Konten hero di atas gambar */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="container mx-auto px-8">
-              <div className="max-w-[600px] text-white">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">Hidangan Berkualitas, Pengalaman Tak Terlupakan</h1>
-                <p className="text-lg mb-8">
-                  {about ||
-                    "Kami menyediakan layanan katering premium dengan bahan-bahan segar dan organik untuk berbagai acara spesial Anda"}
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <a
-                    href="#menu"
-                    className="bg-[var(--primary-color)] hover:bg-[#d36b00] text-white px-6 py-3 rounded-md transition-all"
-                  >
+  return (
+    <section id="home" className="hero-section">
+      <div className="carousel-container">
+        {carouselImages.map((slide, index) => (
+          <div
+            key={index}
+            className={`carousel-slide ${index === currentSlide ? "active" : ""}`}
+            style={{ backgroundImage: `url(${slide.url})` }}
+          >
+            <div className="overlay"></div>
+            <div className="container hero-container">
+              <div className="hero-content">
+                <h1>{slide.title}</h1>
+                <p>{slide.description}</p>
+                <div className="hero-buttons">
+                  <a href="#menu" className="btn">
                     Lihat Menu
                   </a>
-                  <a
-                    href="#contact"
-                    className="border-2 border-white text-white hover:bg-white hover:text-[var(--primary-color)] px-6 py-3 rounded-md transition-all"
-                  >
+                  <a href="#contact" className="btn btn-outline">
                     Hubungi Kami
                   </a>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    )
-  }
-
-  // Log untuk debugging
-  console.log("Image in HeroSection:", image)
-
-  return (
-    <section id="home" className="hero-section relative mx-auto">
-      <div className="carousel-container">
-        {carouselImages.map((img, index) => (
-          <div key={index} className={`carousel-slide ${index === currentSlide ? "active" : ""}`}>
-            <div className="relative h-[500px] md:h-[600px] lg:h-[700px]">
-              {/* Gambar */}
-              <img
-                src={img || "/placeholder.svg"}
-                alt={`DewaDewi Catering Slide ${index + 1}`}
-                className="object-cover w-full h-full"
-                onError={(e) => {
-                  console.error("Image failed to load:", img)
-                  e.target.src = "/placeholder.svg?height=800&width=1600" // Fallback image
-                }}
-              />
-              {/* Overlay untuk meningkatkan keterbacaan teks */}
-              <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-            </div>
-
-            {/* Konten hero di atas gambar */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="container mx-auto px-8">
-                <div className="max-w-[600px] text-white">
-                  <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                    Hidangan Berkualitas, Pengalaman Tak Terlupakan
-                  </h1>
-                  <p className="text-lg mb-8">
-                    {about ||
-                      "Kami menyediakan layanan katering premium dengan bahan-bahan segar dan organik untuk berbagai acara spesial Anda"}
-                  </p>
-                  <div className="flex flex-wrap gap-4">
-                    <a
-                      href="#menu"
-                      className="bg-[var(--primary-color)] hover:bg-[#d36b00] text-white px-6 py-3 rounded-md transition-all"
-                    >
-                      Lihat Menu
-                    </a>
-                    <a
-                      href="#contact"
-                      className="border-2 border-white text-white hover:bg-white hover:text-[var(--primary-color)] px-6 py-3 rounded-md transition-all"
-                    >
-                      Hubungi Kami
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         ))}
 
-        {/* Indikator carousel hanya ditampilkan jika ada lebih dari 1 gambar */}
-        {carouselImages.length > 1 && (
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
-            {carouselImages.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full ${index === currentSlide ? "bg-white" : "bg-white bg-opacity-50"}`}
-                aria-label={`Slide ${index + 1}`}
-              ></button>
-            ))}
-          </div>
-        )}
+        <div className="carousel-indicators">
+          {carouselImages.map((_, index) => (
+            <button
+              key={index}
+              className={`indicator ${index === currentSlide ? "active" : ""}`}
+              onClick={() => goToSlide(index)}
+              aria-label={`Slide ${index + 1}`}
+            ></button>
+          ))}
+        </div>
       </div>
     </section>
   )
