@@ -170,5 +170,13 @@
     .hero-buttons {
       justify-content: center;
     }
+
+    .btn-outline.btn-orange:hover {
+        background-color: orange;
+        color: white;
+        border-color: orange;
+        transition: 0.3s ease;
+      }
+      
   }
   

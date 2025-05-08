@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import "./Navbar.css"
 
-const Navbar = () => {
+const Navbar = ({ nohp }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -51,8 +51,14 @@ const Navbar = () => {
           <li>
             <a href="#contact">Kontak</a>
           </li>
+
           <li className="cta-button">
-            <a href="#order" className="btn">
+            <a
+              href={`https://api.whatsapp.com/send?phone=62${nohp}`}
+              className="btn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Pesan Sekarang
             </a>
           </li>

@@ -8,6 +8,7 @@ import useProfile from "../hook/useGetProfil"
 import CaraPesanSection from "../components/CaraPesanSection"
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
+import FeaturedMenu from "../components/FeaturedMenu"
 
 function HomePage() {
   const { profile, loading, error, fetchProfile } = useProfile()
@@ -43,10 +44,10 @@ function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen w-full">
-      <Navbar />
+      <Navbar nohp={nohp}/>
 
       {/* Hero Section */}
-      <HeroSection about={about} image={imagePreview} />
+      <HeroSection about={about} image={imagePreview} nohp={nohp} />
 
       {/* Header */}
 

@@ -1,77 +1,111 @@
-import { FiX } from "react-icons/fi";
-import { Button } from "./ui/button";
+"use client"
+import { X } from "lucide-react"
+import { Button } from "./ui/button"
+import { useEffect } from "react"
 
 const ProductDetail = ({ product, setProduct }) => {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(2,2,2,.5)] px-4 overflow-x-hidden">
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#F1EFDC] rounded-lg shadow-lg p-4 sm:p-6">
+  // Menambahkan event listener untuk menutup modal dengan tombol Escape
+  useEffect(() => {
+    if (!product) return
 
-        {/* Tombol Close Mobile */}
-        <div className="flex justify-end lg:hidden mb-2">
-          <Button onClick={() => setProduct(null)} className="bg-[#D36B00] text-[#F1EFDC] hover:bg-[#B05A00]">
-            <FiX />
+    const handleEscape = (e) => {
+      if (e.key === "Escape") {
+        setProduct(null)
+      }
+    }
+
+    document.addEventListener("keydown", handleEscape)
+    // Mencegah scrolling pada body saat modal terbuka
+    document.body.style.overflow = "hidden"
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape)
+      // Mengembalikan scrolling saat modal ditutup
+      document.body.style.overflow = "auto"
+    }
+  }, [setProduct, product])
+
+  // Menutup modal jika mengklik di luar konten modal
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      setProduct(null)
+    }
+  }
+
+  if (!product) return null
+
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto"
+      onClick={handleBackdropClick}
+    >
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+        {/* Header */}
+        <div className="flex justify-between items-center p-4 border-b sticky top-0 bg-white z-10">
+          <h3 className="text-xl font-bold text-[var(--primary-brand)] truncate pr-4">{product.name}</h3>
+          <button
+            onClick={() => setProduct(null)}
+            className="text-gray-500 hover:text-[var(--primary-brand)] transition-colors p-1 rounded-full hover:bg-gray-100 flex-shrink-0"
+            aria-label="Close"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Content - Scrollable */}
+        <div className="overflow-y-auto p-4 flex-grow">
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Image container with fixed aspect ratio */}
+            <div className="md:w-1/2 flex-shrink-0">
+              <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                <img
+                  src={product.image || "https://placehold.co/600x600"}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.src = "https://placehold.co/600x600"
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Product details */}
+            <div className="md:w-1/2 flex flex-col space-y-4">
+              <div>
+                <h4 className="text-lg font-semibold text-[var(--primary-brand)]">Deskripsi</h4>
+                <div className="mt-2 text-[var(--primary-brand)] opacity-80 whitespace-pre-wrap break-words">
+                  {product.description || "Tidak ada deskripsi tersedia untuk produk ini."}
+                </div>
+              </div>
+
+              {product.price && (
+                <div>
+                  <h4 className="text-lg font-semibold text-[var(--primary-brand)]">Harga</h4>
+                  <p className="text-[var(--primary-brand)] font-bold text-xl mt-1">
+                    Rp {Number(product.price).toLocaleString("id-ID")}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer with action button - sticky */}
+        <div className="p-4 border-t sticky bottom-0 bg-white">
+          <Button
+            className="w-full bg-[var(--primary-brand)] hover:bg-[#D36B00] text-white py-3 rounded-md transition-all duration-300"
+            onClick={() => {
+              // Buka WhatsApp dengan pesan yang sudah diisi
+              const message = `Halo, saya tertarik dengan produk ${product.name}. Bisakah saya mendapatkan informasi lebih lanjut?`
+              window.open(`https://wa.me/+6281234567890?text=${encodeURIComponent(message)}`, "_blank")
+            }}
+          >
+            Pesan Sekarang via WhatsApp
           </Button>
         </div>
-
-        {/* Mobile Layout */}
-        <div className="block lg:hidden space-y-4 overflow-x-hidden">
-          {/* Gambar 1:1 */}
-          <div className="w-full aspect-square overflow-hidden rounded-lg bg-[#E6D2AA]">
-            <img
-              src={product.image || "https://placehold.co/400x400"}
-              loading="lazy"
-              alt={product.name || "Product Image"}
-              className="w-full h-full object-cover object-center"
-            />
-          </div>
-
-          {/* Nama & Deskripsi */}
-          <div className="break-words">
-            <h2 className="text-xl font-bold text-center text-[#42032C] mb-2">{product.name}</h2>
-            <h3 className="text-lg font-semibold text-[#42032C] mb-1">Description</h3>
-            <p className="text-[#42032C] opacity-90 text-justify whitespace-pre-wrap break-words">
-              {product.description || "No description available."}
-            </p>
-          </div>
-        </div>
-
-        {/* Desktop Layout */}
-        <div className="hidden lg:grid gap-8 grid-cols-2">
-          {/* Gambar */}
-          <div className="flex justify-center items-center">
-            <div className="w-full h-80 overflow-hidden rounded-lg bg-[#E6D2AA]">
-              <img
-                src={product.image || "https://placehold.co/400x400"}
-                loading="lazy"
-                alt={product.name || "Product Image"}
-                className="w-full h-full object-cover object-center"
-              />
-            </div>
-          </div>
-
-          {/* Konten */}
-          <div className="flex flex-col justify-between space-y-4">
-            {/* Tombol Close Desktop */}
-            <div className="flex justify-end">
-              <Button onClick={() => setProduct(null)} className="bg-[#D36B00] text-[#F1EFDC] hover:bg-[#B05A00]">
-                <FiX />
-              </Button>
-            </div>
-
-            {/* Nama & Deskripsi */}
-            <h2 className="text-3xl font-bold text-center text-[#42032C]">{product.name}</h2>
-            <div className="break-words">
-              <h3 className="text-lg font-semibold text-[#42032C] mb-1">Description</h3>
-              <p className="text-[#42032C] opacity-90 text-justify whitespace-pre-wrap break-words">
-                {product.description || "No description available."}
-              </p>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductDetail;
+export default ProductDetail

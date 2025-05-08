@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import "./HeroSection.css"
 
-const HeroSection = () => {
+const HeroSection = ({ nohp }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const carouselImages = [
@@ -54,7 +54,12 @@ const HeroSection = () => {
                   <a href="#menu" className="btn">
                     Lihat Menu
                   </a>
-                  <a href="#contact" className="btn btn-outline">
+                  <a
+                    href={`https://api.whatsapp.com/send?phone=62${nohp}`}
+                    className="btn btn-outline btn-orange"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Hubungi Kami
                   </a>
                 </div>
