@@ -14,7 +14,7 @@ const useDeleteProduct = () => {
         withCredentials: true,
       });
 
-      toast.success("Product deleted successfully!");
+      toast.success("Product Berhasil dihapus!");
       return res.data;
     } catch (error) {
       toast.error(
