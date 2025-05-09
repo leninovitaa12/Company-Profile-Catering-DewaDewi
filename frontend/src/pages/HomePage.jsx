@@ -1,66 +1,63 @@
-import { Check } from "lucide-react";
-import { Button } from "../components/ui/button";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import CarouselSection from "../components/CarouselSection";
-import HeroSection from "../components/HeroSection";
-import BestSellerSection from "../components/BestSellerSection";
-import TransformationSection from "../components/AboutSection";
-import TestimoniSection from "../components/testimoniSection";
-import BreakSection from "../components/BreakSection";
-import useProfile from "../hook/useGetProfil";
-import CaraPesanSection from "../components/CaraPesanSection";
-import { useEffect, useState } from "react";
+"use client"
+import Footer from "../components/Footer"
+import HeroSection from "../components/HeroSection"
+import BestSellerSection from "../components/BestSellerSection"
+import TestimoniSection from "../components/testimoniSection"
+import BreakSection from "../components/BreakSection"
+import useProfile from "../hook/useGetProfil"
+import CaraPesanSection from "../components/CaraPesanSection"
+import { useEffect, useState } from "react"
+import Navbar from "../components/Navbar"
+import FeaturedMenu from "../components/FeaturedMenu"
 
 function HomePage() {
-  const { profile, loading, error, fetchProfile } = useProfile();
-  const [nohp, setNohp] = useState("");
-  const [alamat, setAlamat] = useState("");
-  const [about, setAbout] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
+  const { profile, loading, error, fetchProfile } = useProfile()
+  const [nohp, setNohp] = useState("")
+  const [alamat, setAlamat] = useState("")
+  const [about, setAbout] = useState("")
+  const [imagePreview, setImagePreview] = useState(null)
 
   useEffect(() => {
-    fetchProfile(); // Panggil fetchProfile hanya sekali saat komponen pertama kali dimuat
-  }, []); // Pastikan array dependensi kosong agar hanya sekali dipanggil
+    fetchProfile() // Panggil fetchProfile hanya sekali saat komponen pertama kali dimuat
+  }, []) // Pastikan array dependensi kosong agar hanya sekali dipanggil
 
   useEffect(() => {
     if (profile) {
-      setNohp(profile.nohp);
-      setAlamat(profile.alamat);
-      setAbout(profile.about);
-      setImagePreview(profile.image);
+      setNohp(profile.nohp)
+      setAlamat(profile.alamat)
+      setAbout(profile.about)
+      setImagePreview(profile.image)
     }
-  }, [profile]);
+  }, [profile])
 
   // Menangani kondisi loading dan error
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error}</div>
   }
 
-  console.log(imagePreview);
+  // Log untuk debugging
+  console.log("Image Preview in HomePage:", imagePreview)
 
   return (
     <div className="flex flex-col min-h-screen w-full">
+      <Navbar nohp={nohp}/>
+
+      {/* Hero Section */}
+      <HeroSection about={about} image={imagePreview} nohp={nohp} />
+
       {/* Header */}
 
-      <Header />
+      {/* <Header /> */}
 
       <main className="w-full">
-
-<CarouselSection />
+        {/* <CarouselSection /> */}
 
         {/* Best Sellers Section */}
         <BestSellerSection />
-
-        {/* Hero Section */}
-        <HeroSection about={about} image={imagePreview} />
-        
-        {/* Transformation Section */}
-        {/* <TransformationSection /> */}
 
         {/* Green CTA Section */}
         <BreakSection alamat={alamat} nohp={nohp} />
@@ -75,7 +72,7 @@ function HomePage() {
       {/* Footer */}
       <Footer />
     </div>
-  );
+  )
 }
 
-export default HomePage;
+export default HomePage

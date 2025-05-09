@@ -1,35 +1,82 @@
-import React from 'react'
-import { Button } from './ui/button'
-import { Link as ScrollLink } from "react-scroll";
+"use client"
 
-const HeroSection = ({about, image}) => {
+import { useState, useEffect } from "react"
+import "./HeroSection.css"
+
+const HeroSection = ({ nohp }) => {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const carouselImages = [
+    {
+      url: "https://asset.kompas.com/crops/GZKGclL9N-Dv7wO6JWi8l7udJME=/179x0:1080x601/750x500/data/photo/2019/06/21/3717931935.jpg",
+      title: "Hidangan Berkualitas, Pengalaman Tak Terlupakan",
+      description:
+        "Kami menyediakan layanan katering premium dengan bahan-bahan segar dan organik untuk berbagai acara spesial Anda",
+    },
+    {
+      url: "https://img.freepik.com/free-photo/deep-fried-fish-ball-dark-surface_1150-43602.jpg?t=st=1744357927~exp=1744361527~hmac=a4b7deb9cc972c7a051ddb4a271cf67bb82d754db60eccd19793d55b9a980466&w=1380",
+      title: "Menu Spesial untuk Acara Spesial",
+      description: "Nikmati berbagai pilihan menu premium yang disiapkan oleh chef profesional kami",
+    },
+    {
+      url: "https://img.freepik.com/free-photo/front-view-tasy-little-dumplings-with-flour-dark-gray-surface_179666-44203.jpg?t=st=1744358624~exp=1744362224~hmac=755ff9f3b75ad275f2f1f6800ea6054bc743166442e8fdd5ff917b70c3fefb81&w=1380",
+      title: "Catering untuk Segala Acara",
+      description: "Dari pernikahan hingga acara kantor, kami siap melayani kebutuhan katering Anda",
+    },
+  ]
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev === carouselImages.length - 1 ? 0 : prev + 1))
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [carouselImages.length])
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index)
+  }
+
   return (
-    <section id='about' className="relative mx-auto">
-      <div className="grid px-8 md:grid-cols-2 gap-6 py-12 md:py-20">
-        <div className="flex flex-col justify-center space-y-4">
-          {/* Warna teks diubah ke --primary-brand */}
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-center text-[var(--primary-brand)] max-w-[600px]">
-            ABOUT US
-          </h1>
-          
-          {/* Warna teks muted diubah ke --primary-brand dengan opacity 80% */}
-          <p className="text-lg text-[color:var(--primary-brand)] opacity-80 text-justify max-w-[600px]">
-            {about}
-          </p>
-          
-          <div className="flex flex-col items-center justify-center gap-3 pt-4">
-            {/* Warna button diubah ke --secondary-brand dan hover ke --primary-brand */}
-          
+    <section id="home" className="hero-section">
+      <div className="carousel-container">
+        {carouselImages.map((slide, index) => (
+          <div
+            key={index}
+            className={`carousel-slide ${index === currentSlide ? "active" : ""}`}
+            style={{ backgroundImage: `url(${slide.url})` }}
+          >
+            <div className="overlay"></div>
+            <div className="container hero-container">
+              <div className="hero-content">
+                <h1>{slide.title}</h1>
+                <p>{slide.description}</p>
+                <div className="hero-buttons">
+                  <a href="#menu" className="btn">
+                    Lihat Menu
+                  </a>
+                  <a
+                    href={`https://api.whatsapp.com/send?phone=62${nohp}`}
+                    className="btn btn-outline btn-orange"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Hubungi Kami
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        
-        <div className="relative h-[300px] md:h-[400px]">
-          {/* Gambar */}
-          <img
-            src={image}
-            alt="Catering Dede"
-            className="object-cover rounded-lg w-full h-full"
-          />
+        ))}
+
+        <div className="carousel-indicators">
+          {carouselImages.map((_, index) => (
+            <button
+              key={index}
+              className={`indicator ${index === currentSlide ? "active" : ""}`}
+              onClick={() => goToSlide(index)}
+              aria-label={`Slide ${index + 1}`}
+            ></button>
+          ))}
         </div>
       </div>
     </section>
