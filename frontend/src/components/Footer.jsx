@@ -1,81 +1,82 @@
-import "./Footer.css"
-
-const Footer = () => {
+const Footer = ({ nohp, alamat }) => {
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer-content">
-          <div className="footer-about">
-            <h3>DewaDewi Catering</h3>
-            <p>
-              Menyediakan layanan catering berkualitas untuk berbagai acara dengan cita rasa autentik dan bahan-bahan
-              segar pilihan.
+    <footer className="bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] pt-12 sm:pt-16 lg:pt-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Grid utama */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-16">
+          {/* About */}
+          <div className="lg:col-span-1">
+            <h3 className="text-xl font-semibold mb-6 pb-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-[50px] after:h-[2px] after:bg-[hsl(var(--accent))]">
+              DewaDewi Catering
+            </h3>
+            <p className="mb-6 text-[hsl(var(--secondary))] leading-7">
+              Menyediakan layanan catering berkualitas untuk berbagai acara dengan cita rasa autentik dan bahan-bahan segar pilihan.
             </p>
-            <div className="social-links">
-              <a href="#" aria-label="Facebook">
+            <div className="flex gap-4">
+              <a href="#" aria-label="Facebook" className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-[hsl(var(--accent))] transition">
                 <i className="fab fa-facebook-f"></i>
               </a>
-              <a href="#" aria-label="Instagram">
+              <a href="#" aria-label="Instagram" className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-[hsl(var(--accent))] transition">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="#" aria-label="Twitter">
+              <a href="#" aria-label="Twitter" className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-[hsl(var(--accent))] transition">
                 <i className="fab fa-twitter"></i>
               </a>
-              <a href="#" aria-label="WhatsApp">
+              <a href="#" aria-label="WhatsApp" className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-[hsl(var(--accent))] transition">
                 <i className="fab fa-whatsapp"></i>
               </a>
             </div>
           </div>
 
-          <div className="footer-links">
-            <h3>Tautan Cepat</h3>
-            <ul>
-              <li>
-                <a href="#home">Beranda</a>
-              </li>
-              <li>
-                <a href="#menu">Menu</a>
-              </li>
-              <li>
-                <a href="#about">Tentang Kami</a>
-              </li>
-              <li>
-                <a href="#contact">Kontak</a>
-              </li>
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-xl font-semibold mb-6 pb-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-[50px] after:h-[2px] after:bg-[hsl(var(--accent))]">
+              Tautan Cepat
+            </h3>
+            <ul className="space-y-3 text-[hsl(var(--secondary))]">
+              <li><a href="#home" className="hover:text-[hsl(var(--accent))] transition">Beranda</a></li>
+              <li><a href="#menu" className="hover:text-[hsl(var(--accent))] transition">Menu</a></li>
+              <li><a href="#about" className="hover:text-[hsl(var(--accent))] transition">Tentang Kami</a></li>
+              <li><a href="#contact" className="hover:text-[hsl(var(--accent))] transition">Kontak</a></li>
             </ul>
           </div>
 
-          <div className="footer-contact" id="contact">
-            <h3>Hubungi Kami</h3>
-            <p>
-              <i className="fas fa-map-marker-alt"></i> Demangan, Kota Madiun
-            </p>
-            <p>
-              <i className="fas fa-phone"></i> +62 812 3456 7890
-            </p>
-            <p>
-              <i className="fas fa-envelope"></i> info@dewadewicatering.com
-            </p>
-          </div>
+          {/* Contact */}
+          <div>
+            <h3 className="text-xl font-semibold mb-6 pb-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-[50px] after:h-[2px] after:bg-[hsl(var(--accent))]">
+              Hubungi Kami
+            </h3>
 
-          <div className="footer-newsletter">
-            <h3>Berlangganan</h3>
-            <p>Dapatkan informasi terbaru dan penawaran spesial dari kami</p>
-            <form className="newsletter-form">
-              <input type="email" placeholder="Email Anda" required />
-              <button type="submit" className="btn">
-                Langganan
-              </button>
-            </form>
+            {alamat && (
+              <p className="mb-4 text-[hsl(var(--secondary))]">
+                <i className="fas fa-map-marker-alt mr-2 text-[hsl(var(--accent))]"></i>
+                {alamat}
+              </p>
+            )}
+
+            {nohp && (
+              <p className="mb-4 text-[hsl(var(--secondary))]">
+                <i className="fas fa-phone mr-2 text-[hsl(var(--accent))]"></i>
+                <a
+                  href={`https://api.whatsapp.com/send?phone=62${nohp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[hsl(var(--accent))] transition"
+                >
+                  +62 {nohp}
+                </a>
+              </p>
+            )}
           </div>
         </div>
 
-        <div className="footer-bottom">
+        {/* Footer Bottom */}
+        <div className="border-t border-white/10 pt-6 text-center text-sm">
           <p>&copy; {new Date().getFullYear()} DewaDewi Catering. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

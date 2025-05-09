@@ -1,5 +1,4 @@
 import React from "react";
-import { Check } from "lucide-react";
 
 const CaraPesanSection = () => {
   const steps = [
@@ -11,17 +10,25 @@ const CaraPesanSection = () => {
   ];
 
   return (
-    <section id="cara-pesan" className="bg-[var(--light-brand)] py-16 px-6 md:px-20 text-[var(--primary-brand)] font-sans">
-      <h2 className="text-4xl font-bold mb-4">Cara Pemesanan</h2>
-      <div className="h-1 w-20 bg-[var(--primary-brand)] mb-6"></div>
-      <ul className="space-y-4 text-base md:text-lg">
+    <section id="carapesan" className="bg-[var(--light-brand)] py-16 px-6 text-center font-sans text-[var(--primary-brand)]">
+      {/* Header */}
+      <h2 className="text-4xl font-bold mb-2">Cara Pesan</h2>
+      <p className="text-lg mb-4">Cara melakukan order di dewa dewi catering</p>
+
+      {/* Garis tengah */}
+      <div className="relative w-full flex justify-center mb-12">
+        <div className="h-[3px] w-24 bg-[var(--secondary-brand)]"></div>
+      </div>
+
+      {/* Langkah-langkah */}
+      <div className="max-w-2xl mx-auto text-left space-y-6 text-base md:text-lg">
         {steps.map((step, index) => (
-          <li key={index} className="flex items-start gap-3">
-            <Check className="mt-1 text-green-600" />
-            <span>{step}</span>
-          </li>
+          <div key={index} className="flex items-start">
+            <span className="text-[var(--secondary-brand)] font-bold mr-2">{index + 1}.</span>
+            <p>{step}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </section>
   );
 };

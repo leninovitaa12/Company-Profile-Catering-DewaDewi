@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { Link as ScrollLink } from "react-scroll"
 import "./Navbar.css"
 
 const Navbar = ({ nohp }) => {
@@ -22,7 +23,7 @@ const Navbar = ({ nohp }) => {
 
   return (
     <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
-      <div className="container navbar-container">
+      <div className="navbar-container max-w-[1200px] mx-auto px-6 w-full">
         <div className="logo">
           <h1>DEWADEWI CATERING</h1>
         </div>
@@ -37,19 +38,56 @@ const Navbar = ({ nohp }) => {
         </div>
 
         <ul className={`nav-links ${isMobileMenuOpen ? "active" : ""}`}>
+          {/* ScrollLink untuk Beranda */}
           <li>
-            <a href="#home" className="active">
+            <ScrollLink
+              to="home"
+              smooth={true}
+              duration={700}
+              offset={-80}
+              className="cursor-pointer"
+            >
               Beranda
-            </a>
+            </ScrollLink>
           </li>
+
+          {/* ScrollLink untuk Menu */}
           <li>
-            <a href="#menu">Menu</a>
+            <ScrollLink
+              to="menu"
+              smooth={true}
+              duration={700}
+              offset={-80}
+              className="cursor-pointer"
+            >
+              Menu
+            </ScrollLink>
           </li>
+
+          {/* ScrollLink untuk Cara Pesan */}
           <li>
-            <a href="#about">Tentang Kami</a>
+            <ScrollLink
+              to="carapesan"
+              smooth={true}
+              duration={700}
+              offset={-80}
+              className="cursor-pointer"
+            >
+              Cara Pesan
+            </ScrollLink>
           </li>
+
+          {/* ScrollLink untuk Tentang Kami */}
           <li>
-            <a href="#contact">Kontak</a>
+            <ScrollLink
+              to="about"
+              smooth={true}
+              duration={700}
+              offset={-80}
+              className="cursor-pointer"
+            >
+              Tentang Kami
+            </ScrollLink>
           </li>
 
           <li className="cta-button">

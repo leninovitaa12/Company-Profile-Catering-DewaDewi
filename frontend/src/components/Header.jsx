@@ -10,9 +10,9 @@ const Header = () => {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background">
-              <div className="flex h-16 px-2">
+              <div className="flex h-16 px-8">
                 <div className="flex justify-evenly w-full items-center gap-6">
-                  <Link to="/" className="font-bold text-xl">
+                <Link to="/" className="font-bold text-xl pl-2">
                     CATERING DEWA DEWI
                   </Link >
                   <nav className="hidden md:flex gap-6">
