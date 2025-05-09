@@ -15,17 +15,14 @@ const ProductDetail = ({ product, setProduct }) => {
     }
 
     document.addEventListener("keydown", handleEscape)
-    // Mencegah scrolling pada body saat modal terbuka
     document.body.style.overflow = "hidden"
 
     return () => {
       document.removeEventListener("keydown", handleEscape)
-      // Mengembalikan scrolling saat modal ditutup
       document.body.style.overflow = "auto"
     }
   }, [setProduct, product])
 
-  // Menutup modal jika mengklik di luar konten modal
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       setProduct(null)
@@ -53,7 +50,7 @@ const ProductDetail = ({ product, setProduct }) => {
         </div>
 
         {/* Content - Scrollable */}
-        <div className="overflow-y-auto p-4 flex-grow">
+        <div className="overflow-y-auto overflow-x-hidden break-words md:max-w-[95%] p-4 flex-grow">
           <div className="flex flex-col md:flex-row gap-6">
             {/* Image container with fixed aspect ratio */}
             <div className="md:w-1/2 flex-shrink-0">
@@ -92,16 +89,16 @@ const ProductDetail = ({ product, setProduct }) => {
 
         {/* Footer with action button - sticky */}
         <div className="p-4 border-t sticky bottom-0 bg-white">
-          <Button
-            className="w-full bg-[var(--primary-brand)] hover:bg-[#D36B00] text-white py-3 rounded-md transition-all duration-300"
-            onClick={() => {
-              // Buka WhatsApp dengan pesan yang sudah diisi
-              const message = `Halo, saya tertarik dengan produk ${product.name}. Bisakah saya mendapatkan informasi lebih lanjut?`
-              window.open(`https://wa.me/+6281234567890?text=${encodeURIComponent(message)}`, "_blank")
-            }}
-          >
-            Pesan Sekarang via WhatsApp
-          </Button>
+        <Button
+          className="w-full bg-[var(--primary-brand)] text-[#D36B00] py-3 rounded-md transition-all duration-300 
+                    md:text-white md:bg-[var(--primary-brand)] md:hover:bg-[#D36B00] md:hover:text-white"
+          onClick={() => {
+            const message = `Halo, saya tertarik dengan produk ${product.name}. Bisakah saya mendapatkan informasi lebih lanjut?`
+            window.open(`https://wa.me/+6281234567890?text=${encodeURIComponent(message)}`, "_blank")
+          }}
+        >
+          Pesan Sekarang via WhatsApp
+        </Button>
         </div>
       </div>
     </div>

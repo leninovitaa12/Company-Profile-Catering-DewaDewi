@@ -8,6 +8,10 @@ module.exports = {
         sans: ['Poppins', 'sans-serif'],
       },
       colors: {
+        'primary-brand': '#42032C',
+        'secondary-brand': '#D36B00',
+        'accent-brand': 'hsl(var(--accent))',
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

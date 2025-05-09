@@ -9,6 +9,7 @@ import CaraPesanSection from "../components/CaraPesanSection"
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import FeaturedMenu from "../components/FeaturedMenu"
+import AboutSection from "../components/AboutSection"
 
 function HomePage() {
   const { profile, loading, error, fetchProfile } = useProfile()
@@ -49,12 +50,11 @@ function HomePage() {
       {/* Hero Section */}
       <HeroSection about={about} image={imagePreview} nohp={nohp} />
 
-      {/* Header */}
-
-      {/* <Header /> */}
+      {/* About */}
 
       <main className="w-full">
         {/* <CarouselSection /> */}
+        <AboutSection image={imagePreview} about={about} />
 
         {/* Best Sellers Section */}
         <BestSellerSection />
@@ -70,7 +70,7 @@ function HomePage() {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer alamat={alamat} nohp={nohp}/>
     </div>
   )
 }
