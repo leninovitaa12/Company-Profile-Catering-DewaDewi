@@ -9,6 +9,7 @@ import {
   AccountIcon,
   LogoutIcon,
   ProfilIcon,
+  SettingProfileIcon,
 } from "./icons";
 import { useState } from "react";
 
@@ -220,6 +221,13 @@ export const PageHeader = ({ title, icon, actions }) => {
             </div>
             {actions}
           </div>
+          <Link
+            to={"/setting"} // Menampilkan modal saat tombol logout diklik
+            className="md:hidden flex items-center justify-center bg-white/20 text-black p-2 rounded-lg transition-colors"
+            disabled={loading}
+          >
+            <SettingProfileIcon />
+          </Link>
           <button
             onClick={handleLogoutClick} // Menampilkan modal saat tombol logout diklik
             className="md:hidden flex items-center justify-center bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors"
@@ -390,6 +398,12 @@ export const Sidebar = ({ activePage }) => {
             icon={<ProductIcon />}
             label="Produk"
             isActive={activePage === "product"}
+          />
+          <MenuItem
+            to="/setting"
+            icon={<SettingProfileIcon />}
+            label="setting"
+            isActive={activePage === "setting"}
           />
 
           {authUser?.role === "super-admin" && (

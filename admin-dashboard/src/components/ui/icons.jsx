@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 export const HomeIcon = () => (
   <svg
@@ -15,26 +15,26 @@ export const HomeIcon = () => (
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
     <polyline points="9 22 9 12 15 12 15 22"></polyline>
   </svg>
-)
+);
 
 export const ProfilIcon = () => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {/* Pencil Icon */}
-      <path d="M3 17.25V21h3.75l12-12-3.75-3.75L3 17.25z" />
-      <path d="M18.75 3.75l2.25 2.25" />
-      <path d="M15.75 6.75l-2.25-2.25" />
-    </svg>
-  );  
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    {/* Pencil Icon */}
+    <path d="M3 17.25V21h3.75l12-12-3.75-3.75L3 17.25z" />
+    <path d="M18.75 3.75l2.25 2.25" />
+    <path d="M15.75 6.75l-2.25-2.25" />
+  </svg>
+);
 
 export const TestimoniIcon = () => (
   <svg
@@ -50,7 +50,24 @@ export const TestimoniIcon = () => (
   >
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
   </svg>
-)
+);
+
+export const SettingProfileIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09A1.65 1.65 0 0 0 11 3.09V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+  </svg>
+);
 
 export const ProductIcon = () => (
   <svg
@@ -69,7 +86,7 @@ export const ProductIcon = () => (
     <path d="m3.3 7 8.7 5 8.7-5"></path>
     <path d="M12 22V12"></path>
   </svg>
-)
+);
 
 export const AccountIcon = () => (
   <svg
@@ -86,7 +103,7 @@ export const AccountIcon = () => (
     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
     <circle cx="12" cy="7" r="4"></circle>
   </svg>
-)
+);
 
 export const LogoutIcon = () => (
   <svg
@@ -104,7 +121,7 @@ export const LogoutIcon = () => (
     <polyline points="16 17 21 12 16 7"></polyline>
     <line x1="21" y1="12" x2="9" y2="12"></line>
   </svg>
-)
+);
 
 export const PlusIcon = () => (
   <svg
@@ -121,7 +138,7 @@ export const PlusIcon = () => (
     <line x1="12" y1="5" x2="12" y2="19"></line>
     <line x1="5" y1="12" x2="19" y2="12"></line>
   </svg>
-)
+);
 
 export const ShieldIcon = () => (
   <svg
@@ -137,7 +154,7 @@ export const ShieldIcon = () => (
   >
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
   </svg>
-)
+);
 
 export const UserIcon = () => (
   <svg
@@ -154,7 +171,7 @@ export const UserIcon = () => (
     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
     <circle cx="12" cy="7" r="4"></circle>
   </svg>
-)
+);
 
 export const CalendarIcon = () => (
   <svg
@@ -173,7 +190,7 @@ export const CalendarIcon = () => (
     <line x1="8" x2="8" y1="2" y2="6"></line>
     <line x1="3" x2="21" y1="10" y2="10"></line>
   </svg>
-)
+);
 
 export const ChartIcon = () => (
   <svg
@@ -192,7 +209,7 @@ export const ChartIcon = () => (
     <path d="M13 17V5"></path>
     <path d="M8 17v-3"></path>
   </svg>
-)
+);
 
 export const ImageIcon = () => (
   <svg
@@ -210,7 +227,7 @@ export const ImageIcon = () => (
     <circle cx="8.5" cy="8.5" r="1.5"></circle>
     <polyline points="21 15 16 10 5 21"></polyline>
   </svg>
-)
+);
 
 export const EditIcon = () => (
   <svg
@@ -227,7 +244,7 @@ export const EditIcon = () => (
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
   </svg>
-)
+);
 
 export const TrashIcon = () => (
   <svg
@@ -245,7 +262,7 @@ export const TrashIcon = () => (
     <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
     <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
   </svg>
-)
+);
 
 export const RefreshIcon = () => (
   <svg
@@ -264,7 +281,7 @@ export const RefreshIcon = () => (
     <path d="M3 22v-6h6"></path>
     <path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path>
   </svg>
-)
+);
 
 export const UploadIcon = () => (
   <svg
@@ -282,4 +299,4 @@ export const UploadIcon = () => (
     <polyline points="17 8 12 3 7 8"></polyline>
     <line x1="12" x2="12" y1="3" y2="15"></line>
   </svg>
-)
+);

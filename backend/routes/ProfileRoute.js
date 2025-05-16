@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { uploadImage, compressAndSaveImage } = require("../lib/uploadImage");
+const {
+  uploadMultipleImage,
+  compressAndSaveMultipleImage,
+} = require("../lib/uploadMultipleImage");
 const {
   saveProfile,
   getProfile,
@@ -10,8 +13,8 @@ const { protectedRoute } = require("../middleware/protectedRoute");
 router.post(
   "/",
   protectedRoute,
-  uploadImage,
-  compressAndSaveImage,
+  uploadMultipleImage,
+  compressAndSaveMultipleImage,
   saveProfile
 );
 router.get("/", getProfile);

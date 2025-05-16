@@ -9,6 +9,7 @@ import Product from "./components/Product";
 import SuperAdminDashboard from "./components/SuperAdminDashboard";
 import Layout from "./Layout";
 import ProfileSection from "./components/ProfileSection";
+import SettingProfile from "./components/SettingProfile";
 
 function App() {
   const { authUser } = useAuthContext();
@@ -87,6 +88,19 @@ function App() {
           authUser ? (
             <Layout>
               <Product />
+            </Layout>
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      {/* Rute Setting */}
+      <Route
+        path="/setting"
+        element={
+          authUser ? (
+            <Layout>
+              <SettingProfile />
             </Layout>
           ) : (
             <Navigate to="/login" />

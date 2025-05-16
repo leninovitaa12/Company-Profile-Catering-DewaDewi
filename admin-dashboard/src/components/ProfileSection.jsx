@@ -1,19 +1,33 @@
-"use client"
+"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import useProfile from "../hook/useProfile";
 import { PageHeader, Sidebar } from "./ui/ui-components";
-import { ProfilIcon, ImageIcon } from "./ui/icons"; // Import icons
+import { ProfilIcon, ImageIcon } from "./ui/icons";
 
 const ProfileSection = () => {
   const { profile, loading, error, saveProfile } = useProfile();
   const [nohp, setNohp] = useState("");
   const [alamat, setAlamat] = useState("");
   const [about, setAbout] = useState("");
+
   const [image, setImage] = useState(null);
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+  const [image3, setImage3] = useState(null);
+
   const [imagePreview, setImagePreview] = useState(null);
-  const fileInputRef = useRef(null);
+  const [imagePreview1, setImagePreview1] = useState(null);
+  const [imagePreview2, setImagePreview2] = useState(null);
+  const [imagePreview3, setImagePreview3] = useState(null);
+
+  const fileInputRefs = {
+    image: useRef(null),
+    image1: useRef(null),
+    image2: useRef(null),
+    image3: useRef(null),
+  };
 
   useEffect(() => {
     if (profile) {
@@ -21,19 +35,32 @@ const ProfileSection = () => {
       setAlamat(profile.alamat || "");
       setAbout(profile.about || "");
       setImagePreview(profile.image || null);
+      setImagePreview1(profile.image1 || null);
+      setImagePreview2(profile.image2 || null);
+      setImagePreview3(profile.image3 || null);
     }
   }, [profile]);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e, field) => {
     const file = e.target.files[0];
-    setImage(file);
-    if (file) {
+    if (!file) return;
+
+    if (field === "image") {
+      setImage(file);
       setImagePreview(URL.createObjectURL(file));
+    } else if (field === "image1") {
+      setImage1(file);
+      setImagePreview1(URL.createObjectURL(file));
+    } else if (field === "image2") {
+      setImage2(file);
+      setImagePreview2(URL.createObjectURL(file));
+    } else if (field === "image3") {
+      setImage3(file);
+      setImagePreview3(URL.createObjectURL(file));
     }
   };
 
   const handleSubmit = async () => {
-    // Memastikan semua field wajib diisi
     if (!nohp || !alamat || !about) {
       toast.warning("Semua field wajib diisi!");
       return;
@@ -43,7 +70,11 @@ const ProfileSection = () => {
     formData.append("nohp", nohp);
     formData.append("alamat", alamat);
     formData.append("about", about);
+
     if (image) formData.append("image", image);
+    if (image1) formData.append("image1", image1);
+    if (image2) formData.append("image2", image2);
+    if (image3) formData.append("image3", image3);
 
     try {
       await saveProfile(formData);
@@ -53,13 +84,51 @@ const ProfileSection = () => {
     }
   };
 
+  const renderImageUpload = (label, field, file, preview) => (
+    <div>
+      <label
+        htmlFor={field}
+        className="block text-sm font-medium text-gray-700 mb-1"
+      >
+        {label}
+      </label>
+      <div className="flex items-center">
+        <input
+          id={field}
+          type="file"
+          ref={fileInputRefs[field]}
+          onChange={(e) => handleImageChange(e, field)}
+          className="hidden"
+          accept="image/*"
+        />
+        <label
+          htmlFor={field}
+          className="flex items-center gap-2 cursor-pointer bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 hover:bg-gray-50"
+        >
+          <span className="w-[18px] h-[18px]">
+            <ImageIcon />
+          </span>
+          {file ? file.name : `Pilih ${label}`}
+        </label>
+      </div>
+      {preview && (
+        <div className="mt-2">
+          <img
+            src={preview}
+            alt="Preview"
+            className="w-20 h-20 object-cover rounded-md border"
+          />
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="flex min-h-screen bg-[#F1EFDC]">
       <Sidebar activePage="profil" />
       <div className="flex-1">
         <PageHeader title="Manajemen Profil" icon={<ProfilIcon />} />
         <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-6 mt-6">
-          {/* Profile form */}
           <div>
             <label
               htmlFor="nohp"
@@ -114,42 +183,26 @@ const ProfileSection = () => {
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="image"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Gambar Profil
-            </label>
-            <div className="flex items-center">
-              <input
-                id="image"
-                type="file"
-                ref={fileInputRef}
-                onChange={handleImageChange}
-                className="hidden"
-                accept="image/*"
-              />
-              <label
-                htmlFor="image"
-                className="flex items-center gap-2 cursor-pointer bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 hover:bg-gray-50"
-              >
-                <span className="w-[18px] h-[18px]">
-                  <ImageIcon />
-                </span>
-                {image ? image.name : "Pilih Gambar Profil"}
-              </label>
-            </div>
-            {imagePreview && (
-              <div className="mt-2">
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="w-20 h-20 object-cover rounded-md border"
-                />
-              </div>
-            )}
-          </div>
+          {/* Upload Gambar */}
+          {renderImageUpload("Gambar Profil", "image", image, imagePreview)}
+          {renderImageUpload(
+            "Gambar carrousel 1",
+            "image1",
+            image1,
+            imagePreview1
+          )}
+          {renderImageUpload(
+            "Gambar carrousel 2",
+            "image2",
+            image2,
+            imagePreview2
+          )}
+          {renderImageUpload(
+            "Gambar carrousel 3",
+            "image3",
+            image3,
+            imagePreview3
+          )}
 
           <div className="flex justify-center">
             <button
