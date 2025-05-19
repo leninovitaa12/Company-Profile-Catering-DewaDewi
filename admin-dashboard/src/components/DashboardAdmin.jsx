@@ -2,10 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import { Sidebar, PageHeader, Card, StatCard, ContentCard } from "../components/ui/ui-components";
-import { HomeIcon, TestimoniIcon, ProductIcon, AccountIcon, CalendarIcon } from "../components/ui/icons";
+import {
+  Sidebar,
+  PageHeader,
+  Card,
+  StatCard,
+  ContentCard,
+} from "../components/ui/ui-components";
+import {
+  HomeIcon,
+  TestimoniIcon,
+  ProductIcon,
+  AccountIcon,
+  CalendarIcon,
+} from "../components/ui/icons";
 import useGetProductsAdmin from "../hook/useGetProducts";
 import useGetTestimoni from "../hook/useGetTestimoni";
+import useLogs from "../hook/useLogs";
 
 // Custom hook to calculate time ago (e.g., "5 hours ago")
 const useTimeAgo = (timestamp) => {
@@ -45,6 +58,7 @@ const DashboardAdmin = () => {
   // Fetch data produk dan testimoni
   const { products, loading: productsLoading } = useGetProductsAdmin();
   const { testimonis, loadings: testimonisLoading } = useGetTestimoni();
+  const { logs } = useLogs();
 
   // Get the latest product and latest testimonial
   const latestProduct = products[0] || {};
@@ -70,10 +84,17 @@ const DashboardAdmin = () => {
   ];
 
   // Recent activities
-  const activities = [
-    { action: "Produk baru ditambahkan", time: latestProductTime, icon: <ProductIcon /> },
-    { action: "Testimoni baru diterima", time: latestTestimoniTime, icon: <TestimoniIcon /> },
-  ];
+  const activities = logs.map((log) => ({
+    action: log.message,
+    time: log.time,
+    icon: log.message.toLowerCase().includes("produk") ? (
+      <ProductIcon />
+    ) : log.message.toLowerCase().includes("testimoni") ? (
+      <TestimoniIcon />
+    ) : (
+      <i className="fa-solid fa-clock" />
+    ),
+  }));
 
   return (
     <div className="flex min-h-screen bg-[#F1EFDC]">
@@ -90,7 +111,9 @@ const DashboardAdmin = () => {
             <Card>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-[#42032C]">Selamat Datang, {authUser.name || "Admin"}!</h2>
+                  <h2 className="text-2xl font-bold text-[#42032C]">
+                    Selamat Datang, {authUser.name || "Admin"}!
+                  </h2>
                   <p className="text-gray-600 mt-1">
                     {new Date().toLocaleDateString("id-ID", {
                       weekday: "long",
@@ -106,30 +129,57 @@ const DashboardAdmin = () => {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {stats.map((stat, index) => (
-                <StatCard key={index} title={stat.title} value={stat.value} icon={stat.icon} color={stat.color} />
+                <StatCard
+                  key={index}
+                  title={stat.title}
+                  value={stat.value}
+                  icon={stat.icon}
+                  color={stat.color}
+                />
               ))}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Dashboard Content */}
-              <ContentCard title="Informasi Dashboard" className="lg:col-span-2">
+              <ContentCard
+                title="Informasi Dashboard"
+                className="lg:col-span-2"
+              >
                 <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
                   <p className="text-gray-700 mb-4">
-                    Selamat datang di dashboard admin. Dari sini Anda dapat mengelola produk, testimoni, dan melihat
-                    statistik penting tentang bisnis Anda.
+                    Selamat datang di dashboard admin. Dari sini Anda dapat
+                    mengelola produk, testimoni, dan melihat statistik penting
+                    tentang bisnis Anda.
                   </p>
                 </div>
               </ContentCard>
 
               {/* Recent Activities */}
               <ContentCard title="Aktivitas Terbaru">
-                <div className="space-y-4">
+                <div className="space-y-2 overflow-y-auto max-h-[200px]">
                   {activities.map((activity, index) => (
-                    <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                      <div className="p-2 bg-[#D36B00] bg-opacity-10 rounded-full text-[#D36B00]">{activity.icon}</div>
+                    <div
+                      key={index}
+                      className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg"
+                    >
+                      <div className="p-2 bg-[#D36B00] bg-opacity-10 rounded-full text-[#D36B00]">
+                        {activity.icon}
+                      </div>
                       <div>
-                        <p className="text-gray-800 font-medium">{activity.action}</p>
-                        <p className="text-gray-500 text-sm">{activity.time}</p>
+                        <p className="text-gray-800 font-medium">
+                          {activity.action}
+                        </p>
+                        <p className="text-gray-500 text-sm">
+                          {new Date(activity.time).toLocaleString("id-ID", {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}
+                        </p>
                       </div>
                     </div>
                   ))}

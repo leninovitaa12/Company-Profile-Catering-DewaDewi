@@ -2,8 +2,10 @@ const { Sequelize } = require("sequelize");
 const { Testimoni } = require("../models/index.js");
 const fs = require("fs");
 const path = require("path");
+const myLogger = require("../lib/myLogger.js");
 
 const createTestimoni = async (req, res) => {
+  const { name: userName } = req.user;
   try {
     if (!req.file) {
       return res.status(400).json({ error: "Gambar wajib diunggah." });
@@ -16,6 +18,8 @@ const createTestimoni = async (req, res) => {
     const newTestimoni = await Testimoni.create({
       image: imageUrl,
     });
+
+    myLogger(`${userName} membuat testimoni baru`);
 
     res.status(201).json(newTestimoni);
   } catch (error) {
@@ -49,6 +53,7 @@ const getTestimoni = async (req, res) => {
 };
 
 const updateTestimoni = async (req, res) => {
+  const { name: userName } = req.user;
   try {
     const { id } = req.params;
     const testimoni = await Testimoni.findByPk(id);
@@ -77,6 +82,8 @@ const updateTestimoni = async (req, res) => {
 
     await testimoni.update({ image: imageUrl });
 
+    myLogger(`${userName} memperbarui testimoni`);
+
     res.status(200).json(testimoni);
   } catch (error) {
     console.error("Update Testimoni Error:", error.message);
@@ -85,6 +92,7 @@ const updateTestimoni = async (req, res) => {
 };
 
 const deleteTestimoni = async (req, res) => {
+  const { name: userName } = req.user;
   try {
     const { id } = req.params;
     const testimoni = await Testimoni.findByPk(id);
@@ -106,6 +114,9 @@ const deleteTestimoni = async (req, res) => {
     }
 
     await testimoni.destroy();
+
+    myLogger(`${userName} menghapus testimoni`);
+
     res.status(200).json({ message: "Testimoni berhasil dihapus." });
   } catch (error) {
     console.error("Delete Testimoni Error:", error.message);

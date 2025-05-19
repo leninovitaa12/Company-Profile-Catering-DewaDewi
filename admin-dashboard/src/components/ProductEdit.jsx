@@ -58,13 +58,17 @@ const ProductEdit = ({ setProductToEdit, product, refetch }) => {
       toast.warning("Nama produk tidak boleh kosong!");
       return;
     }
-  
+    if (!productDescription.trim()) {
+      toast.warning("Deskripsi produk tidak boleh kosong!");
+      return;
+    }
+
     const updatedData = {
       name: productName,
       description: productDescription,
       image: productImage,
     };
-  
+
     try {
       setLoading(true);
       await updateProduct(product.id, updatedData);
@@ -82,7 +86,7 @@ const ProductEdit = ({ setProductToEdit, product, refetch }) => {
     } finally {
       setLoading(false);
     }
-  };    
+  };
 
   const renderImagePreview = () => {
     if (productImage) {
@@ -131,11 +135,11 @@ const ProductEdit = ({ setProductToEdit, product, refetch }) => {
           <h2 className="text-3xl font-bold text-gray-800">Edit Produk</h2>
         </div>
         <button
-    className="text-white bg-[#D36B00] hover:bg-[#B25800] focus:outline-none focus:ring-2 focus:ring-[#D36B00] focus:ring-offset-2 rounded-lg px-6 py-3 mb-4 border border-transparent transition-all duration-300 ease-in-out"
-    onClick={() => setProductToEdit(null)} // Menutup form edit atau mengembalikan ke daftar produk
-  >
-    Kembali
-  </button>
+          className="text-white bg-[#D36B00] hover:bg-[#B25800] focus:outline-none focus:ring-2 focus:ring-[#D36B00] focus:ring-offset-2 rounded-lg px-6 py-3 mb-4 border border-transparent transition-all duration-300 ease-in-out"
+          onClick={() => setProductToEdit(null)} // Menutup form edit atau mengembalikan ke daftar produk
+        >
+          Kembali
+        </button>
         <div className="bg-gray-50 p-5 rounded-lg mb-6 border border-gray-200">
           <div className="space-y-4">
             <div>
