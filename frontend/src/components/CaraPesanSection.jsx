@@ -2,9 +2,9 @@ import React from "react";
 
 const CaraPesanSection = () => {
   const steps = [
-    "Pilih paket atau menu yang diinginkan melalui website atau kontak langsung.",
+    "Pikirkan menu yang kalian inginkan atau kalian butuhkan atau mungkin tertarik pada produk yang tersedia di website.",
     "Hubungi kami melalui WhatsApp untuk konsultasi kebutuhan acara Anda.",
-    "Tentukan tanggal, lokasi, dan jumlah tamu.",
+    "Tentukan tanggal, lokasi, dan jumlah item.",
     "Lakukan pembayaran DP sebagai konfirmasi pemesanan.",
     "Tim kami akan mengantarkan dan menyajikan hidangan sesuai jadwal yang disepakati.",
   ];
