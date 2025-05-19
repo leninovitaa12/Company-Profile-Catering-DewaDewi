@@ -12,6 +12,7 @@ const {
   validatePassword,
   resetPassword,
 } = require("../controllers/AuthControllers.js");
+const { updateSelfAccount } = require("../controllers/AccountControllers.js");
 const { protectedRoute } = require("../middleware/protectedRoute.js");
 
 const router = express.Router();
@@ -31,5 +32,6 @@ router.post(
 );
 
 router.get("/check", protectedRoute, getUser);
+router.put("/editself", protectedRoute, updateSelfAccount);
 
 module.exports = router;

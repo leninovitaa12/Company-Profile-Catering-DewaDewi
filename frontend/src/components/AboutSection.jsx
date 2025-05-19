@@ -7,13 +7,17 @@ const AboutSection = ({ image, about }) => {
         {/* Gambar */}
         <div className="relative w-full flex justify-center">
           <div className="space-y-6">
-            <img
+            {/* <img
               src={image}
               alt="Makanan"
               className="rounded-lg shadow-lg w-[300px] md:w-[350px] object-cover"
-            />
+            /> */}
+            <div></div>
             <img
-              src="https://i.pinimg.com/originals/52/6d/39/526d39bf93b6de71c9fcc7741a7c3aa0.jpg"
+              src={
+                image ||
+                "https://i.pinimg.com/originals/52/6d/39/526d39bf93b6de71c9fcc7741a7c3aa0.jpg"
+              }
               alt="Food"
               className="rounded-lg shadow-lg w-[300px] md:w-[350px] object-cover md:-mt-20 ml-auto"
             />
@@ -25,9 +29,7 @@ const AboutSection = ({ image, about }) => {
           <h2 className="text-4xl md:text-5xl font-bold leading-tight">
             Tentang Kami
           </h2>
-          <p className="text-base md:text-lg leading-relaxed">
-            {about}
-          </p>
+          <p className="text-base md:text-lg leading-relaxed">{about}</p>
         </div>
       </div>
     </section>

@@ -111,10 +111,35 @@ const deleteAccount = async (req, res) => {
   }
 };
 
+const updateSelfAccount = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const { name, email, password } = req.body;
+
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ error: "Authentikasi Invalid." });
+    }
+
+    const updateData = { name, email };
+
+    if (password) {
+      updateData.password = bcrypt.hashSync(password, 10);
+    }
+
+    await user.update(updateData);
+    res.status(200).json({ message: "Akun berhasil diperbarui." });
+  } catch (error) {
+    console.error("Update Account Error:", error.message);
+    res.status(500).json({ error: "Terjadi kesalahan pada server" });
+  }
+};
+
 module.exports = {
   getAllAccounts,
   getAccountById,
   createAccount,
   updateAccount,
   deleteAccount,
+  updateSelfAccount,
 };
