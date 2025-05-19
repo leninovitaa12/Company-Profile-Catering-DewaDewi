@@ -1,7 +1,6 @@
 const useApiUrl = () => {
+  const url = "http://localhost:8000";
+  return url;
+};
 
-    const url = "http://localhost:8000";
-    return url;
-  };
-  
-  export default useApiUrl;
+export default useApiUrl;

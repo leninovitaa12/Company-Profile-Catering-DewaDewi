@@ -1,219 +1,139 @@
-import { useState, useRef, useEffect } from "react";
-import { toast } from "react-toastify";
-import useUpdateProduct from "../hook/useUpdateProduct"; // Menggunakan hook untuk update produk
+"use client"
 
-const ImageIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-    <polyline points="21 15 16 10 5 21"></polyline>
-  </svg>
-);
+import { useState, useRef, useEffect } from "react"
+import { toast } from "react-toastify"
+import { motion } from "framer-motion"
+import useUpdateProduct from "../hook/useUpdateProduct"
+import { ImageIcon } from "../components/ui/icons"
+import { Button, Input, TextArea, ImageUpload } from "../components/ui/ui-components"
 
 const ProductEdit = ({ setProductToEdit, product, refetch }) => {
-  const [productName, setProductName] = useState(product.name || "");
-  const [productDescription, setProductDescription] = useState(
-    product.description || ""
-  );
-  const [productImage, setProductImage] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef(null);
+  const [productName, setProductName] = useState(product.name || "")
+  const [productDescription, setProductDescription] = useState(product.description || "")
+  const [productImage, setProductImage] = useState(null)
+  const [imagePreview, setImagePreview] = useState(product.image || null)
+  const [loading, setLoading] = useState(false)
+  const fileInputRef = useRef(null)
 
-  const { updateProduct } = useUpdateProduct(); // Menggunakan hook untuk update produk
+  const { updateProduct } = useUpdateProduct()
 
   useEffect(() => {
     if (product.image) {
-      setProductImage(product.image); // Set image jika ada gambar yang sudah ter-upload
+      setImagePreview(product.image)
     }
-  }, [product]);
+  }, [product])
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     if (file) {
-      setProductImage(file);
+      setProductImage(file)
+      setImagePreview(URL.createObjectURL(file))
     }
-  };
+  }
 
   const resetForm = () => {
-    setProductName("");
-    setProductDescription("");
-    setProductImage(null);
+    setProductName("")
+    setProductDescription("")
+    setProductImage(null)
+    setImagePreview(null)
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = ""
     }
-  };
+  }
 
   const handleEditProduct = async () => {
     if (!productName.trim()) {
-      toast.warning("Nama produk tidak boleh kosong!");
-      return;
+      toast.warning("Nama produk tidak boleh kosong!")
+      return
     }
-  
+
     const updatedData = {
       name: productName,
       description: productDescription,
       image: productImage,
-    };
-  
+    }
+
     try {
-      setLoading(true);
-      await updateProduct(product.id, updatedData);
-      resetForm();
-      await refetch();
+      setLoading(true)
+      await updateProduct(product.id, updatedData)
+      resetForm()
+      await refetch()
       toast.success("Produk berhasil diperbarui", {
-        toastId: "edit-success", // Menetapkan toastId khusus
-      });
-      setProductToEdit(null);
+        toastId: "edit-success",
+      })
+      setProductToEdit(null)
     } catch (error) {
-      console.error("Gagal mengedit produk:", error);
+      console.error("Gagal mengedit produk:", error)
       toast.error("Gagal mengedit produk", {
-        toastId: "edit-error", // Menetapkan toastId khusus
-      });
+        toastId: "edit-error",
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };    
-
-  const renderImagePreview = () => {
-    if (productImage) {
-      // Jika productImage adalah file (diupload oleh user)
-      if (productImage instanceof File) {
-        return (
-          <div className="mt-2 flex items-center gap-4">
-            <div className="relative w-16 h-16 border rounded-md overflow-hidden">
-              <img
-                src={URL.createObjectURL(productImage)} // Membuat URL objek untuk file yang di-upload
-                alt="Preview"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="text-sm text-gray-600">
-              <p>{(productImage.size / 1024).toFixed(2)} KB</p>
-            </div>
-          </div>
-        );
-      }
-    } else if (product.image) {
-      // Jika productImage kosong, tampilkan gambar yang sudah ada dari produk
-      return (
-        <div className="mt-2 flex items-center gap-4">
-          <div className="relative w-16 h-16 border rounded-md overflow-hidden">
-            <img
-              src={product.image || "/placeholder.svg"} // Gambar produk yang sudah ada
-              alt="Preview"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="text-sm text-gray-600">
-            <p>{(product.image.size / 1024).toFixed(2)} KB</p>
-          </div>
-        </div>
-      );
-    }
-
-    return null;
-  };
+  }
 
   return (
-    <>
-      <div className="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
-        <div className="flex justify-center items-center mb-6 border-b pb-3">
-          <h2 className="text-3xl font-bold text-gray-800">Edit Produk</h2>
-        </div>
-        <button
-    className="text-white bg-[#D36B00] hover:bg-[#B25800] focus:outline-none focus:ring-2 focus:ring-[#D36B00] focus:ring-offset-2 rounded-lg px-6 py-3 mb-4 border border-transparent transition-all duration-300 ease-in-out"
-    onClick={() => setProductToEdit(null)} // Menutup form edit atau mengembalikan ke daftar produk
-  >
-    Kembali
-  </button>
-        <div className="bg-gray-50 p-5 rounded-lg mb-6 border border-gray-200">
-          <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="productName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Nama Produk
-              </label>
-              <input
-                id="productName"
-                type="text"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                placeholder="Masukkan nama produk"
-                className="border border-gray-300 rounded-lg p-2.5 w-full focus:ring-[#D36B00] focus:border-[#D36B00] outline-none"
-              />
-            </div>
+    <motion.div
+      className="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-sm"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <motion.div
+        className="flex justify-center items-center mb-6 border-b pb-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1, duration: 0.3 }}
+      >
+        <h2 className="text-3xl font-bold text-gray-800">Edit Produk</h2>
+      </motion.div>
 
-            <div>
-              <label
-                htmlFor="productDescription"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Deskripsi Produk
-              </label>
-              <textarea
-                id="productDescription"
-                value={productDescription}
-                onChange={(e) => setProductDescription(e.target.value)}
-                placeholder="Masukkan deskripsi produk"
-                className="border border-gray-300 rounded-lg p-2.5 w-full h-24 focus:ring-[#D36B00] focus:border-[#D36B00] outline-none resize-none"
-              />
-            </div>
+      <motion.button
+        className="text-white bg-[#D36B00] hover:bg-[#B25800] focus:outline-none focus:ring-2 focus:ring-[#D36B00] focus:ring-offset-2 rounded-lg px-6 py-3 mb-4 border border-transparent"
+        onClick={() => setProductToEdit(null)}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        Kembali
+      </motion.button>
 
-            <div>
-              <label
-                htmlFor="productImage"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Gambar Produk
-              </label>
-              <div className="flex items-center">
-                <input
-                  id="productImage"
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleImageChange}
-                  className="hidden"
-                  accept="image/*"
-                />
-                <label
-                  htmlFor="productImage"
-                  className="flex items-center gap-2 cursor-pointer bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  <span className="w-[18px] h-[18px]">
-                    <ImageIcon />
-                  </span>
-                  {productImage ? productImage.name : "Pilih Gambar Produk"}
-                </label>
-              </div>
-              {renderImagePreview()}
-            </div>
+      <div className="bg-gray-50 p-5 rounded-lg mb-6 border border-gray-200">
+        <div className="space-y-4">
+          <Input
+            id="productName"
+            label="Nama Produk"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+            placeholder="Masukkan nama produk"
+          />
 
-            <div>
-              <button
-                className="bg-[#D36B00] hover:bg-[#42032C] text-white py-2.5 px-5 rounded-lg transition-colors flex items-center gap-2"
-                onClick={handleEditProduct}
-                disabled={loading}
-              >
-                {loading ? "Memproses..." : "Simpan Perubahan"}
-              </button>
-            </div>
-          </div>
+          <TextArea
+            id="productDescription"
+            label="Deskripsi Produk"
+            value={productDescription}
+            onChange={(e) => setProductDescription(e.target.value)}
+            placeholder="Masukkan deskripsi produk"
+            rows={4}
+          />
+
+          <ImageUpload
+            id="productImage"
+            label="Gambar Produk"
+            onChange={handleImageChange}
+            preview={imagePreview}
+            buttonText={productImage ? productImage.name : "Pilih Gambar Produk"}
+            fileInputRef={fileInputRef}
+          />
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+            <Button onClick={handleEditProduct} disabled={loading} icon={<ImageIcon />}>
+              {loading ? "Memproses..." : "Simpan Perubahan"}
+            </Button>
+          </motion.div>
         </div>
       </div>
-    </>
-  );
-};
+    </motion.div>
+  )
+}
 
-export default ProductEdit;
+export default ProductEdit

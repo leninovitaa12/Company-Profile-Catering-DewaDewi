@@ -12,20 +12,6 @@ const Footer = ({ nohp, alamat }) => {
             <p className="mb-6 text-[hsl(var(--secondary))] leading-7">
               Menyediakan layanan catering berkualitas untuk berbagai acara dengan cita rasa autentik dan bahan-bahan segar pilihan.
             </p>
-            <div className="flex gap-4">
-              <a href="#" aria-label="Facebook" className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-[hsl(var(--accent))] transition">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" aria-label="Instagram" className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-[hsl(var(--accent))] transition">
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a href="#" aria-label="Twitter" className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-[hsl(var(--accent))] transition">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="#" aria-label="WhatsApp" className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full hover:bg-[hsl(var(--accent))] transition">
-                <i className="fab fa-whatsapp"></i>
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -35,9 +21,9 @@ const Footer = ({ nohp, alamat }) => {
             </h3>
             <ul className="space-y-3 text-[hsl(var(--secondary))]">
               <li><a href="#home" className="hover:text-[hsl(var(--accent))] transition">Beranda</a></li>
-              <li><a href="#menu" className="hover:text-[hsl(var(--accent))] transition">Menu</a></li>
               <li><a href="#about" className="hover:text-[hsl(var(--accent))] transition">Tentang Kami</a></li>
-              <li><a href="#contact" className="hover:text-[hsl(var(--accent))] transition">Kontak</a></li>
+              <li><a href="#menu" className="hover:text-[hsl(var(--accent))] transition">Menu</a></li>
+              <li><a href="#contact" className="hover:text-[hsl(var(--accent))] transition">Cara Pesan</a></li>
             </ul>
           </div>
 
