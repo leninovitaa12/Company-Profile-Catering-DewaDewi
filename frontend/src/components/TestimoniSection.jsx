@@ -5,7 +5,7 @@ const TestimoniSection = () => {
   const { testimonis, loading } = useGetTestimoni();
 
   return (
-    <section className="py-12 md:py-20 bg-gray-50">
+    <section className="py-12 md:py-20 bg-[var(--light-brand)]">
       <div className="px-8">
         <div className="text-center space-y-2">
           <h2 className="text-3xl font-bold">Testimoni Pembeli Kami</h2>
