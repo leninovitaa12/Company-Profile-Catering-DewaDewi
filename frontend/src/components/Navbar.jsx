@@ -90,7 +90,7 @@ const Navbar = ({ nohp }) => {
         `}>
           
           {/* ScrollLink untuk Beranda */}
-          <li className="lg:ml-0 lg:mr-8 my-3 lg:my-0">
+          <li className="lg:ml-0 lg:mr-4 my-3 lg:my-0"> {/* Adjusted lg:mr-4 */}
             <ScrollLink
               to="home"
               spy={true}
@@ -98,7 +98,7 @@ const Navbar = ({ nohp }) => {
               duration={700}
               offset={-80}
               activeClass="active"
-              className={`cursor-pointer font-medium text-base transition-colors duration-300 ease-in-out relative pb-[5px] hover:text-orange-600 ${
+              className={`cursor-pointer font-medium text-sm transition-colors duration-300 ease-in-out relative pb-[5px] hover:text-orange-600 ${ // Adjusted text-sm
                 isMobileMenuOpen || isScrolled 
                   ? 'text-gray-800' 
                   : 'text-white'
@@ -113,7 +113,7 @@ const Navbar = ({ nohp }) => {
           </li>
 
           {/* ScrollLink untuk Tentang Kami */}
-          <li className="lg:mr-8 my-3 lg:my-0">
+          <li className="lg:mr-4 my-3 lg:my-0"> {/* Adjusted lg:mr-4 */}
             <ScrollLink
               to="about"
               spy={true}
@@ -121,7 +121,7 @@ const Navbar = ({ nohp }) => {
               duration={700}
               offset={-80}
               activeClass="active"
-              className={`cursor-pointer font-medium text-base transition-colors duration-300 ease-in-out relative pb-[5px] hover:text-orange-600 ${
+              className={`cursor-pointer font-medium text-sm transition-colors duration-300 ease-in-out relative pb-[5px] hover:text-orange-600 ${ // Adjusted text-sm
                 isMobileMenuOpen || isScrolled 
                   ? 'text-gray-800' 
                   : 'text-white'
@@ -136,7 +136,7 @@ const Navbar = ({ nohp }) => {
           </li>
 
           {/* ScrollLink untuk Menu */}
-          <li className="lg:mr-8 my-3 lg:my-0">
+          <li className="lg:mr-4 my-3 lg:my-0"> {/* Adjusted lg:mr-4 */}
             <ScrollLink
               to="menu"
               spy={true}
@@ -144,7 +144,7 @@ const Navbar = ({ nohp }) => {
               duration={700}
               offset={-80}
               activeClass="active"
-              className={`cursor-pointer font-medium text-base transition-colors duration-300 ease-in-out relative pb-[5px] hover:text-orange-600 ${
+              className={`cursor-pointer font-medium text-sm transition-colors duration-300 ease-in-out relative pb-[5px] hover:text-orange-600 ${ // Adjusted text-sm
                 isMobileMenuOpen || isScrolled 
                   ? 'text-gray-800' 
                   : 'text-white'
@@ -167,7 +167,7 @@ const Navbar = ({ nohp }) => {
               duration={700}
               offset={-80}
               activeClass="active"
-              className={`cursor-pointer font-medium text-base transition-colors duration-300 ease-in-out relative pb-[5px] hover:text-orange-600 ${
+              className={`cursor-pointer font-medium text-sm transition-colors duration-300 ease-in-out relative pb-[5px] hover:text-orange-600 ${ // Adjusted text-sm
                 isMobileMenuOpen || isScrolled 
                   ? 'text-gray-800' 
                   : 'text-white'
@@ -213,4 +213,4 @@ const Navbar = ({ nohp }) => {
   )
 }
 
-export default Navbar
+export default Navbar;
