@@ -16,7 +16,7 @@ const HeroSection = ({ nohp, image1, image2, image3 }) => {
       url: image2,
       title: "Menu Spesial untuk Acara Spesial",
       description:
-        "Nikmati berbagai pilihan menu premium yang disiapkan oleh chef profesional kami",
+        "Nikmati berbagai pilihan menu premium, dengan bahan yang berkualitas",
     },
     {
       url: image3,
