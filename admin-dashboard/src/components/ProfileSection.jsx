@@ -220,8 +220,8 @@ const ProfileSection = () => {
             />
           </motion.div>
 
-          <motion.div className="flex justify-center" variants={itemVariants}>
-            <Button onClick={handleSubmit} disabled={loading}>
+          <motion.div className="flex justify-center w-full mt-6" variants={itemVariants}>
+            <Button onClick={handleSubmit} disabled={loading} className="w-full sm:w-auto min-w-[200px]">
               {loading ? "Memproses..." : "Simpan Profil"}
             </Button>
           </motion.div>

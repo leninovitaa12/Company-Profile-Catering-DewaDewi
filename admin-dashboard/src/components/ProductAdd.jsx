@@ -101,12 +101,17 @@ const ProductAdd = ({ refetch, onClose }) => {
         />
 
         <motion.div
-          className="flex justify-center mt-6"
+          className="flex justify-center mt-6 w-full"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.3 }}
         >
-          <Button onClick={handleAddProduct} disabled={loading} icon={<ImageIcon />}>
+          <Button
+            onClick={handleAddProduct}
+            disabled={loading}
+            icon={<ImageIcon />}
+            className="w-full sm:w-auto min-w-[200px]"
+          >
             {loading ? "Memproses..." : "Tambah Produk"}
           </Button>
         </motion.div>

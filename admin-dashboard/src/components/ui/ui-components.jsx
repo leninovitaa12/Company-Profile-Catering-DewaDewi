@@ -12,7 +12,6 @@ import {
   AccountIcon,
   LogoutIcon,
   ProfilIcon,
-  SettingProfileIcon,
   ImageIcon,
 } from "./icons"
 
@@ -257,12 +256,6 @@ export const PageHeader = ({ title, icon, actions }) => {
             </div>
             {actions}
           </motion.div>
-          <Link
-            to={"/setting"}
-            className="md:hidden flex items-center justify-center bg-white/20 text-white p-2 rounded-lg transition-colors"
-          >
-            <SettingProfileIcon />
-          </Link>
           <motion.button
             onClick={handleLogoutClick}
             className="md:hidden flex items-center justify-center bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg"
@@ -433,7 +426,6 @@ export const Sidebar = ({ activePage }) => {
           <MenuItem to="/profil" icon={<ProfilIcon />} label="Profil" isActive={activePage === "profil"} />
           <MenuItem to="/testimoni" icon={<TestimoniIcon />} label="Testimoni" isActive={activePage === "testimoni"} />
           <MenuItem to="/product" icon={<ProductIcon />} label="Produk" isActive={activePage === "product"} />
-          <MenuItem to="/setting" icon={<SettingProfileIcon />} label="Setting" isActive={activePage === "setting"} />
 
           {authUser?.role === "super-admin" && (
             <>
