@@ -72,6 +72,7 @@ const TestimoniAdd = ({ onSuccess, refetch }) => {
             disabled={!testimoniImage || loading}
             variant={testimoniImage ? "primary" : "secondary"}
             icon={<UploadIcon />}
+            className="w-full md:w-auto"
           >
             {loading ? "Mengunggah..." : "Upload Testimoni"}
           </Button>

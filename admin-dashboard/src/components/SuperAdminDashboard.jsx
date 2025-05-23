@@ -238,7 +238,13 @@ const SuperAdminDashboard = () => {
           title="Super Admin Dashboard"
           icon={<ShieldIcon />}
           actions={
-            <Button variant="primary" size="sm" icon={<PlusIcon />} onClick={() => openModal()}>
+            <Button
+              variant="primary"
+              size="sm"
+              icon={<PlusIcon />}
+              onClick={() => openModal()}
+              className="w-full sm:w-auto"
+            >
               Tambah Admin
             </Button>
           }
@@ -306,7 +312,7 @@ const SuperAdminDashboard = () => {
                       variant="primary"
                       size="sm"
                       icon={<PlusIcon />}
-                      className="md:hidden mb-4"
+                      className="md:hidden mb-4 w-full"
                       onClick={() => openModal()}
                     >
                       Tambah Admin
@@ -397,18 +403,19 @@ const SuperAdminDashboard = () => {
         onClose={closeModal}
         title={selectedAdmin ? "Edit Admin" : "Buat Admin Baru"}
         footer={
-          <>
-            <Button variant="secondary" onClick={closeModal}>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:justify-end">
+            <Button variant="secondary" onClick={closeModal} className="w-full sm:w-auto">
               Batal
             </Button>
             <Button
               variant="primary"
               onClick={selectedAdmin ? handleUpdateUser : handleCreateUser}
               disabled={createLoading || updateLoading}
+              className="w-full sm:w-auto"
             >
               {createLoading || updateLoading ? "Memproses..." : selectedAdmin ? "Simpan Perubahan" : "Buat Admin"}
             </Button>
-          </>
+          </div>
         }
       >
         <div className="space-y-4">

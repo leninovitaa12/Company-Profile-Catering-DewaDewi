@@ -16,7 +16,7 @@ const HeroSection = ({ nohp, image1, image2, image3 }) => {
       url: image2,
       title: "Menu Spesial untuk Acara Spesial",
       description:
-        "Nikmati berbagai pilihan menu premium yang disiapkan oleh chef profesional kami",
+        "Nikmati berbagai pilihan menu premium yang disiapkan oleh katering kami",
     },
     {
       url: image3,
@@ -102,30 +102,3 @@ const HeroSection = ({ nohp, image1, image2, image3 }) => {
 };
 
 export default HeroSection;
-
-// const carouselImages = [
-//   {
-//     url:
-//       image1 ||
-//       "https://asset.kompas.com/crops/GZKGclL9N-Dv7wO6JWi8l7udJME=/179x0:1080x601/750x500/data/photo/2019/06/21/3717931935.jpg",
-//     title: "Hidangan Berkualitas, Pengalaman Tak Terlupakan",
-//     description:
-//       "Kami menyediakan layanan katering premium dengan bahan-bahan segar dan organik untuk berbagai acara spesial Anda",
-//   },
-//   {
-//     url:
-//       image2 ||
-//       "https://img.freepik.com/free-photo/deep-fried-fish-ball-dark-surface_1150-43602.jpg?t=st=1744357927~exp=1744361527~hmac=a4b7deb9cc972c7a051ddb4a271cf67bb82d754db60eccd19793d55b9a980466&w=1380",
-//     title: "Menu Spesial untuk Acara Spesial",
-//     description:
-//       "Nikmati berbagai pilihan menu premium yang disiapkan oleh chef profesional kami",
-//   },
-//   {
-//     url:
-//       image3 ||
-//       "https://img.freepik.com/free-photo/front-view-tasy-little-dumplings-with-flour-dark-gray-surface_179666-44203.jpg?t=st=1744358624~exp=1744362224~hmac=755ff9f3b75ad275f2f1f6800ea6054bc743166442e8fdd5ff917b70c3fefb81&w=1380",
-//     title: "Catering untuk Segala Acara",
-//     description:
-//       "Dari pernikahan hingga acara kantor, kami siap melayani kebutuhan katering Anda",
-//   },
-// ];

@@ -55,7 +55,7 @@ const Testimoni = () => {
               size="sm"
               icon={<PlusIcon />}
               onClick={() => setShowAddForm(!showAddForm)}
-              className="bg-[#D36B00] hover:bg-[#42032C] text-white"
+              className="bg-[#D36B00] hover:bg-[#42032C] text-white w-full sm:w-auto"
             >
               {showAddForm ? "Tutup Form" : "Tambah Testimoni"}
             </Button>

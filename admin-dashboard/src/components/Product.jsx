@@ -65,7 +65,7 @@ const Product = () => {
                 setShowAddForm(!showAddForm)
                 setProductToEdit(null)
               }}
-              className="bg-[#D36B00] hover:bg-[#42032C] text-white"
+              className="bg-[#D36B00] hover:bg-[#42032C] text-white w-full sm:w-auto"
             >
               {showAddForm ? "Tutup Form" : "Tambah Produk"}
             </Button>

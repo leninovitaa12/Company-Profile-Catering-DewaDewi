@@ -125,8 +125,18 @@ const ProductEdit = ({ setProductToEdit, product, refetch }) => {
             fileInputRef={fileInputRef}
           />
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-            <Button onClick={handleEditProduct} disabled={loading} icon={<ImageIcon />}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex justify-center w-full"
+          >
+            <Button
+              onClick={handleEditProduct}
+              disabled={loading}
+              icon={<ImageIcon />}
+              className="w-full sm:w-auto min-w-[200px]"
+            >
               {loading ? "Memproses..." : "Simpan Perubahan"}
             </Button>
           </motion.div>

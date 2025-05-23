@@ -3,15 +3,9 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { useAuthContext } from "../context/AuthContext"
-import { Sidebar, PageHeader, Card, ContentCard, Button } from "../components/ui/ui-components"
-import {
-  HomeIcon,
-  TestimoniIcon,
-  ProductIcon,
-  CalendarIcon,
-  UserIcon,
-  ShieldIcon,
-} from "../components/ui/icons"
+import { Sidebar, PageHeader, Card, ContentCard } from "../components/ui/ui-components"
+import { HomeIcon, TestimoniIcon, ProductIcon, CalendarIcon, UserIcon, ShieldIcon } from "../components/ui/icons"
+import useGetAdmins from "../hook/useGetAdmins"
 import useGetProductsAdmin from "../hook/useGetProducts"
 import useGetTestimoni from "../hook/useGetTestimoni"
 
@@ -122,10 +116,10 @@ const DateTimeDisplay = () => {
         animate={{ x: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.5 }}
       >
-        <span className="inline-flex items-center gap-2">
-  <CalendarIcon className="w-4 h-4" />
-  {formattedDate}
-</span>
+        <span className="inline-flex items-center gap-3">
+          <CalendarIcon className="w-5 h-5" />
+          {formattedDate}
+        </span>
       </motion.p>
       <motion.p
         className="text-gray-500 text-sm"
@@ -133,10 +127,10 @@ const DateTimeDisplay = () => {
         animate={{ x: 0, opacity: 1 }}
         transition={{ delay: 0.4, duration: 0.5 }}
       >
-        <span className="inline-flex items-center gap-2">
-  <span className="w-4 h-4 flex items-center justify-center">🕒</span>
-  {formattedTime}
-</span>
+        <span className="inline-flex items-center gap-3">
+          <span className="w-5 h-5 flex items-center justify-center">🕒</span>
+          {formattedTime}
+        </span>
       </motion.p>
     </div>
   )
@@ -146,14 +140,14 @@ const DateTimeDisplay = () => {
 const QuickActionButton = ({ icon, label, onClick, color = "bg-[#D36B00]" }) => {
   return (
     <motion.button
-      className={`flex flex-col items-center justify-center p-4 ${color} text-white rounded-lg shadow-md hover:shadow-lg`}
+      className={`flex flex-col items-center justify-center p-4 ${color} text-white rounded-lg shadow-md hover:shadow-lg w-32 h-32`}
       onClick={onClick}
       whileHover={{ scale: 1.05, y: -5 }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
     >
       <span className="text-2xl mb-2">{icon}</span>
-      <span className="text-sm font-medium">{label}</span>
+      <span className="text-sm font-medium text-center">{label}</span>
     </motion.button>
   )
 }
@@ -162,6 +156,7 @@ const DashboardAdmin = () => {
   const { authUser } = useAuthContext()
 
   // Fetch data produk dan testimoni
+  const { admins, loading: adminsLoading, error: adminsError, refetch } = useGetAdmins()
   const { products, loading: productsLoading, refetch: refetchProducts } = useGetProductsAdmin()
   const { testimonis, loadings: testimonisLoading, refetch: refetchTestimonis } = useGetTestimoni()
 
@@ -210,14 +205,14 @@ const DashboardAdmin = () => {
     },
     {
       title: "Admin",
-      value: "1",
+      value: adminsLoading ? "..." : (admins?.filter((admin) => admin.role === "admin").length ?? "0"),
       icon: <UserIcon />,
       color: "bg-purple-100",
       textColor: "text-purple-700",
     },
     {
       title: "Super Admin",
-      value: authUser?.role === "super-admin" ? "1" : "0",
+      value: adminsLoading ? "..." : (admins?.filter((admin) => admin.role === "super-admin").length ?? "0"),
       icon: <ShieldIcon />,
       color: "bg-amber-100",
       textColor: "text-amber-700",
@@ -254,7 +249,6 @@ const DashboardAdmin = () => {
     { icon: "📦", label: "Tambah Produk", color: "bg-[#D36B00]", path: "/product" },
     { icon: "📸", label: "Tambah Testimoni", color: "bg-[#42032C]", path: "/testimoni" },
     { icon: "👤", label: "Edit Profil", color: "bg-[#D36B00]", path: "/profil" },
-    { icon: "⚙️", label: "Pengaturan", color: "bg-[#42032C]", path: "/setting" },
   ]
 
   return (
@@ -269,11 +263,7 @@ const DashboardAdmin = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col pb-16 md:pb-0">
-        <PageHeader
-  title="Dashboard Admin"
-  icon={<HomeIcon />}
-  actions={null}
-/>
+        <PageHeader title="Dashboard Admin" icon={<HomeIcon />} actions={null} />
 
         <motion.div className="flex-1 p-4 md:p-6" variants={containerVariants} initial="hidden" animate="visible">
           <div className="max-w-6xl mx-auto space-y-6">
@@ -357,7 +347,7 @@ const DashboardAdmin = () => {
             {/* Quick Actions */}
             <motion.div variants={itemVariants}>
               <ContentCard title="Aksi Cepat">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
                   {quickActions.map((action, index) => (
                     <motion.div
                       key={index}
@@ -435,26 +425,30 @@ const DashboardAdmin = () => {
                     <AnimatePresence>
                       {activities.map((activity, index) => (
                         <motion.div
-  key={index}
-  className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-100 shadow-sm min-h-[80px]"
-  initial={{ opacity: 0, y: 10, x: 10 }}
-  animate={{ opacity: 1, y: 0, x: 0 }}
-  transition={{ delay: 0.1 * index + 0.3, duration: 0.3 }}
-  whileHover={{
-    scale: 1.02,
-    backgroundColor: "rgba(211, 107, 0, 0.05)",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-  }}
->
-  <div className={`p-2 bg-white rounded-full shadow-sm ${activity.color} flex items-center justify-center w-10 h-10`}>
-    {activity.icon}
-  </div>
-  <div className="flex flex-col justify-center flex-1 min-h-[60px]">
-    <p className="text-gray-800 font-medium leading-tight">{activity.action}</p>
-    {activity.details && <p className="text-gray-600 text-sm leading-snug">{activity.details}</p>}
-    <p className="text-gray-500 text-xs mt-1">{activity.time || "Baru saja"}</p>
-  </div>
-</motion.div>
+                          key={index}
+                          className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-100 shadow-sm min-h-[80px]"
+                          initial={{ opacity: 0, y: 10, x: 10 }}
+                          animate={{ opacity: 1, y: 0, x: 0 }}
+                          transition={{ delay: 0.1 * index + 0.3, duration: 0.3 }}
+                          whileHover={{
+                            scale: 1.02,
+                            backgroundColor: "rgba(211, 107, 0, 0.05)",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                          }}
+                        >
+                          <div
+                            className={`p-2 bg-white rounded-full shadow-sm ${activity.color} flex items-center justify-center w-10 h-10`}
+                          >
+                            {activity.icon}
+                          </div>
+                          <div className="flex flex-col justify-center flex-1 min-h-[60px]">
+                            <p className="text-gray-800 font-medium leading-tight">{activity.action}</p>
+                            {activity.details && (
+                              <p className="text-gray-600 text-sm leading-snug">{activity.details}</p>
+                            )}
+                            <p className="text-gray-500 text-xs mt-1">{activity.time || "Baru saja"}</p>
+                          </div>
+                        </motion.div>
                       ))}
                     </AnimatePresence>
                   </div>
