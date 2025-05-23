@@ -20,7 +20,7 @@ const BestSellerSection = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-brand)] mb-4">Menu Unggulan Kami</h2>
             <div className="h-1 w-24 bg-[var(--primary-brand)] mx-auto mb-4"></div>
             <p className="text-[var(--primary-brand)] opacity-80 max-w-2xl mx-auto">
-              Nikmati berbagai pilihan menu homemade berkualitas.
+              Nikmati berbagai pilihan menu homemade yang berkualitas.
             </p>
           </div>
 
