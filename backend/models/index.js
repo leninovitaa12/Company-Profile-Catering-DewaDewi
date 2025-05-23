@@ -11,17 +11,17 @@ const Pin = require("./Pin")(sequelize, DataTypes);
 const Testimoni = require("./Testimoni")(sequelize, DataTypes);
 const Profile = require("./Profile")(sequelize, DataTypes);
 
-User.hasMany(Pin, {
-  foreignKey: "email",
-  sourceKey: "email",
-  onDelete: "CASCADE",
-  onUpdate: "CASCADE",
-});
+// User.hasMany(Pin, {
+//   foreignKey: "email",
+//   sourceKey: "email",
+//   onDelete: "CASCADE",
+//   onUpdate: "CASCADE",
+// });
 
-Pin.belongsTo(User, {
-  foreignKey: "email",
-  targetKey: "email",
-});
+// Pin.belongsTo(User, {
+//   foreignKey: "email",
+//   targetKey: "email",
+// });
 
 module.exports = {
   sequelize,

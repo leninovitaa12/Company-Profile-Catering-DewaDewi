@@ -1,10 +1,12 @@
 const { Profile } = require("../models");
 const fs = require("fs");
 const path = require("path");
+const myLogger = require("../lib/myLogger");
 
 const saveProfile = async (req, res) => {
   try {
     const { nohp, about, alamat } = req.body;
+    const { name: userName } = req.user;
 
     const makeImageUrl = (filename) =>
       `${req.protocol}://${req.get("host")}/public/image/${filename}`;
@@ -48,6 +50,8 @@ const saveProfile = async (req, res) => {
       }
 
       await profile.update(updates);
+
+      myLogger(`Profile Website diperbarui`, `Oleh ${userName}`);
 
       return res.status(200).json({
         message: "Profile berhasil diperbarui",

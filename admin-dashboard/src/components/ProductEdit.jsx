@@ -1,76 +1,88 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react"
-import { toast } from "react-toastify"
-import { motion } from "framer-motion"
-import useUpdateProduct from "../hook/useUpdateProduct"
-import { ImageIcon } from "../components/ui/icons"
-import { Button, Input, TextArea, ImageUpload } from "../components/ui/ui-components"
+import { useState, useRef, useEffect } from "react";
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
+import useUpdateProduct from "../hook/useUpdateProduct";
+import { ImageIcon } from "../components/ui/icons";
+import {
+  Button,
+  Input,
+  TextArea,
+  ImageUpload,
+} from "../components/ui/ui-components";
 
 const ProductEdit = ({ setProductToEdit, product, refetch }) => {
-  const [productName, setProductName] = useState(product.name || "")
-  const [productDescription, setProductDescription] = useState(product.description || "")
-  const [productImage, setProductImage] = useState(null)
-  const [imagePreview, setImagePreview] = useState(product.image || null)
-  const [loading, setLoading] = useState(false)
-  const fileInputRef = useRef(null)
+  const [productName, setProductName] = useState(product.name || "");
+  const [productDescription, setProductDescription] = useState(
+    product.description || ""
+  );
+  const [productImage, setProductImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(product.image || null);
+  const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef(null);
 
-  const { updateProduct } = useUpdateProduct()
+  const { updateProduct } = useUpdateProduct();
 
   useEffect(() => {
     if (product.image) {
-      setImagePreview(product.image)
+      setImagePreview(product.image);
     }
-  }, [product])
+  }, [product]);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     if (file) {
-      setProductImage(file)
-      setImagePreview(URL.createObjectURL(file))
+      setProductImage(file);
+      setImagePreview(URL.createObjectURL(file));
     }
-  }
+  };
 
   const resetForm = () => {
-    setProductName("")
-    setProductDescription("")
-    setProductImage(null)
-    setImagePreview(null)
+    setProductName("");
+    setProductDescription("");
+    setProductImage(null);
+    setImagePreview(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""
+      fileInputRef.current.value = "";
     }
-  }
+  };
 
   const handleEditProduct = async () => {
     if (!productName.trim()) {
-      toast.warning("Nama produk tidak boleh kosong!")
-      return
+      toast.warning("Nama produk tidak boleh kosong!");
+      return;
+    }
+
+    if (!productDescription.trim()) {
+      toast.warning("Deskripsi produk tidak boleh kosong!");
+      return;
     }
 
     const updatedData = {
       name: productName,
       description: productDescription,
       image: productImage,
-    }
+    };
 
     try {
-      setLoading(true)
-      await updateProduct(product.id, updatedData)
-      resetForm()
-      await refetch()
+      setLoading(true);
+      await updateProduct(product.id, updatedData);
+      resetForm();
+      await refetch();
       toast.success("Produk berhasil diperbarui", {
         toastId: "edit-success",
-      })
-      setProductToEdit(null)
+      });
+      setProductToEdit(null);
     } catch (error) {
-      console.error("Gagal mengedit produk:", error)
+      console.error("Gagal mengedit produk:", error);
       toast.error("Gagal mengedit produk", {
         toastId: "edit-error",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <motion.div
@@ -121,19 +133,29 @@ const ProductEdit = ({ setProductToEdit, product, refetch }) => {
             label="Gambar Produk"
             onChange={handleImageChange}
             preview={imagePreview}
-            buttonText={productImage ? productImage.name : "Pilih Gambar Produk"}
+            buttonText={
+              productImage ? productImage.name : "Pilih Gambar Produk"
+            }
             fileInputRef={fileInputRef}
           />
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-            <Button onClick={handleEditProduct} disabled={loading} icon={<ImageIcon />}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Button
+              onClick={handleEditProduct}
+              disabled={loading}
+              icon={<ImageIcon />}
+            >
               {loading ? "Memproses..." : "Simpan Perubahan"}
             </Button>
           </motion.div>
         </div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default ProductEdit
+export default ProductEdit;

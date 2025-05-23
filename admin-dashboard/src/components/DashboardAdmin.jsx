@@ -1,9 +1,15 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence, useInView } from "framer-motion"
-import { useAuthContext } from "../context/AuthContext"
-import { Sidebar, PageHeader, Card, ContentCard, Button } from "../components/ui/ui-components"
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useInView, color } from "framer-motion";
+import { useAuthContext } from "../context/AuthContext";
+import {
+  Sidebar,
+  PageHeader,
+  Card,
+  ContentCard,
+  Button,
+} from "../components/ui/ui-components";
 import {
   HomeIcon,
   TestimoniIcon,
@@ -11,108 +17,121 @@ import {
   CalendarIcon,
   UserIcon,
   ShieldIcon,
-} from "../components/ui/icons"
-import useGetProductsAdmin from "../hook/useGetProducts"
-import useGetTestimoni from "../hook/useGetTestimoni"
-
+} from "../components/ui/icons";
+import useGetProductsAdmin from "../hook/useGetProducts";
+import useGetTestimoni from "../hook/useGetTestimoni";
+import useLogs from "../hook/useLogs";
 // Custom hook to calculate time ago (e.g., "5 hours ago")
 const useTimeAgo = (timestamp) => {
-  const [timeAgo, setTimeAgo] = useState("")
+  const [timeAgo, setTimeAgo] = useState("");
 
   useEffect(() => {
-    if (!timestamp) return
+    if (!timestamp) return;
 
     const calculateTimeAgo = () => {
-      const diffInMilliseconds = new Date() - new Date(timestamp)
-      const diffInSeconds = Math.floor(diffInMilliseconds / 1000)
-      const diffInMinutes = Math.floor(diffInSeconds / 60)
-      const diffInHours = Math.floor(diffInMinutes / 60)
-      const diffInDays = Math.floor(diffInHours / 24)
+      const diffInMilliseconds = new Date() - new Date(timestamp);
+      const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+      const diffInMinutes = Math.floor(diffInSeconds / 60);
+      const diffInHours = Math.floor(diffInMinutes / 60);
+      const diffInDays = Math.floor(diffInHours / 24);
 
-      let timeString = ""
+      let timeString = "";
       if (diffInMinutes < 1) {
-        timeString = `${diffInSeconds} detik yang lalu`
+        timeString = `${diffInSeconds} detik yang lalu`;
       } else if (diffInMinutes < 60) {
-        timeString = `${diffInMinutes} menit yang lalu`
+        timeString = `${diffInMinutes} menit yang lalu`;
       } else if (diffInHours < 24) {
-        timeString = `${diffInHours} jam yang lalu`
+        timeString = `${diffInHours} jam yang lalu`;
       } else {
-        timeString = `${diffInDays} hari yang lalu`
+        timeString = `${diffInDays} hari yang lalu`;
       }
 
-      setTimeAgo(timeString)
-    }
+      setTimeAgo(timeString);
+    };
 
-    calculateTimeAgo()
-    const interval = setInterval(calculateTimeAgo, 60000) // Update every minute
+    calculateTimeAgo();
+    const interval = setInterval(calculateTimeAgo, 60000); // Update every minute
 
-    return () => clearInterval(interval)
-  }, [timestamp])
+    return () => clearInterval(interval);
+  }, [timestamp]);
 
-  return timeAgo
-}
+  return timeAgo;
+};
+
+const formatTimeAgo = (timestamp) => {
+  const diffInMilliseconds = new Date() - new Date(timestamp);
+  const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  if (diffInMinutes < 1) return `${diffInSeconds} detik yang lalu`;
+  if (diffInMinutes < 60) return `${diffInMinutes} menit yang lalu`;
+  if (diffInHours < 24) return `${diffInHours} jam yang lalu`;
+  return `${diffInDays} hari yang lalu`;
+};
 
 // Animated counter component
 const AnimatedCounter = ({ value, duration = 1.5 }) => {
-  const [count, setCount] = useState(0)
-  const countRef = useRef(null)
-  const inView = useInView(countRef, { once: true })
+  const [count, setCount] = useState(0);
+  const countRef = useRef(null);
+  const inView = useInView(countRef, { once: true });
 
   useEffect(() => {
     if (inView) {
-      let start = 0
-      const end = Number.parseInt(value)
-      if (!end) return
+      let start = 0;
+      const end = Number.parseInt(value);
+      if (!end) return;
 
       // Get animation duration based on value size
-      const incrementTime = (duration * 1000) / end
+      const incrementTime = (duration * 1000) / end;
 
       // Don't use intervals for small numbers
       if (end < 30) {
         const timer = setInterval(() => {
-          start += 1
-          setCount(start)
-          if (start === end) clearInterval(timer)
-        }, incrementTime)
+          start += 1;
+          setCount(start);
+          if (start === end) clearInterval(timer);
+        }, incrementTime);
 
-        return () => clearInterval(timer)
+        return () => clearInterval(timer);
       }
 
       // For larger numbers, use a smoother animation
       const timer = setTimeout(() => {
-        setCount(end)
-      }, 100)
+        setCount(end);
+      }, 100);
 
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timer);
     }
-  }, [inView, value, duration])
+  }, [inView, value, duration]);
 
-  return <span ref={countRef}>{count}</span>
-}
+  return <span ref={countRef}>{count}</span>;
+};
 
 // Date and time component
 const DateTimeDisplay = () => {
-  const [dateTime, setDateTime] = useState(new Date())
+  const [dateTime, setDateTime] = useState(new Date());
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDateTime(new Date())
-    }, 60000)
+      setDateTime(new Date());
+    }, 60000);
 
-    return () => clearInterval(timer)
-  }, [])
+    return () => clearInterval(timer);
+  }, []);
 
   const formattedDate = dateTime.toLocaleDateString("id-ID", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-  })
+  });
 
   const formattedTime = dateTime.toLocaleTimeString("id-ID", {
     hour: "2-digit",
     minute: "2-digit",
-  })
+  });
 
   return (
     <div className="flex flex-col">
@@ -123,9 +142,9 @@ const DateTimeDisplay = () => {
         transition={{ delay: 0.3, duration: 0.5 }}
       >
         <span className="inline-flex items-center gap-2">
-  <CalendarIcon className="w-4 h-4" />
-  {formattedDate}
-</span>
+          <CalendarIcon className="w-4 h-4" />
+          {formattedDate}
+        </span>
       </motion.p>
       <motion.p
         className="text-gray-500 text-sm"
@@ -134,16 +153,21 @@ const DateTimeDisplay = () => {
         transition={{ delay: 0.4, duration: 0.5 }}
       >
         <span className="inline-flex items-center gap-2">
-  <span className="w-4 h-4 flex items-center justify-center">🕒</span>
-  {formattedTime}
-</span>
+          <span className="w-4 h-4 flex items-center justify-center">🕒</span>
+          {formattedTime}
+        </span>
       </motion.p>
     </div>
-  )
-}
+  );
+};
 
 // Quick action button component
-const QuickActionButton = ({ icon, label, onClick, color = "bg-[#D36B00]" }) => {
+const QuickActionButton = ({
+  icon,
+  label,
+  onClick,
+  color = "bg-[#D36B00]",
+}) => {
   return (
     <motion.button
       className={`flex flex-col items-center justify-center p-4 ${color} text-white rounded-lg shadow-md hover:shadow-lg`}
@@ -155,23 +179,31 @@ const QuickActionButton = ({ icon, label, onClick, color = "bg-[#D36B00]" }) => 
       <span className="text-2xl mb-2">{icon}</span>
       <span className="text-sm font-medium">{label}</span>
     </motion.button>
-  )
-}
+  );
+};
 
 const DashboardAdmin = () => {
-  const { authUser } = useAuthContext()
-
+  const { authUser } = useAuthContext();
+  const { logs } = useLogs();
   // Fetch data produk dan testimoni
-  const { products, loading: productsLoading, refetch: refetchProducts } = useGetProductsAdmin()
-  const { testimonis, loadings: testimonisLoading, refetch: refetchTestimonis } = useGetTestimoni()
+  const {
+    products,
+    loading: productsLoading,
+    refetch: refetchProducts,
+  } = useGetProductsAdmin();
+  const {
+    testimonis,
+    loadings: testimonisLoading,
+    refetch: refetchTestimonis,
+  } = useGetTestimoni();
 
   // Get the latest product and latest testimonial
-  const latestProduct = products?.[0] || {}
-  const latestTestimoni = testimonis?.[0] || {}
+  const latestProduct = products?.[0] || {};
+  const latestTestimoni = testimonis?.[0] || {};
 
   // Get the "time ago" for the latest product and testimonial
-  const latestProductTime = useTimeAgo(latestProduct.createdAt)
-  const latestTestimoniTime = useTimeAgo(latestTestimoni.createdAt)
+  const latestProductTime = useTimeAgo(latestProduct.createdAt);
+  const latestTestimoniTime = useTimeAgo(latestTestimoni.createdAt);
 
   // Animation variants
   const containerVariants = {
@@ -182,7 +214,7 @@ const DashboardAdmin = () => {
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -191,7 +223,7 @@ const DashboardAdmin = () => {
       opacity: 1,
       transition: { type: "spring", stiffness: 300, damping: 24 },
     },
-  }
+  };
 
   const stats = [
     {
@@ -222,24 +254,24 @@ const DashboardAdmin = () => {
       color: "bg-amber-100",
       textColor: "text-amber-700",
     },
-  ]
+  ];
 
   // Recent activities with more details
   const activities = [
-    {
-      action: "Produk baru ditambahkan",
-      time: latestProductTime,
-      icon: <ProductIcon />,
-      details: latestProduct.name ? `"${latestProduct.name}"` : "",
-      color: "text-blue-600",
-    },
-    {
-      action: "Testimoni baru diterima",
-      time: latestTestimoniTime,
-      icon: <TestimoniIcon />,
-      details: "Dari pelanggan",
-      color: "text-green-600",
-    },
+    // {
+    //   action: "Produk baru ditambahkan",
+    //   time: latestProductTime,
+    //   icon: <ProductIcon />,
+    //   details: latestProduct.name ? `"${latestProduct.name}"` : "",
+    //   color: "text-blue-600",
+    // },
+    // {
+    //   action: "Testimoni baru diterima",
+    //   time: latestTestimoniTime,
+    //   icon: <TestimoniIcon />,
+    //   details: "Dari pelanggan",
+    //   color: "text-green-600",
+    // },
     {
       action: "Login terakhir",
       time: "Hari ini",
@@ -247,15 +279,52 @@ const DashboardAdmin = () => {
       details: authUser?.email || "admin@example.com",
       color: "text-purple-600",
     },
-  ]
+    ...logs.map((log) => ({
+      action: log.action,
+      details: log.details,
+      time: formatTimeAgo(log.time),
+      icon: log.action.toLowerCase().includes("produk") ? (
+        <ProductIcon />
+      ) : log.action.toLowerCase().includes("testimoni") ? (
+        <TestimoniIcon />
+      ) : (
+        <i className="fa-solid fa-clock" />
+      ),
+      color: log.action.toLowerCase().includes("produk")
+        ? "text-blue-600"
+        : log.action.toLowerCase().includes("testimoni")
+        ? "text-green-600"
+        : "text-purple-600",
+    })),
+  ];
 
   // Quick actions
   const quickActions = [
-    { icon: "📦", label: "Tambah Produk", color: "bg-[#D36B00]", path: "/product" },
-    { icon: "📸", label: "Tambah Testimoni", color: "bg-[#42032C]", path: "/testimoni" },
-    { icon: "👤", label: "Edit Profil", color: "bg-[#D36B00]", path: "/profil" },
-    { icon: "⚙️", label: "Pengaturan", color: "bg-[#42032C]", path: "/setting" },
-  ]
+    {
+      icon: "📦",
+      label: "Tambah Produk",
+      color: "bg-[#D36B00]",
+      path: "/product",
+    },
+    {
+      icon: "📸",
+      label: "Tambah Testimoni",
+      color: "bg-[#42032C]",
+      path: "/testimoni",
+    },
+    {
+      icon: "👤",
+      label: "Edit Profil",
+      color: "bg-[#D36B00]",
+      path: "/profil",
+    },
+    {
+      icon: "⚙️",
+      label: "Pengaturan",
+      color: "bg-[#42032C]",
+      path: "/setting",
+    },
+  ];
 
   return (
     <motion.div
@@ -270,12 +339,17 @@ const DashboardAdmin = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col pb-16 md:pb-0">
         <PageHeader
-  title="Dashboard Admin"
-  icon={<HomeIcon />}
-  actions={null}
-/>
+          title="Dashboard Admin"
+          icon={<HomeIcon />}
+          actions={null}
+        />
 
-        <motion.div className="flex-1 p-4 md:p-6" variants={containerVariants} initial="hidden" animate="visible">
+        <motion.div
+          className="flex-1 p-4 md:p-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <div className="max-w-6xl mx-auto space-y-6">
             {/* Welcome Card */}
             <motion.div variants={itemVariants}>
@@ -326,7 +400,8 @@ const DashboardAdmin = () => {
                   transition={{ delay: 0.1 * index }}
                   whileHover={{
                     y: -5,
-                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                    boxShadow:
+                      "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
                   }}
                 >
                   <Card className="border border-gray-100 h-full">
@@ -401,8 +476,9 @@ const DashboardAdmin = () => {
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.4 }}
                     >
-                      Selamat datang di dashboard admin. Dari sini Anda dapat mengelola produk, testimoni, dan melihat
-                      statistik penting tentang bisnis Anda.
+                      Selamat datang di dashboard admin. Dari sini Anda dapat
+                      mengelola produk, testimoni, dan melihat statistik penting
+                      tentang bisnis Anda.
                     </motion.p>
 
                     <motion.div
@@ -412,12 +488,18 @@ const DashboardAdmin = () => {
                       transition={{ delay: 0.5 }}
                     >
                       <div className="bg-white/60 backdrop-blur-sm p-3 rounded-lg border border-gray-100">
-                        <h4 className="font-medium text-[#D36B00] mb-1">Produk Terbaru</h4>
-                        <p className="text-sm text-gray-600 truncate">{latestProduct.name || "Belum ada produk"}</p>
+                        <h4 className="font-medium text-[#D36B00] mb-1">
+                          Produk Terbaru
+                        </h4>
+                        <p className="text-sm text-gray-600 truncate">
+                          {latestProduct.name || "Belum ada produk"}
+                        </p>
                       </div>
 
                       <div className="bg-white/60 backdrop-blur-sm p-3 rounded-lg border border-gray-100">
-                        <h4 className="font-medium text-[#D36B00] mb-1">Status Sistem</h4>
+                        <h4 className="font-medium text-[#D36B00] mb-1">
+                          Status Sistem
+                        </h4>
                         <div className="flex items-center gap-2 text-sm text-gray-600">
                           <span className="inline-block w-2 h-2 bg-green-500 rounded-full"></span>
                           Semua sistem berjalan normal
@@ -431,30 +513,43 @@ const DashboardAdmin = () => {
               {/* Recent Activities */}
               <motion.div variants={itemVariants}>
                 <ContentCard title="Aktivitas Terbaru">
-                  <div className="space-y-4">
+                  <div className="space-y-4 max-h-[250px] overflow-y-auto scroll-thin overflow-x-hidden scrollbar-hide">
                     <AnimatePresence>
                       {activities.map((activity, index) => (
                         <motion.div
-  key={index}
-  className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-100 shadow-sm min-h-[80px]"
-  initial={{ opacity: 0, y: 10, x: 10 }}
-  animate={{ opacity: 1, y: 0, x: 0 }}
-  transition={{ delay: 0.1 * index + 0.3, duration: 0.3 }}
-  whileHover={{
-    scale: 1.02,
-    backgroundColor: "rgba(211, 107, 0, 0.05)",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-  }}
->
-  <div className={`p-2 bg-white rounded-full shadow-sm ${activity.color} flex items-center justify-center w-10 h-10`}>
-    {activity.icon}
-  </div>
-  <div className="flex flex-col justify-center flex-1 min-h-[60px]">
-    <p className="text-gray-800 font-medium leading-tight">{activity.action}</p>
-    {activity.details && <p className="text-gray-600 text-sm leading-snug">{activity.details}</p>}
-    <p className="text-gray-500 text-xs mt-1">{activity.time || "Baru saja"}</p>
-  </div>
-</motion.div>
+                          key={index}
+                          className="flex cursor-pointer items-start gap-3 p-3 bg-white rounded-lg border border-gray-100 shadow-sm min-h-[80px]"
+                          initial={{ opacity: 0, y: 10, x: 10 }}
+                          animate={{ opacity: 1, y: 0, x: 0 }}
+                          transition={{
+                            delay: 0.1 * index + 0.3,
+                            duration: 0.3,
+                          }}
+                          whileHover={{
+                            scale: 1.02,
+                            backgroundColor: "rgba(211, 107, 0, 0.05)",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                          }}
+                        >
+                          <div
+                            className={`p-2 bg-white rounded-full shadow-sm ${activity.color} flex items-center justify-center w-10 h-10`}
+                          >
+                            {activity.icon}
+                          </div>
+                          <div className="flex flex-col justify-center flex-1 min-h-[60px]">
+                            <p className="text-gray-800 font-medium leading-tight">
+                              {activity.action}
+                            </p>
+                            {activity.details && (
+                              <p className="text-gray-600 text-sm leading-snug">
+                                {activity.details}
+                              </p>
+                            )}
+                            <p className="text-gray-500 text-xs mt-1">
+                              {activity.time || "Baru saja"}
+                            </p>
+                          </div>
+                        </motion.div>
                       ))}
                     </AnimatePresence>
                   </div>
@@ -465,7 +560,7 @@ const DashboardAdmin = () => {
         </motion.div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default DashboardAdmin
+export default DashboardAdmin;

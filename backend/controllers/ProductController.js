@@ -2,11 +2,13 @@ const { Op, Sequelize } = require("sequelize");
 const { Product } = require("../models/index.js");
 const fs = require("fs");
 const path = require("path");
+const myLogger = require("../lib/myLogger.js");
 
 // Create Product
 const createProduct = async (req, res) => {
   try {
     const { name, description } = req.body;
+    const { name: userName } = req.user;
 
     if (!name) {
       return res.status(400).json({ error: "Nama produk wajib diisi." });
@@ -21,6 +23,8 @@ const createProduct = async (req, res) => {
       image: imageUrl,
       description,
     });
+
+    myLogger(`Produk baru ${name} ditambahkan`, `Oleh ${userName}`);
 
     res.status(201).json(newProduct);
   } catch (error) {
@@ -82,6 +86,7 @@ const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description } = req.body;
+    const { name: userName } = req.user;
     const product = await Product.findByPk(id);
 
     if (!product) {
@@ -114,6 +119,8 @@ const updateProduct = async (req, res) => {
       description,
     });
 
+    myLogger(`Produk ${name} diperbarui`, `Oleh ${userName}`);
+
     res.status(200).json(product);
   } catch (error) {
     console.error("Update Product Error:", error.message);
@@ -126,6 +133,7 @@ const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const product = await Product.findByPk(id);
+    const { name: userName } = req.user;
 
     if (!product) {
       return res.status(404).json({ error: "Produk tidak ditemukan." });
@@ -144,6 +152,7 @@ const deleteProduct = async (req, res) => {
     }
 
     await product.destroy();
+    myLogger(`Produk ${product.name} dihapus`, `Oleh ${userName}`);
     res.status(200).json({ message: "Produk berhasil dihapus." });
   } catch (error) {
     console.error("Delete Product Error:", error.message);
