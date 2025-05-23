@@ -9,7 +9,7 @@ const TestimoniSection = () => {
       <div className="px-8">
         <div className="text-center space-y-2">
           <h2 className="text-3xl font-bold">Testimoni Pembeli Kami</h2>
-          <p className="text-muted-foreground">Pesan semakin mudah</p>
+          <p className="text-muted-foreground">Kurang percaya apa lagi nih??</p>
         </div>
 
         {loading ? (

@@ -24,7 +24,7 @@ const createProduct = async (req, res) => {
       description,
     });
 
-    myLogger(`${userName} membuat produk baru: ${name}`);
+    myLogger(`Produk baru ${name} ditambahkan`, `Oleh ${userName}`);
 
     res.status(201).json(newProduct);
   } catch (error) {
@@ -119,7 +119,7 @@ const updateProduct = async (req, res) => {
       description,
     });
 
-    myLogger(`${userName} memperbarui produk: ${name}`);
+    myLogger(`Produk ${name} diperbarui`, `Oleh ${userName}`);
 
     res.status(200).json(product);
   } catch (error) {
@@ -152,7 +152,7 @@ const deleteProduct = async (req, res) => {
     }
 
     await product.destroy();
-    myLogger(`${userName} menghapus produk: ${product.name}`);
+    myLogger(`Produk ${product.name} dihapus`, `Oleh ${userName}`);
     res.status(200).json({ message: "Produk berhasil dihapus." });
   } catch (error) {
     console.error("Delete Product Error:", error.message);

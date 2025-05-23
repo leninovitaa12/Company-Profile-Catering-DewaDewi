@@ -1,12 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Link as ScrollLink } from "react-scroll"
+import { Link as ScrollLink, Events, scrollSpy } from "react-scroll"
 import "./Navbar.css"
 
 const Navbar = ({ nohp }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState("home")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,8 +18,26 @@ const Navbar = ({ nohp }) => {
       }
     }
 
+    // Initialize scrollSpy
+    scrollSpy.update()
+
+    // Register scroll events from react-scroll
+    Events.scrollEvent.register("begin", (to) => {
+      setActiveSection(to)
+    })
+
+    Events.scrollEvent.register("end", (to) => {
+      setActiveSection(to)
+    })
+
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      // Unregister scroll events
+      Events.scrollEvent.remove("begin")
+      Events.scrollEvent.remove("end")
+    }
   }, [])
 
   return (
@@ -42,12 +61,31 @@ const Navbar = ({ nohp }) => {
           <li>
             <ScrollLink
               to="home"
+              spy={true}
               smooth={true}
               duration={700}
               offset={-80}
-              className="cursor-pointer"
+              activeClass="active"
+              className={`cursor-pointer ${activeSection === 'home' ? 'active' : ''}`}
+              onSetActive={() => setActiveSection("home")}
             >
               Beranda
+            </ScrollLink>
+          </li>
+
+          {/* ScrollLink untuk Tentang Kami */}
+          <li>
+            <ScrollLink
+              to="about"
+              spy={true}
+              smooth={true}
+              duration={700}
+              offset={-80}
+              activeClass="active"
+              className={`cursor-pointer ${activeSection === 'about' ? 'active' : ''}`}
+              onSetActive={() => setActiveSection("about")}
+            >
+              Tentang Kami
             </ScrollLink>
           </li>
 
@@ -55,10 +93,13 @@ const Navbar = ({ nohp }) => {
           <li>
             <ScrollLink
               to="menu"
+              spy={true}
               smooth={true}
               duration={700}
               offset={-80}
-              className="cursor-pointer"
+              activeClass="active"
+              className={`cursor-pointer ${activeSection === 'menu' ? 'active' : ''}`}
+              onSetActive={() => setActiveSection("menu")}
             >
               Menu
             </ScrollLink>
@@ -68,25 +109,15 @@ const Navbar = ({ nohp }) => {
           <li>
             <ScrollLink
               to="carapesan"
+              spy={true}
               smooth={true}
               duration={700}
               offset={-80}
-              className="cursor-pointer"
+              activeClass="active"
+              className={`cursor-pointer ${activeSection === 'carapesan' ? 'active' : ''}`}
+              onSetActive={() => setActiveSection("carapesan")}
             >
               Cara Pesan
-            </ScrollLink>
-          </li>
-
-          {/* ScrollLink untuk Tentang Kami */}
-          <li>
-            <ScrollLink
-              to="about"
-              smooth={true}
-              duration={700}
-              offset={-80}
-              className="cursor-pointer"
-            >
-              Tentang Kami
             </ScrollLink>
           </li>
 

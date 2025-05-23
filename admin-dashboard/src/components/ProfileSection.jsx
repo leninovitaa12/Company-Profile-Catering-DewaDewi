@@ -1,222 +1,234 @@
-"use client";
+"use client"
 
-import { useState, useRef, useEffect } from "react";
-import { toast } from "react-toastify";
-import useProfile from "../hook/useProfile";
-import { PageHeader, Sidebar } from "./ui/ui-components";
-import { ProfilIcon, ImageIcon } from "./ui/icons";
+import { useState, useRef, useEffect } from "react"
+import { toast } from "react-toastify"
+import { motion } from "framer-motion"
+import useProfile from "../hook/useProfile"
+import { PageHeader, Sidebar, Button, ImageUpload } from "../components/ui/ui-components"
+import { ProfilIcon } from "../components/ui/icons"
 
 const ProfileSection = () => {
-  const { profile, loading, error, saveProfile } = useProfile();
-  const [nohp, setNohp] = useState("");
-  const [alamat, setAlamat] = useState("");
-  const [about, setAbout] = useState("");
+  const { profile, loading, error, saveProfile } = useProfile()
+  const [nohp, setNohp] = useState("")
+  const [alamat, setAlamat] = useState("")
+  const [about, setAbout] = useState("")
 
-  const [image, setImage] = useState(null);
-  const [image1, setImage1] = useState(null);
-  const [image2, setImage2] = useState(null);
-  const [image3, setImage3] = useState(null);
+  const [image, setImage] = useState(null)
+  const [image1, setImage1] = useState(null)
+  const [image2, setImage2] = useState(null)
+  const [image3, setImage3] = useState(null)
 
-  const [imagePreview, setImagePreview] = useState(null);
-  const [imagePreview1, setImagePreview1] = useState(null);
-  const [imagePreview2, setImagePreview2] = useState(null);
-  const [imagePreview3, setImagePreview3] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null)
+  const [imagePreview1, setImagePreview1] = useState(null)
+  const [imagePreview2, setImagePreview2] = useState(null)
+  const [imagePreview3, setImagePreview3] = useState(null)
 
   const fileInputRefs = {
     image: useRef(null),
     image1: useRef(null),
     image2: useRef(null),
     image3: useRef(null),
-  };
+  }
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 300, damping: 24 },
+    },
+  }
 
   useEffect(() => {
     if (profile) {
-      setNohp(profile.nohp || "");
-      setAlamat(profile.alamat || "");
-      setAbout(profile.about || "");
-      setImagePreview(profile.image || null);
-      setImagePreview1(profile.image1 || null);
-      setImagePreview2(profile.image2 || null);
-      setImagePreview3(profile.image3 || null);
+      setNohp(profile.nohp || "")
+      setAlamat(profile.alamat || "")
+      setAbout(profile.about || "")
+      setImagePreview(profile.image || null)
+      setImagePreview1(profile.image1 || null)
+      setImagePreview2(profile.image2 || null)
+      setImagePreview3(profile.image3 || null)
     }
-  }, [profile]);
+  }, [profile])
 
   const handleImageChange = (e, field) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const file = e.target.files[0]
+    if (!file) return
 
     if (field === "image") {
-      setImage(file);
-      setImagePreview(URL.createObjectURL(file));
+      setImage(file)
+      setImagePreview(URL.createObjectURL(file))
     } else if (field === "image1") {
-      setImage1(file);
-      setImagePreview1(URL.createObjectURL(file));
+      setImage1(file)
+      setImagePreview1(URL.createObjectURL(file))
     } else if (field === "image2") {
-      setImage2(file);
-      setImagePreview2(URL.createObjectURL(file));
+      setImage2(file)
+      setImagePreview2(URL.createObjectURL(file))
     } else if (field === "image3") {
-      setImage3(file);
-      setImagePreview3(URL.createObjectURL(file));
+      setImage3(file)
+      setImagePreview3(URL.createObjectURL(file))
     }
-  };
+  }
 
   const handleSubmit = async () => {
     if (!nohp || !alamat || !about) {
-      toast.warning("Semua field wajib diisi!");
-      return;
+      toast.warning("Semua field wajib diisi!")
+      return
     }
 
-    const formData = new FormData();
-    formData.append("nohp", nohp);
-    formData.append("alamat", alamat);
-    formData.append("about", about);
+    const formData = new FormData()
+    formData.append("nohp", nohp)
+    formData.append("alamat", alamat)
+    formData.append("about", about)
 
-    if (image) formData.append("image", image);
-    if (image1) formData.append("image1", image1);
-    if (image2) formData.append("image2", image2);
-    if (image3) formData.append("image3", image3);
+    if (image) formData.append("image", image)
+    if (image1) formData.append("image1", image1)
+    if (image2) formData.append("image2", image2)
+    if (image3) formData.append("image3", image3)
 
     try {
-      await saveProfile(formData);
-      toast.success("Profil berhasil disimpan");
+      await saveProfile(formData)
+      toast.success("Profil berhasil disimpan")
     } catch {
-      toast.error("Gagal menyimpan profil");
+      toast.error("Gagal menyimpan profil")
     }
-  };
-
-  const renderImageUpload = (label, field, file, preview) => (
-    <div>
-      <label
-        htmlFor={field}
-        className="block text-sm font-medium text-gray-700 mb-1"
-      >
-        {label}
-      </label>
-      <div className="flex items-center">
-        <input
-          id={field}
-          type="file"
-          ref={fileInputRefs[field]}
-          onChange={(e) => handleImageChange(e, field)}
-          className="hidden"
-          accept="image/*"
-        />
-        <label
-          htmlFor={field}
-          className="flex items-center gap-2 cursor-pointer bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 hover:bg-gray-50"
-        >
-          <span className="w-[18px] h-[18px]">
-            <ImageIcon />
-          </span>
-          {file ? file.name : `Pilih ${label}`}
-        </label>
-      </div>
-      {preview && (
-        <div className="mt-2">
-          <img
-            src={preview}
-            alt="Preview"
-            className="w-20 h-20 object-cover rounded-md border"
-          />
-        </div>
-      )}
-    </div>
-  );
+  }
 
   return (
-    <div className="flex min-h-screen bg-[#F1EFDC]">
+    <motion.div
+      className="flex min-h-screen bg-[#F1EFDC]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       <Sidebar activePage="profil" />
       <div className="flex-1">
         <PageHeader title="Manajemen Profil" icon={<ProfilIcon />} />
-        <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-6 mt-6">
-          <div>
-            <label
-              htmlFor="nohp"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+        <motion.div
+          className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-6 mt-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div variants={itemVariants}>
+            <label htmlFor="nohp" className="block text-sm font-medium text-gray-700 mb-1">
               Nomor HP
             </label>
             <div className="flex rounded-lg border border-gray-300 overflow-hidden">
-              <span className="bg-gray-100 px-3 py-2.5 text-sm text-gray-700 flex items-center">
+              <motion.span
+                className="bg-gray-100 px-3 py-2.5 text-sm text-gray-700 flex items-center"
+                whileHover={{ backgroundColor: "#f3f4f6" }}
+              >
                 +62
-              </span>
-              <input
+              </motion.span>
+              <motion.input
                 id="nohp"
                 type="text"
                 value={nohp}
                 onChange={(e) => setNohp(e.target.value.replace(/^0+/, ""))}
                 placeholder="81234567890"
                 className="flex-1 p-2.5 text-sm outline-none"
+                whileFocus={{ scale: 1.01 }}
+                transition={{ duration: 0.2 }}
               />
             </div>
-          </div>
+          </motion.div>
 
-          <div>
-            <label
-              htmlFor="alamat"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+          <motion.div variants={itemVariants}>
+            <label htmlFor="alamat" className="block text-sm font-medium text-gray-700 mb-1">
               Alamat
             </label>
-            <textarea
+            <motion.textarea
               id="alamat"
               value={alamat}
               onChange={(e) => setAlamat(e.target.value)}
               placeholder="Masukkan alamat"
               className="border border-gray-300 rounded-lg p-2.5 w-full h-24 resize-none"
+              whileFocus={{ scale: 1.01 }}
+              transition={{ duration: 0.2 }}
             />
-          </div>
+          </motion.div>
 
-          <div>
-            <label
-              htmlFor="about"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+          <motion.div variants={itemVariants}>
+            <label htmlFor="about" className="block text-sm font-medium text-gray-700 mb-1">
               Tentang Saya
             </label>
-            <textarea
+            <motion.textarea
               id="about"
               value={about}
               onChange={(e) => setAbout(e.target.value)}
               placeholder="Deskripsi singkat"
               className="border border-gray-300 rounded-lg p-2.5 w-full h-24 resize-none"
+              whileFocus={{ scale: 1.01 }}
+              transition={{ duration: 0.2 }}
             />
-          </div>
+          </motion.div>
 
           {/* Upload Gambar */}
-          {renderImageUpload("Gambar Profil", "image", image, imagePreview)}
-          {renderImageUpload(
-            "Gambar carrousel 1",
-            "image1",
-            image1,
-            imagePreview1
-          )}
-          {renderImageUpload(
-            "Gambar carrousel 2",
-            "image2",
-            image2,
-            imagePreview2
-          )}
-          {renderImageUpload(
-            "Gambar carrousel 3",
-            "image3",
-            image3,
-            imagePreview3
-          )}
+          <motion.div variants={itemVariants}>
+            <ImageUpload
+              id="image"
+              label="Gambar Profil"
+              onChange={(e) => handleImageChange(e, "image")}
+              preview={imagePreview}
+              buttonText="Pilih Gambar Profil"
+              fileInputRef={fileInputRefs.image}
+            />
+          </motion.div>
 
-          <div className="flex justify-center">
-            <button
-              className="bg-[#D36B00] hover:bg-[#42032C] text-white py-2.5 px-6 rounded-lg transition-colors"
-              onClick={handleSubmit}
-              disabled={loading}
-            >
+          <motion.div variants={itemVariants}>
+            <ImageUpload
+              id="image1"
+              label="Gambar carrousel 1"
+              onChange={(e) => handleImageChange(e, "image1")}
+              preview={imagePreview1}
+              buttonText="Pilih Gambar Carousel 1"
+              fileInputRef={fileInputRefs.image1}
+            />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <ImageUpload
+              id="image2"
+              label="Gambar carrousel 2"
+              onChange={(e) => handleImageChange(e, "image2")}
+              preview={imagePreview2}
+              buttonText="Pilih Gambar Carousel 2"
+              fileInputRef={fileInputRefs.image2}
+            />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <ImageUpload
+              id="image3"
+              label="Gambar carrousel 3"
+              onChange={(e) => handleImageChange(e, "image3")}
+              preview={imagePreview3}
+              buttonText="Pilih Gambar Carousel 3"
+              fileInputRef={fileInputRefs.image3}
+            />
+          </motion.div>
+
+          <motion.div className="flex justify-center" variants={itemVariants}>
+            <Button onClick={handleSubmit} disabled={loading}>
               {loading ? "Memproses..." : "Simpan Profil"}
-            </button>
-          </div>
-        </div>
+            </Button>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
-  );
-};
+    </motion.div>
+  )
+}
 
-export default ProfileSection;
+export default ProfileSection

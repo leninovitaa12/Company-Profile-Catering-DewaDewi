@@ -14,13 +14,13 @@ const useDeleteProduct = () => {
         withCredentials: true,
       });
 
-      toast.success("Product Berhasil dihapus!");
+      toast.success("Produk Berhasil dihapus!");
       return res.data;
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
           error.message ||
-          "Failed to delete product"
+          "Gagal menghapus produk"
       );
       throw error;
     } finally {

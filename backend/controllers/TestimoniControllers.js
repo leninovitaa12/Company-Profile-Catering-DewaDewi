@@ -19,7 +19,7 @@ const createTestimoni = async (req, res) => {
       image: imageUrl,
     });
 
-    myLogger(`${userName} membuat testimoni baru`);
+    myLogger(`Testimoni baru ditambahkan`, `Oleh ${userName}`);
 
     res.status(201).json(newTestimoni);
   } catch (error) {
@@ -82,7 +82,7 @@ const updateTestimoni = async (req, res) => {
 
     await testimoni.update({ image: imageUrl });
 
-    myLogger(`${userName} memperbarui testimoni`);
+    myLogger(`Testimoni diperbarui`, `Oleh ${userName}`);
 
     res.status(200).json(testimoni);
   } catch (error) {
@@ -115,7 +115,7 @@ const deleteTestimoni = async (req, res) => {
 
     await testimoni.destroy();
 
-    myLogger(`${userName} menghapus testimoni`);
+    myLogger(`Testimoni dihapus`, `Oleh ${userName}`);
 
     res.status(200).json({ message: "Testimoni berhasil dihapus." });
   } catch (error) {

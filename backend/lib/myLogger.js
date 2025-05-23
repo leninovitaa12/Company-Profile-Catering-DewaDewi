@@ -3,12 +3,13 @@ const path = require("path");
 
 const logFilePath = path.join(__dirname, "../public/log.json");
 
-function myLogger(message) {
+function myLogger(action, details) {
   try {
     const now = new Date();
     const logEntry = {
-      time: now.toISOString(),
-      message,
+      time: now.getTime(),
+      action,
+      details,
     };
 
     let logs = [];
