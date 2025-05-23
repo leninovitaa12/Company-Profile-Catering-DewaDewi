@@ -1,45 +1,44 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { toast } from "react-toastify"
-import { motion } from "framer-motion"
-import useDeleteProduct from "../hook/useDeleteProduct"
-import { EditIcon, TrashIcon } from "../components/ui/icons"
-import { ConfirmDialog } from "../components/ui/ui-components"
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
+import useDeleteProduct from "../hook/useDeleteProduct";
+import { EditIcon, TrashIcon } from "../components/ui/icons";
+import { ConfirmDialog } from "../components/ui/ui-components";
 
 const ProductItem = ({ products, loading, refetch, onEdit }) => {
-  const { deleteProduct, loading: deleteLoading } = useDeleteProduct()
-  const [productToEdit, setProductToEdit] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedProductId, setSelectedProductId] = useState(null)
+  const { deleteProduct, loading: deleteLoading } = useDeleteProduct();
+  const [productToEdit, setProductToEdit] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   const handleEditClick = (product) => {
-    setProductToEdit(product)
-    onEdit(product)
-  }
+    setProductToEdit(product);
+    onEdit(product);
+  };
 
   const openDeleteModal = (id) => {
-    setSelectedProductId(id)
-    setIsModalOpen(true)
-  }
+    setSelectedProductId(id);
+    setIsModalOpen(true);
+  };
 
   const closeDeleteModal = () => {
-    setSelectedProductId(null)
-    setIsModalOpen(false)
-  }
+    setSelectedProductId(null);
+    setIsModalOpen(false);
+  };
 
   const handleDeleteConfirm = async () => {
-    if (!selectedProductId) return
+    if (!selectedProductId) return;
     try {
-      await deleteProduct(selectedProductId)
-      refetch()
-      toast.success("Produk berhasil dihapus!")
+      await deleteProduct(selectedProductId);
+      refetch();
     } catch (error) {
-      toast.error("Gagal menghapus produk!")
+      toast.error("Gagal menghapus produk!");
     } finally {
-      closeDeleteModal()
+      closeDeleteModal();
     }
-  }
+  };
 
   // Animation variants
   const containerVariants = {
@@ -50,7 +49,7 @@ const ProductItem = ({ products, loading, refetch, onEdit }) => {
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -59,7 +58,7 @@ const ProductItem = ({ products, loading, refetch, onEdit }) => {
       opacity: 1,
       transition: { type: "spring", stiffness: 300, damping: 24 },
     },
-  }
+  };
 
   return (
     <div className="mt-8 p-5 mx-auto">
@@ -101,8 +100,12 @@ const ProductItem = ({ products, loading, refetch, onEdit }) => {
                 </div>
               )}
               <div className="p-4">
-                <h4 className="text-lg font-semibold mb-2 text-gray-800">{product.name}</h4>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">{product.description}</p>
+                <h4 className="text-lg font-semibold mb-2 text-gray-800">
+                  {product.name}
+                </h4>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                  {product.description}
+                </p>
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-gray-500">
                     {new Date(product.createdAt).toLocaleDateString("id-ID")}
@@ -138,7 +141,7 @@ const ProductItem = ({ products, loading, refetch, onEdit }) => {
         </motion.div>
       ) : null}
     </div>
-  )
-}
+  );
+};
 
-export default ProductItem
+export default ProductItem;

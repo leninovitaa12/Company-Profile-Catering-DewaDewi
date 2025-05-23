@@ -33,7 +33,7 @@ const FeaturedMenu = () => {
       <div className="container">
         <h2 className="section-title">Menu Unggulan Kami</h2>
         <p className="section-subtitle">
-          Nikmati berbagai pilihan menu berkualitas yang disiapkan oleh chef profesional kami
+          Nikmati berbagai pilihan menu berkualitas dengan bahan-bahan pilihan
         </p>
 
         <div className="featured-items">

@@ -1,3 +1,4 @@
+const myLogger = require("../lib/myLogger");
 const { User } = require("../models");
 const bcrypt = require("bcryptjs");
 
@@ -73,6 +74,7 @@ const updateAccount = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, email, password } = req.body;
+    const userName = req.user.name;
 
     const user = await User.findByPk(id);
     if (!user) {
@@ -86,6 +88,9 @@ const updateAccount = async (req, res) => {
     }
 
     await user.update(updateData);
+
+    myLogger(`Akun ${user.name} diperbarui`, `Oleh ${userName}`);
+
     res.status(200).json({ message: "Akun berhasil diperbarui." });
   } catch (error) {
     console.error("Update Account Error:", error.message);
@@ -128,6 +133,9 @@ const updateSelfAccount = async (req, res) => {
     }
 
     await user.update(updateData);
+
+    myLogger(`Akun ${user.name} diperbarui`, `Oleh ${name}`);
+
     res.status(200).json({ message: "Akun berhasil diperbarui." });
   } catch (error) {
     console.error("Update Account Error:", error.message);
